@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery — Festival 2026</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../logo-512.svg" type="image/svg+xml">
+
+    <!-- Tailwind & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Satoshi', 'Outfit', 'sans-serif'],
+                        display: ['Satoshi', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            primary: '#134E8E',
+                            secondary: '#FFB33F',
+                            dark: '#0F172A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .hero-gradient { background: radial-gradient(circle at 70% 20%, rgba(19, 78, 142, 0.05), transparent 40%), radial-gradient(circle at 30% 80%, rgba(255, 179, 63, 0.03), transparent 40%); }
+        .gallery-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .gallery-card:hover { transform: translateY(-8px); }
+        .image-overlay { opacity: 0; transition: opacity 0.3s ease; }
+        .gallery-card:hover .image-overlay { opacity: 1; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 px-4 py-4 sm:px-8 bg-white/80 backdrop-blur-xl border-b border-slate-100">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 bg-brand-primary rounded-xl flex items-center justify-center shadow-lg shadow-brand-primary/20">
+                    <img id="nav-logo" src="../logo-512.svg" alt="Logo" class="w-7 h-7 object-contain">
+                </div>
+                <div class="flex flex-col">
+                    <span id="fest-name" class="font-black text-xl tracking-tight text-brand-primary leading-none mb-0.5">FEST'26</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Media Gallery</span>
+                </div>
+            </a>
+            <a href="index.html" class="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-brand-primary transition-all">
+                <i class="fi fi-rr-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="py-12 sm:py-16 bg-white border-b border-slate-100 hero-gradient">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-brand-primary/10 rounded-full mb-6">
+                <i class="fi fi-rr-picture text-brand-primary text-xs"></i>
+                <span class="text-[10px] font-black text-brand-primary uppercase tracking-widest">Visual Journey</span>
+            </div>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-4 heading-tight">Capturing <span class="text-brand-primary">Excellence</span></h1>
+            <p class="text-slate-500 font-medium text-base sm:text-lg max-w-2xl mx-auto px-4 sm:px-0">Browse through our curated albums of the most memorable moments from Festival 2026.</p>
+        </div>
+    </header>
+
+    <main class="flex-1 py-12 sm:py-16">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8 lg:gap-10" id="gallery-container">
+                <!-- Skeletons -->
+                <div class="aspect-square rounded-[1.5rem] sm:rounded-[2.5rem] bg-slate-200 animate-pulse"></div>
+                <div class="aspect-square rounded-[1.5rem] sm:rounded-[2.5rem] bg-slate-200 animate-pulse"></div>
+                <div class="aspect-square rounded-[1.5rem] sm:rounded-[2.5rem] bg-slate-200 animate-pulse"></div>
+                <div class="aspect-square rounded-[1.5rem] sm:rounded-[2.5rem] bg-slate-200 animate-pulse"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Lightbox (Simplified) -->
+    <div id="lightbox" class="fixed inset-0 bg-black/95 z-[100] hidden flex items-center justify-center p-4" onclick="this.classList.add('hidden')">
+        <img id="lightbox-img" src="" class="max-w-full max-h-full rounded-2xl shadow-2xl">
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKA0k_9UgoJX_RBgEsIeNdiW2w0Okko1o",
+            authDomain: "festie-s1u2h3.firebaseapp.com",
+            projectId: "festie-s1u2h3",
+            storageBucket: "festie-s1u2h3.firebasestorage.app",
+            messagingSenderId: "794049194885",
+            appId: "1:794049194885:web:8f75f0df4c15cde15eb2ec"
+        };
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Fest Config
+        db.collection('config').doc('festData').onSnapshot(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                if (data.name) document.querySelectorAll('#fest-name').forEach(el => el.innerText = data.name);
+                if (data.logo) document.getElementById('nav-logo').src = data.logo;
+            }
+        });
+
+        // Load Gallery
+        db.collection('mediaGallery').orderBy('createdAt', 'desc').onSnapshot(snap => {
+            const container = document.getElementById('gallery-container');
+            const docs = snap.docs.map(doc => doc.data());
+
+            if (docs.length === 0) {
+                container.innerHTML = `<div class="col-span-full py-32 text-center text-slate-400 font-bold">No images uploaded to the gallery yet.</div>`;
+                return;
+            }
+
+            container.innerHTML = docs.map(doc => `
+                <div class="group relative aspect-square rounded-[2.5rem] overflow-hidden bg-slate-100 gallery-card shadow-lg cursor-pointer" onclick="openLightbox('${doc.url}')">
+                    <img src="${doc.url}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent image-overlay flex flex-col justify-end p-8">
+                        <span class="text-white text-[10px] font-black uppercase tracking-widest bg-brand-primary/80 px-4 py-2 rounded-full w-fit backdrop-blur-md">View Full</span>
+                    </div>
+                </div>
+            `).join('');
+        });
+
+        function openLightbox(url) {
+            const lb = document.getElementById('lightbox');
+            document.getElementById('lightbox-img').src = url;
+            lb.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

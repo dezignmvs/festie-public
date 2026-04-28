@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Festival 2026 — Official Portal</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../logo-512.svg" type="image/svg+xml">
+
+    <!-- Tailwind & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Satoshi', 'Outfit', 'sans-serif'],
+                        display: ['Satoshi', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            primary: '#134E8E',
+                            secondary: '#FFB33F',
+                            dark: '#0F172A',
+                            accent: '#F43F5E',
+                            glass: 'rgba(255, 255, 255, 0.75)'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        html { scroll-behavior: smooth; }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .glass-dark { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .hero-gradient { background: radial-gradient(circle at 70% 20%, rgba(19, 78, 142, 0.1), transparent 40%), radial-gradient(circle at 30% 80%, rgba(255, 179, 63, 0.08), transparent 40%); }
+        .text-glow-primary { text-shadow: 0 0 20px rgba(19, 78, 142, 0.3); }
+        
+        .section-reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .section-reveal.active { opacity: 1; transform: translateY(0); }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        .leaderboard-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .leaderboard-card:hover { transform: scale(1.02) translateY(-5px); }
+        
+        .gallery-item { position: relative; overflow: hidden; border-radius: 24px; transition: all 0.5s ease; }
+        .gallery-item:hover img { transform: scale(1.1); filter: brightness(0.8); }
+        .gallery-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6), transparent); opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: flex-end; padding: 20px; }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+        .btn-premium { @apply relative overflow-hidden; transition: all 0.3s ease; }
+        .btn-premium::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: 0.5s; }
+        .btn-premium:hover::after { left: 100%; }
+
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        
+        .heading-tight { letter-spacing: -0.04em; }
+        .subheading { letter-spacing: 0.05em; font-weight: 700; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans selection:bg-brand-primary/10 selection:text-brand-primary overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 px-3 py-6 sm:px-8 transition-all duration-500" id="navbar">
+        <div class="max-w-7xl mx-auto glass rounded-[1.5rem] sm:rounded-[2rem] px-5 sm:px-8 py-3 sm:py-4 flex items-center justify-between shadow-[0_8px_32px_-8px_rgba(0,0,0,0.08)]">
+            <div class="flex items-center gap-3 group cursor-pointer">
+                <div class="w-10 h-10 bg-brand-primary rounded-xl flex items-center justify-center shadow-lg shadow-brand-primary/20 group-hover:rotate-12 transition-transform">
+                    <img id="nav-logo" src="../logo-512.svg" alt="Logo" class="w-7 h-7 object-contain">
+                </div>
+                <div class="flex flex-col">
+                    <span id="fest-name" class="font-black text-xl tracking-tighter text-brand-primary leading-none mb-0.5 heading-tight">FEST'26</span>
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none">Official Portal</span>
+                </div>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="hidden lg:flex items-center gap-10">
+                <a href="#home" class="text-[13px] font-extrabold text-slate-500 hover:text-brand-primary tracking-wider uppercase transition-colors">Home</a>
+                <a href="#results" class="text-[13px] font-extrabold text-slate-500 hover:text-brand-primary tracking-wider uppercase transition-colors">Standings</a>
+                <a href="#downloads" class="text-[13px] font-extrabold text-slate-500 hover:text-brand-primary tracking-wider uppercase transition-colors">Downloads</a>
+                <a href="#gallery" class="text-[13px] font-extrabold text-slate-500 hover:text-brand-primary tracking-wider uppercase transition-colors">Moments</a>
+                <div class="h-6 w-px bg-slate-200"></div>
+                <a href="#contact" class="px-7 py-3 bg-brand-primary text-white rounded-2xl text-[13px] font-black uppercase tracking-widest shadow-xl shadow-brand-primary/25 hover:-translate-y-1 active:scale-95 transition-all btn-premium">
+                    Contact
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="lg:hidden w-10 h-10 flex items-center justify-center text-slate-600 bg-slate-100 rounded-xl" onclick="toggleMobileMenu()">
+                <i class="fi fi-rr-menu-burger text-lg"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-white/95 backdrop-blur-2xl z-[60] flex flex-col items-center justify-center gap-10 hidden">
+        <button onclick="toggleMobileMenu()" class="absolute top-10 right-10 w-12 h-12 flex items-center justify-center bg-slate-100 rounded-2xl text-2xl text-slate-400">&times;</button>
+        <a href="#home" onclick="toggleMobileMenu()" class="text-3xl font-black text-brand-primary">Home</a>
+        <a href="#results" onclick="toggleMobileMenu()" class="text-3xl font-black">Standings</a>
+        <a href="#downloads" onclick="toggleMobileMenu()" class="text-3xl font-black">Downloads</a>
+        <a href="#gallery" onclick="toggleMobileMenu()" class="text-3xl font-black">Moments</a>
+        <a href="#contact" onclick="toggleMobileMenu()" class="px-10 py-5 bg-brand-primary text-white rounded-[2rem] font-black text-xl shadow-2xl shadow-brand-primary/30">Contact Us</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden hero-gradient">
+        <!-- Floating Elements -->
+        <div class="absolute top-1/4 -right-20 w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-1/4 -left-20 w-[400px] h-[400px] bg-brand-secondary/8 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-8 w-full grid lg:grid-cols-12 gap-16 items-center">
+            <div class="lg:col-span-7 space-y-8 sm:space-y-10 text-center lg:text-left">
+                <div class="inline-flex items-center gap-3 px-4 py-2 sm:px-5 sm:py-2.5 bg-white border border-slate-200 rounded-full shadow-sm">
+                    <div class="relative flex h-2.5 w-2.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-accent"></span>
+                    </div>
+                    <span class="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] sm:tracking-[0.25em] text-slate-500">Live Updates — 2026</span>
+                </div>
+                
+                <h1 class="text-[clamp(42px,10vw,88px)] font-black leading-[0.95] heading-tight text-slate-900">
+                    Artistry in <span class="text-brand-primary">Motion</span>,<br>
+                    Excellence in <span class="text-brand-secondary">Spirit.</span>
+                </h1>
+                
+                <p class="text-lg sm:text-xl text-slate-500 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium tracking-tight px-2 sm:px-0">
+                    Dive into the most prestigious cultural celebration of the year. Track live rankings, download event media, and relive every moment of pure talent.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start pt-6">
+                    <a href="results.html" class="w-full sm:w-auto px-10 py-5 bg-brand-primary text-white rounded-[2rem] font-black text-lg shadow-[0_20px_50px_-12px_rgba(19,78,142,0.4)] hover:-translate-y-1.5 active:scale-95 transition-all flex items-center justify-center gap-4 group btn-premium">
+                        Live Standings <i class="fi fi-rr-arrow-right mt-1 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="gallery.html" class="w-full sm:w-auto px-10 py-5 bg-white text-slate-900 rounded-[2rem] font-black text-lg border border-slate-200 hover:bg-slate-50 transition-all flex items-center justify-center gap-4 group hover:shadow-lg transition-all">
+                        Explore Gallery
+                    </a>
+                </div>
+
+                <!-- Mini Stats -->
+                <div class="grid grid-cols-3 gap-8 pt-10 border-t border-slate-200/60 max-w-lg mx-auto lg:mx-0">
+                    <div>
+                        <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Completed</p>
+                        <p class="text-3xl font-black text-brand-primary" id="stat-completed">--</p>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Teams</p>
+                        <p class="text-3xl font-black text-slate-800" id="stat-teams">--</p>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Participants</p>
+                        <p class="text-3xl font-black text-slate-800" id="stat-cands">--</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-5 relative hidden lg:block">
+                <div class="absolute -inset-10 bg-gradient-to-tr from-brand-primary/10 to-brand-secondary/10 rounded-[4rem] blur-3xl opacity-60"></div>
+                <div class="relative bg-white p-5 rounded-[4rem] shadow-2xl border border-white animate-float">
+                    <div class="rounded-[3.2rem] overflow-hidden aspect-[4/5]">
+                        <img id="hero-img" src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop" 
+                            alt="Festival" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute -bottom-8 -right-8 glass p-8 rounded-[2.5rem] shadow-xl border border-white/50 flex flex-col gap-2 max-w-[240px]">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-brand-secondary rounded-full flex items-center justify-center text-white">
+                                <i class="fi fi-rr-flame text-lg"></i>
+                            </div>
+                            <p class="text-sm font-black text-slate-800">Grand Finale Countdown</p>
+                        </div>
+                        <p class="text-[12px] text-slate-500 font-medium">Join us for the ultimate showdown of talent and creativity.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Standings Section -->
+    <section id="results" class="py-32 bg-brand-dark text-white overflow-hidden relative">
+        <!-- Decoration -->
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-primary/20 rounded-full blur-[140px] pointer-events-none opacity-50"></div>
+        <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-accent/10 rounded-full blur-[120px] pointer-events-none opacity-30"></div>
+
+        <div class="max-w-7xl mx-auto px-8 relative z-10">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-20">
+                <div class="space-y-6">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-primary/20 border border-brand-primary/30 rounded-full">
+                        <span class="w-2 h-2 bg-brand-secondary rounded-full animate-pulse"></span>
+                        <span class="text-[10px] font-black text-brand-secondary uppercase tracking-widest">Real-time Data</span>
+                    </div>
+                    <h2 class="text-[clamp(36px,6vw,56px)] font-black leading-[1.1] tracking-tight">
+                        Current <span class="text-brand-secondary">Leaderboard</span>
+                    </h2>
+                    <p class="text-slate-400 font-medium max-w-xl text-lg">
+                        The race to the championship trophy is heating up. Track the overall points across all sections and categories.
+                    </p>
+                </div>
+                
+                <div class="flex flex-wrap gap-4">
+                    <div class="px-8 py-5 glass-dark rounded-[2rem] border border-white/10 min-w-[160px]">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-1.5">Leader</p>
+                        <p class="text-2xl font-black text-brand-secondary" id="leader-name">--</p>
+                    </div>
+                    <div class="px-8 py-5 glass-dark rounded-[2rem] border border-white/10 min-w-[160px]">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mb-1.5">Gap to 1st</p>
+                        <p class="text-2xl font-black text-slate-200" id="leader-gap">--</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leaderboard Container -->
+            <div class="grid lg:grid-cols-12 gap-12 items-start" id="leaderboard-container">
+                <!-- TOP 3 BIG CARDS -->
+                <div class="lg:col-span-7 space-y-6" id="top-3-list">
+                    <!-- Loading Skeletons -->
+                    <div class="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 h-24 skeleton opacity-20"></div>
+                    <div class="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 h-24 skeleton opacity-20"></div>
+                    <div class="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 h-24 skeleton opacity-20"></div>
+                </div>
+
+                <!-- STATS & CTA -->
+                <div class="lg:col-span-5 space-y-8">
+                    <div class="p-8 sm:p-10 rounded-[2.5rem] sm:rounded-[3rem] bg-gradient-to-br from-brand-primary/10 to-transparent border border-white/10 h-full flex flex-col justify-center text-left space-y-6 sm:space-y-8 backdrop-blur-sm">
+                        <div class="w-14 h-14 sm:w-16 sm:h-16 bg-white/5 rounded-2xl flex items-center justify-center">
+                            <i class="fi fi-rr-chart-pyramid text-2xl sm:text-3xl text-brand-secondary"></i>
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-black leading-tight">Every Point<br>Matters.</h3>
+                        <p class="text-slate-400 font-medium leading-relaxed text-base sm:text-lg">
+                            Our automated result system ensures absolute transparency. View full section-wise breakdowns and individual toppers in the full portal.
+                        </p>
+                        <div class="pt-4 sm:pt-6">
+                            <a href="results.html" class="inline-flex items-center gap-3 px-8 sm:px-10 py-4 sm:py-5 bg-white text-brand-dark rounded-2xl font-black text-base sm:text-lg hover:bg-brand-secondary hover:text-brand-dark transition-all group btn-premium">
+                                Open Scoreboard <i class="fi fi-rr-arrow-right mt-1 group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Downloads Section -->
+    <section id="downloads" class="py-32 bg-white">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center space-y-6 mb-20">
+                <div class="inline-flex px-5 py-2 bg-slate-100 rounded-full">
+                    <span class="text-[11px] font-black uppercase tracking-widest text-slate-500">Resource Hub</span>
+                </div>
+                <h2 class="text-[clamp(32px,5vw,52px)] font-black tracking-tight text-slate-900">Essential <span class="text-brand-primary">Downloads</span></h2>
+                <p class="text-slate-500 font-medium text-lg max-w-2xl mx-auto">Access everything from event schedules to official rulebooks and high-resolution promotional materials.</p>
+            </div>
+            
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10" id="download-list">
+                <!-- Skeletons -->
+                <div class="p-10 rounded-[3rem] bg-slate-50 border border-slate-100 h-64 skeleton"></div>
+                <div class="p-10 rounded-[3rem] bg-slate-50 border border-slate-100 h-64 skeleton"></div>
+                <div class="p-10 rounded-[3rem] bg-slate-50 border border-slate-100 h-64 skeleton"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-32 bg-slate-50 relative overflow-hidden">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(19,78,142,0.03),transparent)]"></div>
+        
+        <div class="max-w-7xl mx-auto px-8 relative z-10">
+            <div class="flex flex-col md:flex-row items-center md:items-end justify-between gap-10 mb-20 text-center md:text-left">
+                <div class="space-y-6">
+                    <h2 class="text-[clamp(32px,5vw,52px)] font-black tracking-tight text-slate-900">Capturing the <span class="text-brand-primary">Magic</span></h2>
+                    <p class="text-slate-500 font-medium text-lg max-w-xl">A visual journey through the most unforgettable moments of Festival 2026.</p>
+                </div>
+                <a href="gallery.html" class="hidden sm:flex items-center gap-4 text-brand-primary font-black uppercase tracking-[0.2em] text-[12px] hover:gap-6 transition-all group">
+                    View Full Gallery <i class="fi fi-rr-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="gallery-grid">
+                <!-- Skeletons -->
+                <div class="aspect-square rounded-[2rem] skeleton opacity-40"></div>
+                <div class="aspect-square rounded-[2rem] skeleton opacity-40"></div>
+                <div class="aspect-square rounded-[2rem] md:row-span-2 md:col-span-2 skeleton opacity-40"></div>
+                <div class="aspect-square rounded-[2rem] skeleton opacity-40"></div>
+                <div class="aspect-square rounded-[2rem] skeleton opacity-40"></div>
+            </div>
+            
+            <div class="mt-12 text-center sm:hidden">
+                <a href="#" class="inline-flex items-center gap-4 text-brand-primary font-black uppercase tracking-widest text-[12px]">
+                    Open Full Gallery <i class="fi fi-rr-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-white border-t border-slate-100 pt-32 pb-16 relative">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="grid lg:grid-cols-12 gap-16 mb-24">
+                <div class="lg:col-span-5 space-y-12">
+                    <div class="space-y-8">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-brand-primary rounded-[1.2rem] flex items-center justify-center shadow-xl shadow-brand-primary/20">
+                                <img src="../logo-512.svg" alt="Logo" class="w-9 h-9 object-contain">
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="font-black text-3xl tracking-tight text-brand-primary fest-name-display">FEST'26</span>
+                                <span class="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em]">Excellence Defined</span>
+                            </div>
+                        </div>
+                        <p class="text-xl text-slate-500 font-medium leading-relaxed">
+                            A platform dedicated to celebrating talent, fostering community, and pushing the boundaries of creativity.
+                        </p>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-10">
+                        <div class="space-y-4">
+                            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Headquarters</p>
+                            <p class="text-lg font-bold text-slate-700">Central Arts Complex,<br>Kerala, India</p>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Direct Contact</p>
+                            <p class="text-lg font-bold text-slate-700">hello@fest2026.com<br>+91 90000 12345</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7">
+                    <div class="p-12 rounded-[3.5rem] bg-slate-50 border border-slate-100 space-y-10 shadow-sm">
+                        <h3 class="text-3xl font-black text-slate-900">Let's Connect</h3>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div class="space-y-1.5">
+                                <label class="text-[11px] font-black text-slate-400 uppercase ml-1">Full Name</label>
+                                <input type="text" placeholder="John Doe" class="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-brand-primary/5 focus:border-brand-primary/30 transition-all font-medium bg-white">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-[11px] font-black text-slate-400 uppercase ml-1">Email Address</label>
+                                <input type="email" placeholder="john@example.com" class="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-brand-primary/5 focus:border-brand-primary/30 transition-all font-medium bg-white">
+                            </div>
+                            <div class="sm:col-span-2 space-y-1.5">
+                                <label class="text-[11px] font-black text-slate-400 uppercase ml-1">Your Message</label>
+                                <textarea placeholder="How can we help you?" rows="4" class="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-brand-primary/5 focus:border-brand-primary/30 transition-all font-medium bg-white resize-none"></textarea>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <button class="w-full py-5 bg-brand-primary text-white rounded-[1.5rem] font-black text-lg shadow-2xl shadow-brand-primary/20 hover:-translate-y-1 active:scale-95 transition-all">
+                                    Submit Message
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center gap-10 pt-16 border-t border-slate-100">
+                <p class="text-sm font-medium text-slate-400">© 2026 Festival Management. Designed with ❤️ in India.</p>
+                <div class="flex items-center gap-5">
+                    <a href="#" class="w-12 h-12 glass rounded-2xl flex items-center justify-center text-slate-400 hover:text-brand-primary hover:shadow-lg transition-all"><i class="fi fi-rr-instagram text-lg"></i></a>
+                    <a href="#" class="w-12 h-12 glass rounded-2xl flex items-center justify-center text-slate-400 hover:text-brand-primary hover:shadow-lg transition-all"><i class="fi fi-rr-facebook text-lg"></i></a>
+                    <a href="#" class="w-12 h-12 glass rounded-2xl flex items-center justify-center text-slate-400 hover:text-brand-primary hover:shadow-lg transition-all"><i class="fi fi-rr-twitter text-lg"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKA0k_9UgoJX_RBgEsIeNdiW2w0Okko1o",
+            authDomain: "festie-s1u2h3.firebaseapp.com",
+            projectId: "festie-s1u2h3",
+            storageBucket: "festie-s1u2h3.firebasestorage.app",
+            messagingSenderId: "794049194885",
+            appId: "1:794049194885:web:8f75f0df4c15cde15eb2ec"
+        };
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // ════════════════════════════════════════════════════════════
+        // 1. DYNAMIC UI CONTROLS
+        // ════════════════════════════════════════════════════════════
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.remove('py-6');
+                nav.classList.add('py-3');
+                nav.firstElementChild.classList.add('shadow-[0_15px_40px_-10px_rgba(0,0,0,0.12)]', 'bg-white/95');
+            } else {
+                nav.classList.add('py-6');
+                nav.classList.remove('py-3');
+                nav.firstElementChild.classList.remove('shadow-[0_15px_40px_-10px_rgba(0,0,0,0.12)]', 'bg-white/95');
+            }
+        });
+
+        // Mobile Menu
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // Section Reveal Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('section-reveal');
+            observer.observe(section);
+        });
+
+        // ════════════════════════════════════════════════════════════
+        // 2. FIREBASE DATA HANDLERS
+        // ════════════════════════════════════════════════════════════
+
+        const _data = { teams: [], programs: [], results: [], negMarks: [], cands: [] };
+        let _isLoaded = { teams: false, programs: false, results: false, negMarks: false, cands: false };
+
+        // Realtime Listeners for Leaderboard
+        function initDataSync() {
+            // Fest Config
+            db.collection('config').doc('festData').onSnapshot(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.name) {
+                        document.querySelectorAll('#fest-name, .fest-name-display').forEach(el => el.innerText = data.name);
+                        document.title = data.name + " 2026 — Official Portal";
+                    }
+                    if (data.logo) document.getElementById('nav-logo').src = data.logo;
+                }
+            });
+
+            // Core Data
+            db.collection('teams').where('isActive', '==', true).onSnapshot(snap => {
+                _data.teams = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _isLoaded.teams = true;
+                calculateLeaderboard();
+            });
+
+            db.collection('programs').onSnapshot(snap => {
+                _data.programs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _isLoaded.programs = true;
+                calculateLeaderboard();
+            });
+
+            db.collection('programResults').onSnapshot(snap => {
+                _data.results = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _isLoaded.results = true;
+                calculateLeaderboard();
+            });
+
+            db.collection('negativeMarks').where('status', '==', 'Active').onSnapshot(snap => {
+                _data.negMarks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _isLoaded.negMarks = true;
+                calculateLeaderboard();
+            });
+
+            db.collection('candidates').onSnapshot(snap => {
+                _data.cands = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _isLoaded.cands = true;
+                calculateLeaderboard();
+            });
+
+            // Downloads (Once)
+            db.collection('downloads').orderBy('createdAt', 'desc').onSnapshot(snap => {
+                renderDownloads(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+            });
+
+            // Gallery (Recent 5)
+            db.collection('mediaGallery').orderBy('createdAt', 'desc').limit(5).onSnapshot(snap => {
+                renderGallery(snap.docs.map(doc => doc.data().url));
+            });
+        }
+
+        function calculateLeaderboard() {
+            if (!Object.values(_isLoaded).every(v => v)) return;
+
+            const stats = {};
+            _data.teams.forEach(t => {
+                stats[t.name] = { name: t.name, color: t.color || '#134E8E', pts: 0 };
+            });
+
+            const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
+            
+            _data.results.forEach(res => {
+                if (!publishedProgIds.has(res.programId)) return;
+                const teamName = res.team || res.teamName;
+                const pts = parseFloat(res.totalPoints || res.points || 0);
+                if (teamName && stats[teamName]) stats[teamName].pts += pts;
+            });
+
+            _data.negMarks.forEach(neg => {
+                const penalty = parseFloat(neg.marks || 0);
+                const teams = Array.isArray(neg.teams) ? neg.teams : [neg.teams].filter(Boolean);
+                teams.forEach(tName => {
+                    if (stats[tName]) stats[tName].pts = Math.max(0, stats[tName].pts - penalty);
+                });
+            });
+
+            const leaderboard = Object.values(stats)
+                .sort((a, b) => b.pts - a.pts)
+                .slice(0, 3);
+
+            renderLeaderboard(leaderboard);
+            updateStatsCounters();
+        }
+
+        function updateStatsCounters() {
+            document.getElementById('stat-completed').innerText = _data.programs.filter(p => p.resultsPublished).length;
+            document.getElementById('stat-teams').innerText = _data.teams.length;
+            document.getElementById('stat-cands').innerText = _data.cands.length;
+        }
+
+        function renderLeaderboard(top3) {
+            const container = document.getElementById('top-3-list');
+            if (top3.length === 0) {
+                container.innerHTML = `<div class="p-12 text-center text-slate-500 font-bold border border-white/10 rounded-[2rem]">Standings will be updated soon...</div>`;
+                return;
+            }
+
+            container.innerHTML = top3.map((team, idx) => {
+                const rank = idx + 1;
+                const initials = team.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+                let medalClass = 'bg-white/10 text-white';
+                let medalIcon = rank;
+                if(rank === 1) { medalClass = 'bg-brand-secondary text-brand-dark'; medalIcon = '<i class="fi fi-rr-trophy"></i>'; }
+                else if(rank === 2) { medalClass = 'bg-slate-300 text-slate-900'; }
+                else if(rank === 3) { medalClass = 'bg-amber-700 text-white'; }
+
+                return `
+                <div class="p-8 rounded-[2.5rem] glass-dark border border-white/10 flex items-center justify-between leaderboard-card">
+                    <div class="flex items-center gap-8">
+                        <div class="w-14 h-14 rounded-2xl ${medalClass} flex items-center justify-center font-black text-xl shadow-lg">
+                            ${medalIcon}
+                        </div>
+                        <div class="flex items-center gap-5">
+                            <div class="w-12 h-12 rounded-full border-2 border-white/20 flex items-center justify-center font-black text-sm" style="background: ${team.color}20; color: ${team.color}">
+                                ${initials}
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-black tracking-tight">${team.name}</h4>
+                                <p class="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-1">Overall Rank #${rank}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-3xl font-black text-brand-secondary">${team.pts.toFixed(1)}</p>
+                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Points</p>
+                    </div>
+                </div>`;
+            }).join('');
+
+            // Update Top 2 Header Stats
+            if (top3[0]) {
+                document.getElementById('leader-name').innerText = top3[0].name;
+                if (top3[1]) {
+                    const gap = top3[0].pts - top3[1].pts;
+                    document.getElementById('leader-gap').innerText = `+${gap.toFixed(1)} pts`;
+                } else {
+                    document.getElementById('leader-gap').innerText = 'N/A';
+                }
+            }
+        }
+
+        function renderDownloads(list) {
+            const container = document.getElementById('download-list');
+            if (list.length === 0) {
+                container.innerHTML = `<div class="col-span-full py-20 text-center text-slate-400 font-bold border border-slate-100 rounded-[3rem]">No downloads available at the moment.</div>`;
+                return;
+            }
+
+            container.innerHTML = list.map(dl => {
+                let iconClass = 'bg-blue-50 text-blue-500';
+                let icon = 'fi-rr-document';
+                if(dl.category === 'schedule') { iconClass = 'bg-amber-50 text-amber-500'; icon = 'fi-rr-calendar'; }
+                else if(dl.category === 'rules') { iconClass = 'bg-rose-50 text-rose-500'; icon = 'fi-rr-shield-check'; }
+
+                return `
+                <div class="p-10 rounded-[3rem] bg-white border border-slate-100 group hover:border-brand-primary/30 transition-all hover:shadow-2xl hover:shadow-brand-primary/5 flex flex-col h-full">
+                    <div class="w-16 h-16 ${iconClass} rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i class="fi ${icon} text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900 mb-3">${dl.title}</h3>
+                    <p class="text-sm text-slate-500 mb-8 font-medium leading-relaxed flex-1">${dl.description || 'Official document for Festival 2026.'}</p>
+                    <a href="${dl.file.url}" target="_blank" class="w-full py-5 bg-slate-50 border border-slate-100 rounded-2xl font-black text-sm text-slate-600 hover:bg-brand-primary hover:text-white hover:border-brand-primary transition-all flex items-center justify-center gap-3">
+                        Download Now <i class="fi fi-rr-download text-[12px]"></i>
+                    </a>
+                </div>`;
+            }).join('');
+        }
+
+        function renderGallery(urls) {
+            const container = document.getElementById('gallery-grid');
+            if (urls.length === 0) return;
+
+            const gridItems = container.children;
+            urls.forEach((url, i) => {
+                if (gridItems[i]) {
+                    gridItems[i].innerHTML = `
+                        <img src="${url}" class="w-full h-full object-cover transition-transform duration-700">
+                        <div class="gallery-overlay">
+                            <span class="text-white text-[11px] font-black uppercase tracking-widest bg-brand-primary/80 px-4 py-2 rounded-full backdrop-blur-md">Official Lens</span>
+                        </div>
+                    `;
+                    gridItems[i].className = `gallery-item shadow-sm hover:shadow-2xl cursor-pointer ${i === 2 ? 'md:row-span-2 md:col-span-2' : 'aspect-square'}`;
+                }
+            });
+        }
+
+        // Initialize
+        initDataSync();
+
+    </script>
+</body>
+</html>

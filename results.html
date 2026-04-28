@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results — Festival 2026</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="../logo-512.svg" type="image/svg+xml">
+
+    <!-- Tailwind & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Satoshi', 'Outfit', 'sans-serif'],
+                        display: ['Satoshi', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            primary: '#134E8E',
+                            secondary: '#FFB33F',
+                            dark: '#0F172A',
+                            accent: '#F43F5E'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+        .glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .hero-gradient { background: radial-gradient(circle at 70% 20%, rgba(19, 78, 142, 0.05), transparent 40%), radial-gradient(circle at 30% 80%, rgba(255, 179, 63, 0.03), transparent 40%); }
+        
+        .section-reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
+        .section-reveal.active { opacity: 1; transform: translateY(0); }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans selection:bg-brand-primary/10 selection:text-brand-primary min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 px-4 py-4 sm:px-8 bg-white/80 backdrop-blur-xl border-b border-slate-100">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 bg-brand-primary rounded-xl flex items-center justify-center shadow-lg shadow-brand-primary/20">
+                    <img id="nav-logo" src="../logo-512.svg" alt="Logo" class="w-7 h-7 object-contain">
+                </div>
+                <div class="flex flex-col">
+                    <span id="fest-name" class="font-black text-xl tracking-tight text-brand-primary leading-none mb-0.5">FEST'26</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Official Standings</span>
+                </div>
+            </a>
+            <a href="index.html" class="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-brand-primary transition-all">
+                <i class="fi fi-rr-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="py-12 sm:py-16 bg-white border-b border-slate-100 hero-gradient">
+        <div class="max-w-7xl mx-auto px-6 sm:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                <div class="space-y-4 text-center md:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-brand-primary/10 rounded-full">
+                        <span class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-pulse"></span>
+                        <span class="text-[10px] font-black text-brand-primary uppercase tracking-widest">Live Updates</span>
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-900 leading-tight heading-tight">Championship <span class="text-brand-primary">Standings</span></h1>
+                    <p class="text-slate-500 font-medium text-base sm:text-lg max-w-xl mx-auto md:mx-0">Comprehensive leaderboard tracking every point scored across all events and sections.</p>
+                </div>
+                
+                <div class="flex justify-center md:justify-end gap-3 sm:gap-4">
+                    <div class="px-5 py-3 sm:px-6 sm:py-4 bg-white border border-slate-200 rounded-2xl shadow-sm">
+                        <p class="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Points</p>
+                        <p class="text-xl sm:text-2xl font-black text-brand-primary" id="total-pts">--</p>
+                    </div>
+                    <div class="px-5 py-3 sm:px-6 sm:py-4 bg-white border border-slate-200 rounded-2xl shadow-sm">
+                        <p class="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Programs</p>
+                        <p class="text-xl sm:text-2xl font-black text-slate-800" id="total-progs">--</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 py-12">
+        <div class="max-w-7xl mx-auto px-8">
+            
+            <!-- Filters -->
+            <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center justify-between">
+                <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+                    <div class="relative w-full sm:w-72">
+                        <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="search-team" placeholder="Search team..." class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-brand-primary/5 focus:border-brand-primary/30 transition-all font-medium text-sm">
+                    </div>
+                    <div class="relative w-full sm:w-auto min-w-[160px]">
+                        <select id="section-filter" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-brand-primary/5 focus:border-brand-primary/30 transition-all font-bold text-sm text-slate-600 appearance-none cursor-pointer">
+                            <option value="all">All Sections</option>
+                        </select>
+                        <i class="fi fi-rr-angle-small-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                    </div>
+                </div>
+                <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest text-center lg:text-right">
+                    Last Updated: <span id="last-updated" class="text-slate-600">--</span>
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="bg-slate-50/50 border-b border-slate-100">
+                                <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">Rank</th>
+                                <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">Team</th>
+                                <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Participation</th>
+                                <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Section Pts</th>
+                                <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">Total Points</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-table-body">
+                            <!-- Skeletons -->
+                            <tr class="animate-pulse border-b border-slate-50">
+                                <td colspan="5" class="px-8 py-6 h-20 bg-white"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Note -->
+            <div class="mt-12 p-8 rounded-3xl bg-amber-50 border border-amber-100 flex items-start gap-5">
+                <div class="w-10 h-10 bg-amber-200 rounded-xl flex items-center justify-center shrink-0">
+                    <i class="fi fi-rr-info text-amber-700"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-amber-900 mb-1">Point Calculation Note</p>
+                    <p class="text-sm text-amber-700 leading-relaxed">The rankings displayed are calculated based on published results only. Negative marks (if any) are automatically deducted from the total score. For any discrepancies, please contact the festival control room.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-white border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-8 flex flex-col sm:flex-row justify-between items-center gap-6">
+            <p class="text-sm font-medium text-slate-400">© 2026 Festival Management Official Results Portal.</p>
+            <div class="flex items-center gap-4">
+                <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest">Powered by</span>
+                <span class="text-sm font-black text-brand-primary">ArtFest 2026 Engine</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKA0k_9UgoJX_RBgEsIeNdiW2w0Okko1o",
+            authDomain: "festie-s1u2h3.firebaseapp.com",
+            projectId: "festie-s1u2h3",
+            storageBucket: "festie-s1u2h3.firebasestorage.app",
+            messagingSenderId: "794049194885",
+            appId: "1:794049194885:web:8f75f0df4c15cde15eb2ec"
+        };
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const _data = { teams: [], programs: [], results: [], negMarks: [], sections: [] };
+        let _isLoaded = { teams: false, programs: false, results: false, negMarks: false, sections: false };
+
+        function initSync() {
+            // Fest Config
+            db.collection('config').doc('festData').onSnapshot(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.name) document.querySelectorAll('#fest-name').forEach(el => el.innerText = data.name);
+                    if (data.logo) document.getElementById('nav-logo').src = data.logo;
+                }
+            });
+
+            // Sections for filter
+            db.collection('sections').where('isActive', '==', true).onSnapshot(snap => {
+                _data.sections = snap.docs.map(d => d.data().name);
+                const select = document.getElementById('section-filter');
+                _data.sections.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s;
+                    opt.innerText = s;
+                    select.appendChild(opt);
+                });
+                _isLoaded.sections = true;
+                render();
+            });
+
+            // Core Data
+            db.collection('teams').where('isActive', '==', true).onSnapshot(snap => {
+                _data.teams = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _isLoaded.teams = true;
+                render();
+            });
+
+            db.collection('programs').onSnapshot(snap => {
+                _data.programs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _isLoaded.programs = true;
+                render();
+            });
+
+            db.collection('programResults').onSnapshot(snap => {
+                _data.results = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _isLoaded.results = true;
+                render();
+            });
+
+            db.collection('negativeMarks').where('status', '==', 'Active').onSnapshot(snap => {
+                _data.negMarks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _isLoaded.negMarks = true;
+                render();
+            });
+        }
+
+        function render() {
+            if (!Object.values(_isLoaded).every(v => v)) return;
+            
+            const sectionFilter = document.getElementById('section-filter').value;
+            const searchQuery = document.getElementById('search-team').value.toLowerCase();
+            
+            const stats = {};
+            _data.teams.forEach(t => {
+                stats[t.name] = { 
+                    name: t.name, 
+                    color: t.color || '#134E8E', 
+                    total: 0, 
+                    participation: 0, 
+                    sectionPts: {},
+                    progs: new Set()
+                };
+            });
+
+            const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
+            const programMap = {};
+            _data.programs.forEach(p => programMap[p.id] = p);
+
+            _data.results.forEach(res => {
+                if (!publishedProgIds.has(res.programId)) return;
+                
+                const teamName = res.team || res.teamName;
+                if (!teamName || !stats[teamName]) return;
+
+                const pts = parseFloat(res.totalPoints || res.points || 0);
+                if (pts <= 0) return;
+
+                const prog = programMap[res.programId];
+                const progSection = prog ? (prog.section || 'Uncategorized') : 'Uncategorized';
+
+                // Check section filter
+                if (sectionFilter !== 'all' && progSection !== sectionFilter) return;
+
+                stats[teamName].total += pts;
+                stats[teamName].progs.add(res.programId);
+                
+                if (!stats[teamName].sectionPts[progSection]) stats[teamName].sectionPts[progSection] = 0;
+                stats[teamName].sectionPts[progSection] += pts;
+            });
+
+            // Deduct Negative Marks
+            _data.negMarks.forEach(neg => {
+                const penalty = parseFloat(neg.marks || 0);
+                const teams = Array.isArray(neg.teams) ? neg.teams : [neg.teams].filter(Boolean);
+                teams.forEach(tName => {
+                    if (stats[tName]) stats[tName].total = Math.max(0, stats[tName].total - penalty);
+                });
+            });
+
+            const sorted = Object.values(stats)
+                .filter(t => t.name.toLowerCase().includes(searchQuery))
+                .sort((a, b) => b.total - a.total);
+
+            // Update Header Stats
+            let totalFestPts = 0;
+            sorted.forEach(t => totalFestPts += t.total);
+            document.getElementById('total-pts').innerText = totalFestPts.toFixed(0);
+            document.getElementById('total-progs').innerText = publishedProgIds.size;
+            document.getElementById('last-updated').innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+            const body = document.getElementById('results-table-body');
+            if (sorted.length === 0) {
+                body.innerHTML = `<tr><td colspan="5" class="py-24 text-center text-slate-400 font-bold">No teams found matching your criteria.</td></tr>`;
+                return;
+            }
+
+            body.innerHTML = sorted.map((team, idx) => {
+                const rank = idx + 1;
+                const initials = team.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+                
+                // Section dots
+                const sectionsCount = Object.keys(team.sectionPts).length;
+                
+                return `
+                <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                    <td class="px-8 py-6">
+                        <div class="flex items-center gap-4">
+                            <span class="text-lg font-black ${rank <= 3 ? 'text-brand-primary' : 'text-slate-400'}">#${rank}</span>
+                        </div>
+                    </td>
+                    <td class="px-8 py-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center font-black text-xs text-white shadow-sm shrink-0" style="background: ${team.color}">
+                                ${initials}
+                            </div>
+                            <span class="font-bold text-slate-800">${team.name}</span>
+                        </div>
+                    </td>
+                    <td class="px-8 py-6 text-center">
+                        <div class="flex flex-col items-center">
+                            <span class="text-sm font-black text-slate-700">${team.progs.size}</span>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Events</span>
+                        </div>
+                    </td>
+                    <td class="px-8 py-6 text-center">
+                        <div class="flex flex-wrap justify-center gap-1.5 max-w-[150px] mx-auto">
+                            ${Object.keys(team.sectionPts).map(s => `<span class="px-2 py-0.5 bg-slate-100 rounded-full text-[9px] font-black text-slate-500 uppercase tracking-tighter" title="${s}: ${team.sectionPts[s].toFixed(1)}">${s.substring(0,3)}</span>`).join('') || '--'}
+                        </div>
+                    </td>
+                    <td class="px-8 py-6 text-right">
+                        <span class="text-2xl font-black text-brand-primary">${team.total.toFixed(1)}</span>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        // Listeners
+        document.getElementById('section-filter').addEventListener('change', render);
+        document.getElementById('search-team').addEventListener('input', render);
+
+        // Init
+        initSync();
+    </script>
+</body>
+</html>
