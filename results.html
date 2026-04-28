@@ -37,15 +37,14 @@
 
     <style>
         html { scroll-behavior: smooth; }
-        .glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); }
-        .hero-gradient { background: radial-gradient(circle at 70% 20%, rgba(19, 78, 142, 0.05), transparent 40%), radial-gradient(circle at 30% 80%, rgba(255, 179, 63, 0.03), transparent 40%); }
+        .minimal-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; }
         
-        .section-reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
+        .section-reveal { opacity: 0; transform: translateY(10px); transition: all 0.5s ease-out; }
         .section-reveal.active { opacity: 1; transform: translateY(0); }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #f8fafc; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
@@ -58,8 +57,8 @@
     <nav class="sticky top-0 z-50 px-4 py-4 sm:px-8 bg-white/80 backdrop-blur-xl border-b border-slate-100">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 bg-brand-primary rounded-xl flex items-center justify-center shadow-lg shadow-brand-primary/20">
-                    <img id="nav-logo" src="../logo-512.svg" alt="Logo" class="w-7 h-7 object-contain">
+                <div class="w-9 h-9 bg-brand-primary rounded-lg flex items-center justify-center">
+                    <img id="nav-logo" src="../logo-512.svg" alt="Logo" class="w-6 h-6 object-contain">
                 </div>
                 <div class="flex flex-col">
                     <span id="fest-name" class="font-black text-xl tracking-tight text-brand-primary leading-none mb-0.5">FEST'26</span>
@@ -73,7 +72,7 @@
     </nav>
 
     <!-- Header -->
-    <header class="py-12 sm:py-16 bg-white border-b border-slate-100 hero-gradient">
+    <header class="py-12 bg-white border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-6 sm:px-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
                 <div class="space-y-4 text-center md:text-left">
@@ -86,13 +85,13 @@
                 </div>
                 
                 <div class="flex justify-center md:justify-end gap-3 sm:gap-4">
-                    <div class="px-5 py-3 sm:px-6 sm:py-4 bg-white border border-slate-200 rounded-2xl shadow-sm">
-                        <p class="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Points</p>
-                        <p class="text-xl sm:text-2xl font-black text-brand-primary" id="total-pts">--</p>
+                    <div class="px-5 py-3 bg-white border border-slate-200 rounded-xl">
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Points</p>
+                        <p class="text-xl font-black text-brand-primary" id="total-pts">--</p>
                     </div>
-                    <div class="px-5 py-3 sm:px-6 sm:py-4 bg-white border border-slate-200 rounded-2xl shadow-sm">
-                        <p class="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Programs</p>
-                        <p class="text-xl sm:text-2xl font-black text-slate-800" id="total-progs">--</p>
+                    <div class="px-5 py-3 bg-white border border-slate-200 rounded-xl">
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Programs</p>
+                        <p class="text-xl font-black text-slate-800" id="total-progs">--</p>
                     </div>
                 </div>
             </div>
@@ -108,10 +107,10 @@
                 <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
                     <div class="relative w-full sm:w-72">
                         <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="search-team" placeholder="Search team..." class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-brand-primary/5 focus:border-brand-primary/30 transition-all font-medium text-sm">
+                        <input type="text" id="search-team" placeholder="Search team..." class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
                     </div>
                     <div class="relative w-full sm:w-auto min-w-[160px]">
-                        <select id="section-filter" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-brand-primary/5 focus:border-brand-primary/30 transition-all font-bold text-sm text-slate-600 appearance-none cursor-pointer">
+                        <select id="section-filter" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-brand-primary/40 transition-all font-bold text-sm text-slate-600 appearance-none cursor-pointer">
                             <option value="all">All Sections</option>
                         </select>
                         <i class="fi fi-rr-angle-small-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
@@ -123,7 +122,7 @@
             </div>
 
             <!-- Table Container -->
-            <div class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
                         <thead>
@@ -146,13 +145,13 @@
             </div>
 
             <!-- Note -->
-            <div class="mt-12 p-8 rounded-3xl bg-amber-50 border border-amber-100 flex items-start gap-5">
-                <div class="w-10 h-10 bg-amber-200 rounded-xl flex items-center justify-center shrink-0">
-                    <i class="fi fi-rr-info text-amber-700"></i>
+            <div class="mt-12 p-6 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-4">
+                <div class="w-9 h-9 bg-slate-200 rounded-lg flex items-center justify-center shrink-0">
+                    <i class="fi fi-rr-info text-slate-600"></i>
                 </div>
                 <div>
-                    <p class="text-sm font-bold text-amber-900 mb-1">Point Calculation Note</p>
-                    <p class="text-sm text-amber-700 leading-relaxed">The rankings displayed are calculated based on published results only. Negative marks (if any) are automatically deducted from the total score. For any discrepancies, please contact the festival control room.</p>
+                    <p class="text-sm font-bold text-slate-900 mb-1">Point Calculation Note</p>
+                    <p class="text-sm text-slate-500 leading-relaxed">The rankings displayed are calculated based on published results only. Negative marks (if any) are automatically deducted from the total score.</p>
                 </div>
             </div>
         </div>
@@ -325,7 +324,7 @@
                     </td>
                     <td class="px-8 py-6">
                         <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-full border-2 border-white flex items-center justify-center font-black text-xs text-white shadow-sm shrink-0" style="background: ${team.color}">
+                            <div class="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center font-bold text-xs text-white shrink-0" style="background: ${team.color}">
                                 ${initials}
                             </div>
                             <span class="font-bold text-slate-800">${team.name}</span>
