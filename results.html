@@ -49,6 +49,9 @@
         
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        
+        @keyframes reveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-reveal { animation: reveal 0.4s ease-out forwards; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans selection:bg-brand-primary/10 selection:text-brand-primary min-h-screen flex flex-col">
@@ -69,30 +72,30 @@
                 <i class="fi fi-rr-arrow-left"></i> Back to Home
             </a>
         </div>
-    </nav>
-
-    <!-- Header -->
-    <header class="py-12 bg-white border-b border-slate-100">
+    </nav>    <!-- Header -->
+    <header class="py-10 bg-white border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-6 sm:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
-                <div class="space-y-4 text-center md:text-left">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-brand-primary/10 rounded-full">
-                        <span class="w-1.5 h-1.5 bg-brand-primary rounded-full animate-pulse"></span>
-                        <span class="text-[10px] font-black text-brand-primary uppercase tracking-widest">Live Updates</span>
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                <div class="space-y-3 text-center md:text-left">
+                    <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 leading-tight heading-tight">Live <span class="text-brand-primary">Standings</span></h1>
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                        <div class="flex items-center gap-2">
+                            <span class="text-brand-primary">Total Points:</span>
+                            <span id="total-pts" class="text-slate-700">--</span>
+                        </div>
+                        <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-brand-primary">Programs:</span>
+                            <span id="total-progs" class="text-slate-700">--</span>
+                        </div>
                     </div>
-                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-900 leading-tight heading-tight">Championship <span class="text-brand-primary">Standings</span></h1>
-                    <p class="text-slate-500 font-medium text-base sm:text-lg max-w-xl mx-auto md:mx-0">Comprehensive leaderboard tracking every point scored across all events and sections.</p>
                 </div>
                 
-                <div class="flex justify-center md:justify-end gap-3 sm:gap-4">
-                    <div class="px-5 py-3 bg-white border border-slate-200 rounded-xl">
-                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total Points</p>
-                        <p class="text-xl font-black text-brand-primary" id="total-pts">--</p>
-                    </div>
-                    <div class="px-5 py-3 bg-white border border-slate-200 rounded-xl">
-                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Programs</p>
-                        <p class="text-xl font-black text-slate-800" id="total-progs">--</p>
-                    </div>
+                <div class="flex items-center justify-center bg-slate-100 p-1 rounded-xl">
+                    <button onclick="switchTab('team')" id="tab-team" class="px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all bg-white text-brand-primary shadow-sm">Team</button>
+                    <button onclick="switchTab('program')" id="tab-program" class="px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all text-slate-500 hover:text-slate-700">Program</button>
+                    <button onclick="switchTab('candidate')" id="tab-candidate" class="px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all text-slate-500 hover:text-slate-700">Candidates</button>
+                    <button onclick="switchTab('search')" id="tab-search" class="px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all text-slate-500 hover:text-slate-700">Search</button>
                 </div>
             </div>
         </div>
@@ -102,45 +105,104 @@
     <main class="flex-1 py-12">
         <div class="max-w-7xl mx-auto px-8">
             
-            <!-- Filters -->
-            <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center justify-between">
-                <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
-                    <div class="relative w-full sm:w-72">
-                        <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="search-team" placeholder="Search team..." class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
+            <!-- Dynamic Content Area -->
+            <div id="view-team" class="tab-view">
+                <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center justify-between">
+                    <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+                        <div class="relative w-full sm:w-72">
+                            <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="text" id="search-team" placeholder="Search team..." class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
+                        </div>
+                        <div class="relative w-full sm:w-auto min-w-[160px]">
+                            <select id="section-filter" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-brand-primary/40 transition-all font-bold text-sm text-slate-600 appearance-none cursor-pointer">
+                                <option value="all">All Sections</option>
+                            </select>
+                            <i class="fi fi-rr-angle-small-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                        </div>
                     </div>
-                    <div class="relative w-full sm:w-auto min-w-[160px]">
-                        <select id="section-filter" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-brand-primary/40 transition-all font-bold text-sm text-slate-600 appearance-none cursor-pointer">
-                            <option value="all">All Sections</option>
-                        </select>
-                        <i class="fi fi-rr-angle-small-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                    <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest text-center lg:text-right">
+                        Last Updated: <span id="last-updated" class="text-slate-600">--</span>
                     </div>
                 </div>
-                <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest text-center lg:text-right">
-                    Last Updated: <span id="last-updated" class="text-slate-600">--</span>
+
+                <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="bg-slate-50/50 border-b border-slate-100">
+                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">Rank</th>
+                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">Team</th>
+                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Participation</th>
+                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Section Pts</th>
+                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">Total Points</th>
+                                </tr>
+                            </thead>
+                            <tbody id="results-table-body">
+                                <tr class="animate-pulse border-b border-slate-50"><td colspan="5" class="px-8 py-6 h-20 bg-white"></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <!-- Table Container -->
-            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left">
-                        <thead>
-                            <tr class="bg-slate-50/50 border-b border-slate-100">
-                                <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">Rank</th>
-                                <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">Team</th>
-                                <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Participation</th>
-                                <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Section Pts</th>
-                                <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">Total Points</th>
-                            </tr>
-                        </thead>
-                        <tbody id="results-table-body">
-                            <!-- Skeletons -->
-                            <tr class="animate-pulse border-b border-slate-50">
-                                <td colspan="5" class="px-8 py-6 h-20 bg-white"></td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- Program View -->
+            <div id="view-program" class="tab-view hidden">
+                <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center">
+                    <div class="relative w-full sm:w-80">
+                        <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="search-program" placeholder="Search program name..." class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
+                    </div>
+                    <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                        <span class="w-2 h-2 bg-brand-primary rounded-full"></span> Only Published results shown
+                    </div>
+                </div>
+                <div id="program-results-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dynamic -->
+                </div>
+            </div>
+
+            <!-- Candidate View -->
+            <div id="view-candidate" class="tab-view hidden">
+                <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center">
+                    <div class="relative w-full sm:w-80">
+                        <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="search-candidate" placeholder="Search candidate name..." class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="bg-slate-50/50 border-b border-slate-100">
+                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">Rank</th>
+                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">Candidate</th>
+                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">Team</th>
+                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Programs</th>
+                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">Total Points</th>
+                                </tr>
+                            </thead>
+                            <tbody id="candidate-table-body">
+                                <!-- Dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Chest No View -->
+            <div id="view-search" class="tab-view hidden">
+                <div class="max-w-2xl mx-auto text-center space-y-8 py-12">
+                    <div class="space-y-4">
+                        <h2 class="text-2xl font-bold text-slate-800">Student Profile Search</h2>
+                        <p class="text-slate-500">Enter a chest number to view all participating programs and total points earned.</p>
+                    </div>
+                    <div class="relative max-w-md mx-auto">
+                        <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="search-chest" oninput="searchByChestNo()" placeholder="Enter Chest Number (e.g. 101)" class="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary text-center text-xl font-bold tracking-widest">
+                    </div>
+                    <div id="chest-result-area" class="text-left">
+                        <!-- Result Card -->
+                    </div>
                 </div>
             </div>
 
@@ -185,8 +247,23 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        const _data = { teams: [], programs: [], results: [], negMarks: [], sections: [] };
-        let _isLoaded = { teams: false, programs: false, results: false, negMarks: false, sections: false };
+        const _data = { teams: [], programs: [], results: [], negMarks: [], sections: [], candidates: [] };
+        let _isLoaded = { teams: false, programs: false, results: false, negMarks: false, sections: false, candidates: false };
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-view').forEach(v => v.classList.add('hidden'));
+            document.getElementById('view-' + tabId).classList.remove('hidden');
+            
+            document.querySelectorAll('header button').forEach(b => {
+                b.classList.remove('bg-white', 'text-brand-primary', 'shadow-sm');
+                b.classList.add('text-slate-500');
+            });
+            const activeTab = document.getElementById('tab-' + tabId);
+            activeTab.classList.add('bg-white', 'text-brand-primary', 'shadow-sm');
+            activeTab.classList.remove('text-slate-500');
+
+            render();
+        }
 
         function initSync() {
             // Fest Config
@@ -236,11 +313,26 @@
                 _isLoaded.negMarks = true;
                 render();
             });
+
+            db.collection('candidates').onSnapshot(snap => {
+                _data.candidates = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _isLoaded.candidates = true;
+                render();
+            });
         }
 
         function render() {
             if (!Object.values(_isLoaded).every(v => v)) return;
             
+            const activeTab = document.querySelector('header button.bg-white').id.replace('tab-', '');
+            
+            if (activeTab === 'team') renderTeamTable();
+            else if (activeTab === 'program') renderProgramGrid();
+            else if (activeTab === 'candidate') renderCandidateTable();
+            else if (activeTab === 'search') searchByChestNo();
+        }
+
+        function renderTeamTable() {
             const sectionFilter = document.getElementById('section-filter').value;
             const searchQuery = document.getElementById('search-team').value.toLowerCase();
             
@@ -272,7 +364,6 @@
                 const prog = programMap[res.programId];
                 const progSection = prog ? (prog.section || 'Uncategorized') : 'Uncategorized';
 
-                // Check section filter
                 if (sectionFilter !== 'all' && progSection !== sectionFilter) return;
 
                 stats[teamName].total += pts;
@@ -282,7 +373,6 @@
                 stats[teamName].sectionPts[progSection] += pts;
             });
 
-            // Deduct Negative Marks
             _data.negMarks.forEach(neg => {
                 const penalty = parseFloat(neg.marks || 0);
                 const teams = Array.isArray(neg.teams) ? neg.teams : [neg.teams].filter(Boolean);
@@ -295,58 +385,181 @@
                 .filter(t => t.name.toLowerCase().includes(searchQuery))
                 .sort((a, b) => b.total - a.total);
 
-            // Update Header Stats
-            let totalFestPts = 0;
-            sorted.forEach(t => totalFestPts += t.total);
-            document.getElementById('total-pts').innerText = totalFestPts.toFixed(0);
-            document.getElementById('total-progs').innerText = publishedProgIds.size;
-            document.getElementById('last-updated').innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-
-            const body = document.getElementById('results-table-body');
-            if (sorted.length === 0) {
-                body.innerHTML = `<tr><td colspan="5" class="py-24 text-center text-slate-400 font-bold">No teams found matching your criteria.</td></tr>`;
-                return;
+            // Update Stats
+            if (document.getElementById('total-pts')) {
+                let totalFestPts = 0;
+                sorted.forEach(t => totalFestPts += t.total);
+                document.getElementById('total-pts').innerText = totalFestPts.toFixed(0);
+                document.getElementById('total-progs').innerText = publishedProgIds.size;
+            }
+            if (document.getElementById('last-updated')) {
+                document.getElementById('last-updated').innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             }
 
+            const body = document.getElementById('results-table-body');
             body.innerHTML = sorted.map((team, idx) => {
                 const rank = idx + 1;
                 const initials = team.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
-                
-                // Section dots
-                const sectionsCount = Object.keys(team.sectionPts).length;
-                
                 return `
                 <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                    <td class="px-8 py-6"><span class="font-black ${rank <= 3 ? 'text-brand-primary' : 'text-slate-400'}">#${rank}</span></td>
                     <td class="px-8 py-6">
                         <div class="flex items-center gap-4">
-                            <span class="text-lg font-black ${rank <= 3 ? 'text-brand-primary' : 'text-slate-400'}">#${rank}</span>
-                        </div>
-                    </td>
-                    <td class="px-8 py-6">
-                        <div class="flex items-center gap-4">
-                            <div class="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center font-bold text-xs text-white shrink-0" style="background: ${team.color}">
-                                ${initials}
-                            </div>
+                            <div class="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center font-bold text-[10px] text-white shrink-0" style="background: ${team.color}">${initials}</div>
                             <span class="font-bold text-slate-800">${team.name}</span>
                         </div>
                     </td>
+                    <td class="px-8 py-6 text-center text-sm font-bold text-slate-700">${team.progs.size}</td>
                     <td class="px-8 py-6 text-center">
-                        <div class="flex flex-col items-center">
-                            <span class="text-sm font-black text-slate-700">${team.progs.size}</span>
-                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Events</span>
+                        <div class="flex flex-wrap justify-center gap-1">
+                            ${Object.keys(team.sectionPts).map(s => `<span class="px-1.5 py-0.5 bg-slate-100 rounded text-[9px] font-bold text-slate-500 uppercase">${s.substring(0,3)}</span>`).join('') || '--'}
                         </div>
                     </td>
-                    <td class="px-8 py-6 text-center">
-                        <div class="flex flex-wrap justify-center gap-1.5 max-w-[150px] mx-auto">
-                            ${Object.keys(team.sectionPts).map(s => `<span class="px-2 py-0.5 bg-slate-100 rounded-full text-[9px] font-black text-slate-500 uppercase tracking-tighter" title="${s}: ${team.sectionPts[s].toFixed(1)}">${s.substring(0,3)}</span>`).join('') || '--'}
-                        </div>
-                    </td>
-                    <td class="px-8 py-6 text-right">
-                        <span class="text-2xl font-black text-brand-primary">${team.total.toFixed(1)}</span>
-                    </td>
+                    <td class="px-8 py-6 text-right font-black text-brand-primary">${team.total.toFixed(1)}</td>
                 </tr>`;
             }).join('');
         }
+
+        function renderProgramGrid() {
+            const searchQuery = document.getElementById('search-program').value.toLowerCase();
+            const publishedPrograms = _data.programs.filter(p => p.resultsPublished && p.name.toLowerCase().includes(searchQuery));
+            const container = document.getElementById('program-results-grid');
+
+            if (publishedPrograms.length === 0) {
+                container.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400 font-bold">No results found for your search.</div>`;
+                return;
+            }
+
+            container.innerHTML = publishedPrograms.map(p => {
+                const winners = _data.results.filter(r => r.programId === p.id).sort((a, b) => (b.points || 0) - (a.points || 0));
+                return `
+                <div class="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
+                    <div class="flex justify-between items-start gap-3">
+                        <h4 class="font-bold text-slate-900 leading-tight">${p.name}</h4>
+                        <span class="px-2 py-0.5 bg-slate-100 rounded text-[9px] font-bold text-slate-500 uppercase">${p.section || 'Gen'}</span>
+                    </div>
+                    <div class="space-y-2">
+                        ${winners.map((w, idx) => `
+                            <div class="flex items-center justify-between text-xs p-2 rounded ${idx === 0 ? 'bg-amber-50 border border-amber-100' : 'bg-slate-50'}">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 flex items-center justify-center font-bold ${idx === 0 ? 'text-amber-600' : 'text-slate-400'}">${idx + 1}</span>
+                                    <div>
+                                        <p class="font-bold text-slate-800">${w.candidateName || w.name || 'Unknown'}</p>
+                                        <p class="text-[10px] text-slate-500 font-medium">${w.teamName || w.team}</p>
+                                    </div>
+                                </div>
+                                <span class="font-black text-brand-primary">${w.totalPoints || w.points}</span>
+                            </div>
+                        `).join('') || '<p class="text-[10px] text-slate-400 italic">No winners data found</p>'}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function renderCandidateTable() {
+            const searchQuery = document.getElementById('search-candidate').value.toLowerCase();
+            const candStats = {};
+            
+            const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
+            
+            _data.results.forEach(res => {
+                if (!publishedProgIds.has(res.programId)) return;
+                const key = res.candidateId || res.chestNo || res.candidateName;
+                if (!key) return;
+
+                if (!candStats[key]) {
+                    candStats[key] = {
+                        name: res.candidateName || res.name || 'Unknown',
+                        team: res.teamName || res.team || '--',
+                        points: 0,
+                        progs: 0
+                    };
+                }
+                candStats[key].points += parseFloat(res.totalPoints || res.points || 0);
+                candStats[key].progs++;
+            });
+
+            const sorted = Object.values(candStats)
+                .filter(c => c.name.toLowerCase().includes(searchQuery))
+                .sort((a, b) => b.points - a.points)
+                .slice(0, 50);
+
+            const body = document.getElementById('candidate-table-body');
+            body.innerHTML = sorted.map((c, idx) => `
+                <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                    <td class="px-8 py-4"><span class="font-bold text-slate-400">#${idx + 1}</span></td>
+                    <td class="px-8 py-4 font-bold text-slate-800">${c.name}</td>
+                    <td class="px-8 py-4 text-sm text-slate-500 font-bold">${c.team}</td>
+                    <td class="px-8 py-4 text-center text-sm font-bold text-slate-700">${c.progs}</td>
+                    <td class="px-8 py-4 text-right font-black text-brand-primary">${c.points.toFixed(1)}</td>
+                </tr>
+            `).join('');
+        }
+
+        function searchByChestNo() {
+            const query = document.getElementById('search-chest').value.trim();
+            const area = document.getElementById('chest-result-area');
+            if (!query) { area.innerHTML = ''; return; }
+
+            const cand = _data.candidates.find(c => c.chestNo == query);
+            if (!cand) {
+                area.innerHTML = `<div class="p-8 text-center text-slate-400 font-bold border border-dashed border-slate-200 rounded-xl">Chest number not found.</div>`;
+                return;
+            }
+
+            const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
+            const candResults = _data.results.filter(r => (r.candidateId === cand.id || r.chestNo == query) && publishedProgIds.has(r.programId));
+            const total = candResults.reduce((sum, r) => sum + parseFloat(r.totalPoints || r.points || 0), 0);
+
+            const programMap = {};
+            _data.programs.forEach(p => programMap[p.id] = p);
+
+            area.innerHTML = `
+            <div class="bg-white border border-slate-200 rounded-xl p-8 space-y-8 animate-reveal">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-6 border-b border-slate-100 pb-8">
+                    <div class="flex items-center gap-6">
+                        <div class="w-20 h-20 bg-brand-primary/5 rounded-full flex items-center justify-center text-brand-primary text-3xl font-black">
+                            ${cand.chestNo}
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-black text-slate-900">${cand.name}</h3>
+                            <p class="text-sm font-bold text-brand-primary uppercase tracking-widest">${cand.team}</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">${cand.category || ''} | ${cand.gender || ''}</p>
+                        </div>
+                    </div>
+                    <div class="text-center sm:text-right">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Overall Points</p>
+                        <p class="text-5xl font-black text-brand-primary">${total.toFixed(1)}</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Participated Programs</h4>
+                    <div class="grid gap-3">
+                        ${candResults.map(r => {
+                            const p = programMap[r.programId] || { name: 'Unknown', section: 'Gen' };
+                            return `
+                            <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-100">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-8 h-8 bg-white border border-slate-200 rounded-lg flex items-center justify-center font-bold text-[10px] text-brand-primary">#${r.position || '-'}</div>
+                                    <div>
+                                        <p class="text-sm font-bold text-slate-800">${p.name}</p>
+                                        <p class="text-[10px] text-slate-400 font-bold uppercase">${p.section || ''}</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-black text-brand-primary">${r.totalPoints || r.points}</p>
+                                    <p class="text-[9px] text-slate-400 font-bold uppercase">Points</p>
+                                </div>
+                            </div>`;
+                        }).join('') || '<div class="py-12 text-center text-slate-400 italic">No published results found for this student.</div>'}
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // Listeners for sub-searches
+        document.getElementById('search-program').addEventListener('input', render);
+        document.getElementById('search-candidate').addEventListener('input', render);
 
         // Listeners
         document.getElementById('section-filter').addEventListener('change', render);
