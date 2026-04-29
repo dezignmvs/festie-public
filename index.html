@@ -57,10 +57,11 @@
         .leaderboard-card:hover { background: #f8fafc; }
         
         .gallery-item { position: relative; overflow: hidden; border-radius: 12px; border: 1px solid #e2e8f0; }
-        .gallery-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.2s ease; display: flex; align-items: center; justify-center; }
+        .gallery-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.2s ease; display: flex; align-items: center; justify-content: center; }
         .gallery-item:hover .gallery-overlay { opacity: 1; }
 
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        @keyframes scrollLeft { 0% { transform: translateX(100%); } 100% { transform: translateX(-200%); } }
         .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
         
         .heading-tight { letter-spacing: -0.02em; }
@@ -144,21 +145,7 @@
                     </a>
                 </div>
 
-                <!-- Mini Stats -->
-                <div class="grid grid-cols-3 gap-8 pt-10 border-t border-slate-200/60 max-w-lg mx-auto lg:mx-0">
-                    <div>
-                        <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Completed</p>
-                        <p class="text-3xl font-black text-brand-primary" id="stat-completed">--</p>
-                    </div>
-                    <div>
-                        <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Teams</p>
-                        <p class="text-3xl font-black text-slate-800" id="stat-teams">--</p>
-                    </div>
-                    <div>
-                        <p class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-1">Participants</p>
-                        <p class="text-3xl font-black text-slate-800" id="stat-cands">--</p>
-                    </div>
-                </div>
+
             </div>
 
             <div class="lg:col-span-5 relative hidden lg:block">
@@ -181,8 +168,48 @@
         </div>
     </section>
 
+    <!-- Colorful Stats Cards -->
+    <section class="py-12 bg-white relative z-20 -mt-12">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                <!-- Card 1 -->
+                <div class="relative overflow-hidden bg-amber-50 rounded-3xl p-6 sm:p-8 border border-amber-100 group transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-500/10">
+                    <div class="relative z-10">
+                        <h3 class="text-4xl sm:text-5xl font-black text-amber-500 mb-2 tracking-tight flex items-baseline gap-1" id="stat-cands">--</h3>
+                        <p class="text-sm sm:text-base font-bold text-slate-600">Candidates</p>
+                    </div>
+                    <i class="fi fi-rr-graduation-cap absolute -bottom-6 -right-6 text-[8rem] text-amber-500/10 group-hover:scale-110 transition-transform duration-500"></i>
+                </div>
+                <!-- Card 2 -->
+                <div class="relative overflow-hidden bg-teal-50 rounded-3xl p-6 sm:p-8 border border-teal-100 group transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-teal-500/10">
+                    <div class="relative z-10">
+                        <h3 class="text-4xl sm:text-5xl font-black text-teal-500 mb-2 tracking-tight flex items-baseline gap-1" id="stat-teams">--</h3>
+                        <p class="text-sm sm:text-base font-bold text-slate-600">Teams</p>
+                    </div>
+                    <i class="fi fi-rr-building absolute -bottom-6 -right-6 text-[8rem] text-teal-500/10 group-hover:scale-110 transition-transform duration-500"></i>
+                </div>
+                <!-- Card 3 -->
+                <div class="relative overflow-hidden bg-blue-50 rounded-3xl p-6 sm:p-8 border border-blue-100 group transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/10">
+                    <div class="relative z-10">
+                        <h3 class="text-4xl sm:text-5xl font-black text-blue-500 mb-2 tracking-tight flex items-baseline gap-1" id="stat-progs">--</h3>
+                        <p class="text-sm sm:text-base font-bold text-slate-600">Programs</p>
+                    </div>
+                    <i class="fi fi-rr-microphone absolute -bottom-6 -right-6 text-[8rem] text-blue-500/10 group-hover:scale-110 transition-transform duration-500"></i>
+                </div>
+                <!-- Card 4 -->
+                <div class="relative overflow-hidden bg-rose-50 rounded-3xl p-6 sm:p-8 border border-rose-100 group transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-rose-500/10">
+                    <div class="relative z-10">
+                        <h3 class="text-4xl sm:text-5xl font-black text-rose-500 mb-2 tracking-tight flex items-baseline gap-1" id="stat-completed">--</h3>
+                        <p class="text-sm sm:text-base font-bold text-slate-600">Completed</p>
+                    </div>
+                    <i class="fi fi-rr-flag-checkered absolute -bottom-6 -right-6 text-[8rem] text-rose-500/10 group-hover:scale-110 transition-transform duration-500"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Standings Section -->
-    <section id="results" class="py-24 bg-slate-900 text-white overflow-hidden relative">
+    <section id="results" class="py-24 bg-slate-50 text-slate-900 overflow-hidden relative">
         <!-- Decoration -->
         <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-primary/10 rounded-full blur-[100px] pointer-events-none opacity-50"></div>
 
@@ -202,13 +229,13 @@
                 </div>
                 
                 <div class="flex flex-wrap gap-4">
-                    <div class="px-6 py-4 bg-white/5 border border-white/10 rounded-xl min-w-[150px]">
+                    <div class="px-6 py-4 bg-white border border-slate-200 shadow-sm rounded-xl min-w-[150px]">
                         <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1">Leader</p>
                         <p class="text-xl font-black text-brand-secondary" id="leader-name">--</p>
                     </div>
-                    <div class="px-6 py-4 bg-white/5 border border-white/10 rounded-xl min-w-[150px]">
+                    <div class="px-6 py-4 bg-white border border-slate-200 shadow-sm rounded-xl min-w-[150px]">
                         <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1">Gap to 1st</p>
-                        <p class="text-xl font-black text-slate-200" id="leader-gap">--</p>
+                        <p class="text-xl font-black text-slate-700" id="leader-gap">--</p>
                     </div>
                 </div>
             </div>
@@ -218,26 +245,38 @@
                 <!-- TOP 3 BIG CARDS -->
                 <div class="lg:col-span-7 space-y-6" id="top-3-list">
                     <!-- Loading Skeletons -->
-                    <div class="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 h-24 skeleton opacity-20"></div>
-                    <div class="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 h-24 skeleton opacity-20"></div>
-                    <div class="p-8 rounded-[2.5rem] bg-white/5 border border-white/10 h-24 skeleton opacity-20"></div>
+                    <div class="p-8 rounded-[2.5rem] bg-white border border-slate-200 h-24 skeleton"></div>
+                    <div class="p-8 rounded-[2.5rem] bg-white border border-slate-200 h-24 skeleton"></div>
+                    <div class="p-8 rounded-[2.5rem] bg-white border border-slate-200 h-24 skeleton"></div>
                 </div>
 
                 <!-- STATS & CTA -->
-                <div class="lg:col-span-5">
-                    <div class="p-8 sm:p-10 rounded-3xl bg-white/5 border border-white/10 h-full flex flex-col justify-center space-y-6">
-                        <div class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center">
+                <div class="lg:col-span-5 flex flex-col gap-6">
+                    <div class="p-8 sm:p-10 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-center space-y-6 flex-1">
+                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center">
                             <i class="fi fi-rr-chart-pyramid text-2xl text-brand-secondary"></i>
                         </div>
                         <h3 class="text-2xl font-bold leading-tight">Every Point Matters.</h3>
-                        <p class="text-slate-400 font-medium leading-relaxed text-base">
+                        <p class="text-slate-500 font-medium leading-relaxed text-base">
                             Our automated result system ensures absolute transparency. View full section-wise breakdowns in the portal.
                         </p>
                         <div class="pt-4">
-                            <a href="results.html" class="inline-flex items-center gap-3 px-8 py-4 bg-white text-slate-900 rounded-xl font-bold hover:bg-brand-secondary transition-colors group">
+                            <a href="results.html" class="inline-flex items-center gap-3 px-8 py-4 bg-brand-primary text-white rounded-xl font-bold hover:bg-brand-primary/90 transition-colors group">
                                 Open Scoreboard <i class="fi fi-rr-arrow-right mt-1 group-hover:translate-x-1 transition-transform"></i>
                             </a>
                         </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Notification Ticker -->
+            <div class="mt-12 rounded-2xl bg-white border border-slate-200 shadow-sm p-5 overflow-hidden flex items-center gap-4 max-w-4xl mx-auto w-full">
+                <div class="shrink-0 w-10 h-10 bg-brand-secondary/10 text-brand-secondary rounded-full flex items-center justify-center animate-pulse">
+                    <i class="fi fi-rr-bell-ring"></i>
+                </div>
+                <div class="flex-1 overflow-hidden relative">
+                    <div class="whitespace-nowrap flex gap-8 items-center" id="notification-ticker" style="animation: scrollLeft 15s linear infinite;">
+                        <span class="text-sm font-bold text-slate-600">Waiting for latest updates...</span>
                     </div>
                 </div>
             </div>
@@ -515,8 +554,32 @@
 
         function updateStatsCounters() {
             document.getElementById('stat-completed').innerText = _data.programs.filter(p => p.resultsPublished).length;
+            document.getElementById('stat-progs').innerText = _data.programs.length;
             document.getElementById('stat-teams').innerText = _data.teams.length;
             document.getElementById('stat-cands').innerText = _data.cands.length;
+
+            // Update Notification Ticker
+            const ticker = document.getElementById('notification-ticker');
+            const published = _data.programs.filter(p => p.resultsPublished);
+            if(published.length > 0) {
+                // Get last 5 published programs (assuming append order or just random)
+                const recent = published.slice(-5);
+                ticker.innerHTML = recent.map(p => `
+                    <span class="flex items-center gap-2 text-sm font-bold text-slate-700">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> 
+                        Latest: ${p.name} (${p.category || 'General'}) results published!
+                    </span>
+                    <span class="text-slate-300">|</span>
+                `).join('') + `
+                    <span class="flex items-center gap-2 text-sm font-bold text-slate-700">
+                        <span class="w-2 h-2 rounded-full bg-brand-secondary animate-pulse"></span> 
+                        Check Scoreboard for more details!
+                    </span>
+                `;
+                ticker.style.animation = `scrollLeft ${Math.max(15, recent.length * 5)}s linear infinite`;
+            } else {
+                ticker.innerHTML = '<span class="text-sm font-bold text-slate-600">Waiting for latest updates...</span>';
+            }
         }
 
         function renderLeaderboard(top3) {
@@ -529,24 +592,24 @@
             container.innerHTML = top3.map((team, idx) => {
                 const rank = idx + 1;
                 const initials = team.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
-                let medalClass = 'bg-white/10 text-white';
+                let medalClass = 'bg-slate-100 text-slate-700';
                 let medalIcon = rank;
                 if(rank === 1) { medalClass = 'bg-brand-secondary text-brand-dark'; medalIcon = '<i class="fi fi-rr-trophy"></i>'; }
-                else if(rank === 2) { medalClass = 'bg-slate-300 text-slate-900'; }
-                else if(rank === 3) { medalClass = 'bg-amber-700 text-white'; }
+                else if(rank === 2) { medalClass = 'bg-slate-200 text-slate-900'; }
+                else if(rank === 3) { medalClass = 'bg-amber-100 text-amber-700'; }
 
                 return `
-                <div class="p-6 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between leaderboard-card">
+                <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex items-center justify-between leaderboard-card hover:shadow-md transition-shadow">
                     <div class="flex items-center gap-6">
-                        <div class="w-12 h-12 rounded-lg ${medalClass} flex items-center justify-center font-bold text-lg">
+                        <div class="w-12 h-12 rounded-xl ${medalClass} flex items-center justify-center font-bold text-lg">
                             ${medalIcon}
                         </div>
                         <div class="flex items-center gap-5">
-                            <div class="w-12 h-12 rounded-full border-2 border-white/20 flex items-center justify-center font-black text-sm" style="background: ${team.color}20; color: ${team.color}">
+                            <div class="w-12 h-12 rounded-full border border-slate-100 flex items-center justify-center font-black text-sm" style="background: ${team.color}15; color: ${team.color}">
                                 ${initials}
                             </div>
                             <div>
-                                <h4 class="text-2xl font-black tracking-tight">${team.name}</h4>
+                                <h4 class="text-2xl font-black tracking-tight text-slate-900">${team.name}</h4>
                                 <p class="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-1">Overall Rank #${rank}</p>
                             </div>
                         </div>
@@ -615,8 +678,34 @@
             });
         }
 
+        // ════════════════════════════════════════════════════════════
+        // 3. PUBLIC ALERTS TICKER
+        // ════════════════════════════════════════════════════════════
+        function initPublicAlerts() {
+            db.collection('alerts')
+                .where('target', '==', 'public')
+                .orderBy('createdAt', 'desc')
+                .onSnapshot(snap => {
+                    if (snap.empty) return; // keep program-result ticker if no alerts
+
+                    const alerts = snap.docs.map(d => d.data());
+                    const ticker = document.getElementById('notification-ticker');
+
+                    ticker.innerHTML = alerts.map(a => `
+                        <span class="flex items-center gap-2 text-sm font-bold text-slate-700 whitespace-nowrap">
+                            <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse shrink-0"></span>
+                            ${a.title}: ${a.description}
+                        </span>
+                        <span class="text-slate-300 shrink-0">|</span>
+                    `).join('');
+
+                    ticker.style.animation = `scrollLeft ${Math.max(18, alerts.length * 6)}s linear infinite`;
+                });
+        }
+
         // Initialize
         initDataSync();
+        initPublicAlerts();
 
     </script>
 </body>

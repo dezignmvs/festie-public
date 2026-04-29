@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Results — Festival 2026</title>
-    
+
     <!-- Favicon -->
     <link rel="icon" href="../logo-512.svg" type="image/svg+xml">
 
     <!-- Tailwind & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { 
+                    fontFamily: {
                         sans: ['Satoshi', 'Outfit', 'sans-serif'],
                         display: ['Satoshi', 'sans-serif'],
                     },
@@ -36,49 +39,110 @@
     </script>
 
     <style>
-        html { scroll-behavior: smooth; }
-        .minimal-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; }
-        
-        .section-reveal { opacity: 0; transform: translateY(10px); transition: all 0.5s ease-out; }
-        .section-reveal.active { opacity: 1; transform: translateY(0); }
+        html {
+            scroll-behavior: smooth;
+        }
 
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #f8fafc; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-        .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
-        
-        @keyframes reveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-reveal { animation: reveal 0.4s ease-out forwards; }
+        .minimal-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        .section-reveal {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease-out;
+        }
+
+        .section-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f8fafc;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes reveal {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-reveal {
+            animation: reveal 0.4s ease-out forwards;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans selection:bg-brand-primary/10 selection:text-brand-primary min-h-screen flex flex-col">
+
+<body
+    class="bg-white text-slate-900 font-sans selection:bg-brand-primary/10 selection:text-brand-primary min-h-screen flex flex-col">
 
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 px-4 py-4 sm:px-8 bg-white/80 backdrop-blur-xl border-b border-slate-100">
+    <nav class="sticky top-0 z-50 px-4 py-4 sm:px-8 bg-white/80  border-b border-slate-200">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-3 group">
-                <div class="w-9 h-9 bg-brand-primary rounded-lg flex items-center justify-center">
+                <div class="w-9 h-9 bg-brand-primary rounded-xl flex items-center justify-center">
                     <img id="nav-logo" src="../logo-512.svg" alt="Logo" class="w-6 h-6 object-contain">
                 </div>
                 <div class="flex flex-col">
-                    <span id="fest-name" class="font-black text-xl tracking-tight text-brand-primary leading-none mb-0.5">FEST'26</span>
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Official Standings</span>
+                    <span id="fest-name"
+                        class="font-black text-xl tracking-tight text-brand-primary leading-none mb-0.5">FEST'26</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Official
+                        Standings</span>
                 </div>
             </a>
-            <a href="index.html" class="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-brand-primary transition-all">
+            <a href="index.html"
+                class="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-brand-primary transition-all">
                 <i class="fi fi-rr-arrow-left"></i> Back to Home
             </a>
         </div>
-    </nav>    <!-- Header -->
-    <header class="py-10 bg-white border-b border-slate-100">
+    </nav> <!-- Header -->
+    <header class="py-10 bg-white border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-6 sm:px-8">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
                 <div class="space-y-3 text-center md:text-left">
-                    <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 leading-tight heading-tight">Live <span class="text-brand-primary">Standings</span></h1>
-                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                    <h1
+                        class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 leading-tight heading-tight">
+                        Live <span class="text-brand-primary">Standings</span></h1>
+                    <div
+                        class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-400">
                         <div class="flex items-center gap-2">
                             <span class="text-brand-primary">Total Points:</span>
                             <span id="total-pts" class="text-slate-700">--</span>
@@ -90,12 +154,16 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="flex items-center justify-center bg-slate-100 p-1 rounded-xl">
-                    <button onclick="switchTab('team')" id="tab-team" class="px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all bg-white text-brand-primary shadow-sm">Team</button>
-                    <button onclick="switchTab('program')" id="tab-program" class="px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all text-slate-500 hover:text-slate-700">Program</button>
-                    <button onclick="switchTab('candidate')" id="tab-candidate" class="px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all text-slate-500 hover:text-slate-700">Candidates</button>
-                    <button onclick="switchTab('search')" id="tab-search" class="px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all text-slate-500 hover:text-slate-700">Search</button>
+                    <button onclick="switchTab('team')" id="tab-team"
+                        class="px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-white text-brand-primary shadow-sm">Team</button>
+                    <button onclick="switchTab('program')" id="tab-program"
+                        class="px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-slate-700 font-medium hover:text-slate-700">Program</button>
+                    <button onclick="switchTab('candidate')" id="tab-candidate"
+                        class="px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-slate-700 font-medium hover:text-slate-700">Candidates</button>
+                    <button onclick="switchTab('search')" id="tab-search"
+                        class="px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-slate-700 font-medium hover:text-slate-700">Search</button>
                 </div>
             </div>
         </div>
@@ -104,23 +172,27 @@
     <!-- Main Content -->
     <main class="flex-1 py-12">
         <div class="max-w-7xl mx-auto px-8">
-            
+
             <!-- Dynamic Content Area -->
             <div id="view-team" class="tab-view">
                 <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center justify-between">
                     <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
                         <div class="relative w-full sm:w-72">
                             <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                            <input type="text" id="search-team" placeholder="Search team..." class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
+                            <input type="text" id="search-team" placeholder="Search team..."
+                                class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
                         </div>
                         <div class="relative w-full sm:w-auto min-w-[160px]">
-                            <select id="section-filter" class="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-brand-primary/40 transition-all font-bold text-sm text-slate-600 appearance-none cursor-pointer">
+                            <select id="section-filter"
+                                class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-bold text-sm text-slate-600 appearance-none cursor-pointer">
                                 <option value="all">All Sections</option>
                             </select>
-                            <i class="fi fi-rr-angle-small-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                            <i
+                                class="fi fi-rr-angle-small-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
                         </div>
                     </div>
-                    <div class="text-[11px] font-black text-slate-400 uppercase tracking-widest text-center lg:text-right">
+                    <div
+                        class="text-[11px] font-black text-slate-400 uppercase tracking-widest text-center lg:text-right">
                         Last Updated: <span id="last-updated" class="text-slate-600">--</span>
                     </div>
                 </div>
@@ -129,16 +201,28 @@
                     <div class="overflow-x-auto">
                         <table class="w-full text-left">
                             <thead>
-                                <tr class="bg-slate-50/50 border-b border-slate-100">
-                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">Rank</th>
-                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">Team</th>
-                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Participation</th>
-                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Section Pts</th>
-                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">Total Points</th>
+                                <tr class="bg-white/50 border-b border-slate-200">
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                        Rank</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                        Team</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">
+                                        Participation</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">
+                                        Section Pts</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">
+                                        Total Points</th>
                                 </tr>
                             </thead>
                             <tbody id="results-table-body">
-                                <tr class="animate-pulse border-b border-slate-50"><td colspan="5" class="px-8 py-6 h-20 bg-white"></td></tr>
+                                <tr class="animate-pulse border-b border-slate-50">
+                                    <td colspan="5" class="px-8 py-6 h-20 bg-white"></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -150,7 +234,8 @@
                 <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center">
                     <div class="relative w-full sm:w-80">
                         <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="search-program" placeholder="Search program name..." class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
+                        <input type="text" id="search-program" placeholder="Search program name..."
+                            class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
                     </div>
                     <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
                         <span class="w-2 h-2 bg-brand-primary rounded-full"></span> Only Published results shown
@@ -166,19 +251,30 @@
                 <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center">
                     <div class="relative w-full sm:w-80">
                         <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="search-candidate" placeholder="Search candidate name..." class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
+                        <input type="text" id="search-candidate" placeholder="Search candidate name..."
+                            class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
                     </div>
                 </div>
                 <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left">
                             <thead>
-                                <tr class="bg-slate-50/50 border-b border-slate-100">
-                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">Rank</th>
-                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">Candidate</th>
-                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">Team</th>
-                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">Programs</th>
-                                    <th class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">Total Points</th>
+                                <tr class="bg-white/50 border-b border-slate-200">
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                        Rank</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                        Candidate</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                        Team</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">
+                                        Programs</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">
+                                        Total Points</th>
                                 </tr>
                             </thead>
                             <tbody id="candidate-table-body">
@@ -194,11 +290,14 @@
                 <div class="max-w-2xl mx-auto text-center space-y-8 py-12">
                     <div class="space-y-4">
                         <h2 class="text-2xl font-bold text-slate-800">Student Profile Search</h2>
-                        <p class="text-slate-500">Enter a chest number to view all participating programs and total points earned.</p>
+                        <p class="text-slate-700 font-medium">Enter a chest number to view all participating programs
+                            and total points earned.</p>
                     </div>
                     <div class="relative max-w-md mx-auto">
                         <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="search-chest" oninput="searchByChestNo()" placeholder="Enter Chest Number (e.g. 101)" class="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary text-center text-xl font-bold tracking-widest">
+                        <input type="text" id="search-chest" oninput="searchByChestNo()"
+                            placeholder="Enter Chest Number (e.g. 101)"
+                            class="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary text-center text-xl font-bold tracking-widest">
                     </div>
                     <div id="chest-result-area" class="text-left">
                         <!-- Result Card -->
@@ -207,20 +306,22 @@
             </div>
 
             <!-- Note -->
-            <div class="mt-12 p-6 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-4">
-                <div class="w-9 h-9 bg-slate-200 rounded-lg flex items-center justify-center shrink-0">
+            <div class="mt-12 p-6 rounded-xl bg-white border border-slate-200 flex items-start gap-4">
+                <div class="w-9 h-9 bg-slate-200 rounded-xl flex items-center justify-center shrink-0">
                     <i class="fi fi-rr-info text-slate-600"></i>
                 </div>
                 <div>
                     <p class="text-sm font-bold text-slate-900 mb-1">Point Calculation Note</p>
-                    <p class="text-sm text-slate-500 leading-relaxed">The rankings displayed are calculated based on published results only. Negative marks (if any) are automatically deducted from the total score.</p>
+                    <p class="text-sm text-slate-700 font-medium leading-relaxed">The rankings displayed are calculated
+                        based on published results only. Negative marks (if any) are automatically deducted from the
+                        total score.</p>
                 </div>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="py-12 bg-white border-t border-slate-100">
+    <footer class="py-12 bg-white border-t border-slate-200">
         <div class="max-w-7xl mx-auto px-8 flex flex-col sm:flex-row justify-between items-center gap-6">
             <p class="text-sm font-medium text-slate-400">© 2026 Festival Management Official Results Portal.</p>
             <div class="flex items-center gap-4">
@@ -233,7 +334,7 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    
+
     <script>
         // Firebase Config
         const firebaseConfig = {
@@ -253,14 +354,14 @@
         function switchTab(tabId) {
             document.querySelectorAll('.tab-view').forEach(v => v.classList.add('hidden'));
             document.getElementById('view-' + tabId).classList.remove('hidden');
-            
+
             document.querySelectorAll('header button').forEach(b => {
                 b.classList.remove('bg-white', 'text-brand-primary', 'shadow-sm');
-                b.classList.add('text-slate-500');
+                b.classList.add('text-slate-700 font-medium');
             });
             const activeTab = document.getElementById('tab-' + tabId);
             activeTab.classList.add('bg-white', 'text-brand-primary', 'shadow-sm');
-            activeTab.classList.remove('text-slate-500');
+            activeTab.classList.remove('text-slate-700 font-medium');
 
             render();
         }
@@ -323,9 +424,9 @@
 
         function render() {
             if (!Object.values(_isLoaded).every(v => v)) return;
-            
+
             const activeTab = document.querySelector('header button.bg-white').id.replace('tab-', '');
-            
+
             if (activeTab === 'team') renderTeamTable();
             else if (activeTab === 'program') renderProgramGrid();
             else if (activeTab === 'candidate') renderCandidateTable();
@@ -335,14 +436,14 @@
         function renderTeamTable() {
             const sectionFilter = document.getElementById('section-filter').value;
             const searchQuery = document.getElementById('search-team').value.toLowerCase();
-            
+
             const stats = {};
             _data.teams.forEach(t => {
-                stats[t.name] = { 
-                    name: t.name, 
-                    color: t.color || '#134E8E', 
-                    total: 0, 
-                    participation: 0, 
+                stats[t.name] = {
+                    name: t.name,
+                    color: t.color || '#134E8E',
+                    total: 0,
+                    participation: 0,
                     sectionPts: {},
                     progs: new Set()
                 };
@@ -354,7 +455,7 @@
 
             _data.results.forEach(res => {
                 if (!publishedProgIds.has(res.programId)) return;
-                
+
                 const teamName = res.team || res.teamName;
                 if (!teamName || !stats[teamName]) return;
 
@@ -368,7 +469,7 @@
 
                 stats[teamName].total += pts;
                 stats[teamName].progs.add(res.programId);
-                
+
                 if (!stats[teamName].sectionPts[progSection]) stats[teamName].sectionPts[progSection] = 0;
                 stats[teamName].sectionPts[progSection] += pts;
             });
@@ -393,7 +494,7 @@
                 document.getElementById('total-progs').innerText = publishedProgIds.size;
             }
             if (document.getElementById('last-updated')) {
-                document.getElementById('last-updated').innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                document.getElementById('last-updated').innerText = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             }
 
             const body = document.getElementById('results-table-body');
@@ -401,7 +502,7 @@
                 const rank = idx + 1;
                 const initials = team.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
                 return `
-                <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                <tr class="border-b border-slate-50 hover:bg-white/50 transition-colors">
                     <td class="px-8 py-6"><span class="font-black ${rank <= 3 ? 'text-brand-primary' : 'text-slate-400'}">#${rank}</span></td>
                     <td class="px-8 py-6">
                         <div class="flex items-center gap-4">
@@ -412,7 +513,7 @@
                     <td class="px-8 py-6 text-center text-sm font-bold text-slate-700">${team.progs.size}</td>
                     <td class="px-8 py-6 text-center">
                         <div class="flex flex-wrap justify-center gap-1">
-                            ${Object.keys(team.sectionPts).map(s => `<span class="px-1.5 py-0.5 bg-slate-100 rounded text-[9px] font-bold text-slate-500 uppercase">${s.substring(0,3)}</span>`).join('') || '--'}
+                            ${Object.keys(team.sectionPts).map(s => `<span class="px-1.5 py-0.5 bg-slate-100 rounded text-[9px] font-bold text-slate-700 font-medium uppercase">${s.substring(0, 3)}</span>`).join('') || '--'}
                         </div>
                     </td>
                     <td class="px-8 py-6 text-right font-black text-brand-primary">${team.total.toFixed(1)}</td>
@@ -436,16 +537,16 @@
                 <div class="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
                     <div class="flex justify-between items-start gap-3">
                         <h4 class="font-bold text-slate-900 leading-tight">${p.name}</h4>
-                        <span class="px-2 py-0.5 bg-slate-100 rounded text-[9px] font-bold text-slate-500 uppercase">${p.section || 'Gen'}</span>
+                        <span class="px-2 py-0.5 bg-slate-100 rounded text-[9px] font-bold text-slate-700 font-medium uppercase">${p.section || 'Gen'}</span>
                     </div>
                     <div class="space-y-2">
                         ${winners.map((w, idx) => `
-                            <div class="flex items-center justify-between text-xs p-2 rounded ${idx === 0 ? 'bg-amber-50 border border-amber-100' : 'bg-slate-50'}">
+                            <div class="flex items-center justify-between text-xs p-2 rounded ${idx === 0 ? 'bg-amber-50 border border-amber-100' : 'bg-white'}">
                                 <div class="flex items-center gap-2">
                                     <span class="w-5 h-5 flex items-center justify-center font-bold ${idx === 0 ? 'text-amber-600' : 'text-slate-400'}">${idx + 1}</span>
                                     <div>
                                         <p class="font-bold text-slate-800">${w.candidateName || w.name || 'Unknown'}</p>
-                                        <p class="text-[10px] text-slate-500 font-medium">${w.teamName || w.team}</p>
+                                        <p class="text-[10px] text-slate-700 font-medium font-medium">${w.teamName || w.team}</p>
                                     </div>
                                 </div>
                                 <span class="font-black text-brand-primary">${w.totalPoints || w.points}</span>
@@ -459,9 +560,9 @@
         function renderCandidateTable() {
             const searchQuery = document.getElementById('search-candidate').value.toLowerCase();
             const candStats = {};
-            
+
             const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
-            
+
             _data.results.forEach(res => {
                 if (!publishedProgIds.has(res.programId)) return;
                 const key = res.candidateId || res.chestNo || res.candidateName;
@@ -486,10 +587,10 @@
 
             const body = document.getElementById('candidate-table-body');
             body.innerHTML = sorted.map((c, idx) => `
-                <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                <tr class="border-b border-slate-50 hover:bg-white/50 transition-colors">
                     <td class="px-8 py-4"><span class="font-bold text-slate-400">#${idx + 1}</span></td>
                     <td class="px-8 py-4 font-bold text-slate-800">${c.name}</td>
-                    <td class="px-8 py-4 text-sm text-slate-500 font-bold">${c.team}</td>
+                    <td class="px-8 py-4 text-sm text-slate-700 font-medium font-bold">${c.team}</td>
                     <td class="px-8 py-4 text-center text-sm font-bold text-slate-700">${c.progs}</td>
                     <td class="px-8 py-4 text-right font-black text-brand-primary">${c.points.toFixed(1)}</td>
                 </tr>
@@ -516,7 +617,7 @@
 
             area.innerHTML = `
             <div class="bg-white border border-slate-200 rounded-xl p-8 space-y-8 animate-reveal">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-6 border-b border-slate-100 pb-8">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-6 border-b border-slate-200 pb-8">
                     <div class="flex items-center gap-6">
                         <div class="w-20 h-20 bg-brand-primary/5 rounded-full flex items-center justify-center text-brand-primary text-3xl font-black">
                             ${cand.chestNo}
@@ -536,11 +637,11 @@
                     <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Participated Programs</h4>
                     <div class="grid gap-3">
                         ${candResults.map(r => {
-                            const p = programMap[r.programId] || { name: 'Unknown', section: 'Gen' };
-                            return `
-                            <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-100">
+                const p = programMap[r.programId] || { name: 'Unknown', section: 'Gen' };
+                return `
+                            <div class="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-8 h-8 bg-white border border-slate-200 rounded-lg flex items-center justify-center font-bold text-[10px] text-brand-primary">#${r.position || '-'}</div>
+                                    <div class="w-8 h-8 bg-white border border-slate-200 rounded-xl flex items-center justify-center font-bold text-[10px] text-brand-primary">#${r.position || '-'}</div>
                                     <div>
                                         <p class="text-sm font-bold text-slate-800">${p.name}</p>
                                         <p class="text-[10px] text-slate-400 font-bold uppercase">${p.section || ''}</p>
@@ -551,7 +652,7 @@
                                     <p class="text-[9px] text-slate-400 font-bold uppercase">Points</p>
                                 </div>
                             </div>`;
-                        }).join('') || '<div class="py-12 text-center text-slate-400 italic">No published results found for this student.</div>'}
+            }).join('') || '<div class="py-12 text-center text-slate-400 italic">No published results found for this student.</div>'}
                     </div>
                 </div>
             </div>`;
@@ -569,4 +670,5 @@
         initSync();
     </script>
 </body>
+
 </html>
