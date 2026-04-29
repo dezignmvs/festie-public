@@ -367,6 +367,16 @@
         }
 
         function initSync() {
+            // Website Config & Visibility
+            db.collection('config').doc('website').onSnapshot(doc => {
+                if (doc.exists) {
+                    const config = doc.data();
+                    if (config.isWebsiteOn === false || (config.visiblePages && !config.visiblePages.includes('standings'))) {
+                        window.location.href = 'index.html';
+                    }
+                }
+            });
+
             // Fest Config
             db.collection('config').doc('festData').onSnapshot(doc => {
                 if (doc.exists) {

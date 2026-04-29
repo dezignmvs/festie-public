@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Festival 2026 — Official Portal</title>
-    
+
     <!-- Favicon -->
     <link rel="icon" href="../logo-512.svg" type="image/svg+xml">
 
     <!-- Tailwind & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet'
+        href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { 
+                    fontFamily: {
                         sans: ['Satoshi', 'Outfit', 'sans-serif'],
                         display: ['Satoshi', 'sans-serif'],
                     },
@@ -41,81 +44,183 @@
     </script>
 
     <style>
-        html { scroll-behavior: smooth; }
-        .minimal-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; }
-        .minimal-card-dark { background: #0F172A; border: 1px solid #1e293b; border-radius: 12px; }
-        
-        .section-reveal { opacity: 0; transform: translateY(10px); transition: all 0.5s ease-out; }
-        .section-reveal.active { opacity: 1; transform: translateY(0); }
+        html {
+            scroll-behavior: smooth;
+        }
 
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #f8fafc; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .minimal-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
 
-        .leaderboard-card { transition: background 0.2s ease; }
-        .leaderboard-card:hover { background: #f8fafc; }
-        
-        .gallery-item { position: relative; overflow: hidden; border-radius: 12px; border: 1px solid #e2e8f0; }
-        .gallery-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.2s ease; display: flex; align-items: center; justify-content: center; }
-        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        .minimal-card-dark {
+            background: #0F172A;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+        }
 
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-        @keyframes scrollLeft { 0% { transform: translateX(100%); } 100% { transform: translateX(-200%); } }
-        .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
-        
-        .heading-tight { letter-spacing: -0.02em; }
+        .section-reveal {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease-out;
+        }
+
+        .section-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f8fafc;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .leaderboard-card {
+            transition: background 0.2s ease;
+        }
+
+        .leaderboard-card:hover {
+            background: #f8fafc;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @keyframes scrollLeft {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-200%);
+            }
+        }
+
+        .animate-scrollLeft {
+            animation: scrollLeft 20s linear infinite;
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        .heading-tight {
+            letter-spacing: -0.02em;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans selection:bg-brand-primary/10 selection:text-brand-primary overflow-x-hidden">
+
+<body
+    class="bg-slate-50 text-slate-900 font-sans selection:bg-brand-primary/10 selection:text-brand-primary overflow-x-hidden">
 
     <!-- Navigation -->
     <nav class="fixed top-0 left-0 right-0 z-50 px-4 py-4 transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto bg-white border border-slate-200 rounded-xl px-6 py-3 flex items-center justify-between">
+        <div
+            class="max-w-7xl mx-auto bg-white border border-slate-200 rounded-xl px-6 py-3 flex items-center justify-between">
             <div class="flex items-center gap-3 group cursor-pointer">
-                <div class="w-9 h-9 bg-brand-primary rounded-lg flex items-center justify-center group-hover:rotate-3 transition-transform">
+                <div
+                    class="w-9 h-9 bg-brand-primary rounded-lg flex items-center justify-center group-hover:rotate-3 transition-transform">
                     <img id="nav-logo" src="../logo-512.svg" alt="Logo" class="w-6 h-6 object-contain">
                 </div>
                 <div class="flex flex-col">
-                    <span id="fest-name" class="font-black text-xl tracking-tighter text-brand-primary leading-none mb-0.5 heading-tight">FEST'26</span>
-                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none">Official Portal</span>
+                    <span id="fest-name"
+                        class="font-black text-xl tracking-tighter text-brand-primary leading-none mb-0.5 heading-tight">FEST'26</span>
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] leading-none">Official
+                        Portal</span>
                 </div>
             </div>
 
             <!-- Desktop Menu -->
-            <div class="hidden lg:flex items-center gap-10">
-                <a href="#home" class="text-[13px] font-extrabold text-slate-500 hover:text-brand-primary tracking-wider uppercase transition-colors">Home</a>
-                <a href="#results" class="text-[13px] font-extrabold text-slate-500 hover:text-brand-primary tracking-wider uppercase transition-colors">Standings</a>
-                <a href="#downloads" class="text-[13px] font-extrabold text-slate-500 hover:text-brand-primary tracking-wider uppercase transition-colors">Downloads</a>
-                <a href="#gallery" class="text-[13px] font-extrabold text-slate-500 hover:text-brand-primary tracking-wider uppercase transition-colors">Moments</a>
-                <div class="h-6 w-px bg-slate-200"></div>
-                <a href="#contact" class="px-6 py-2.5 bg-brand-primary text-white rounded-lg text-[13px] font-bold uppercase tracking-wider hover:bg-brand-primary/90 transition-colors">
+            <div class="hidden lg:flex items-center gap-10" id="desktop-menu">
+                <a href="#home" id="nav-home"
+                    class="text-[13px] font-extrabold text-slate-500 hover:text-brand-primary tracking-wider uppercase transition-colors">Home</a>
+                <a href="#results" id="nav-standings"
+                    class="text-[13px] font-extrabold text-slate-500 hover:text-brand-primary tracking-wider uppercase transition-colors">Standings</a>
+                <a href="#downloads" id="nav-downloads"
+                    class="text-[13px] font-extrabold text-slate-500 hover:text-brand-primary tracking-wider uppercase transition-colors">Downloads</a>
+                <a href="#gallery" id="nav-moments"
+                    class="text-[13px] font-extrabold text-slate-500 hover:text-brand-primary tracking-wider uppercase transition-colors">Moments</a>
+                <div class="h-6 w-px bg-slate-200" id="nav-sep"></div>
+                <a href="#contact" id="nav-contact"
+                    class="px-6 py-2.5 bg-brand-primary text-white rounded-lg text-[13px] font-bold uppercase tracking-wider hover:bg-brand-primary/90 transition-colors">
                     Contact
                 </a>
             </div>
 
             <!-- Mobile Menu Toggle -->
-            <button class="lg:hidden w-10 h-10 flex items-center justify-center text-slate-600 bg-slate-100 rounded-lg" onclick="toggleMobileMenu()">
+            <button class="lg:hidden w-10 h-10 flex items-center justify-center text-slate-600 bg-slate-100 rounded-lg"
+                onclick="toggleMobileMenu()">
                 <i class="fi fi-rr-menu-burger text-lg"></i>
             </button>
         </div>
     </nav>
 
+
+
     <!-- Mobile Menu Overlay -->
-    <div id="mobile-menu" class="fixed inset-0 bg-white/95 backdrop-blur-2xl z-[60] flex flex-col items-center justify-center gap-10 hidden">
-        <button onclick="toggleMobileMenu()" class="absolute top-10 right-10 w-12 h-12 flex items-center justify-center bg-slate-100 rounded-2xl text-2xl text-slate-400">&times;</button>
-        <a href="#home" onclick="toggleMobileMenu()" class="text-3xl font-black text-brand-primary">Home</a>
-        <a href="#results" onclick="toggleMobileMenu()" class="text-3xl font-black">Standings</a>
-        <a href="#downloads" onclick="toggleMobileMenu()" class="text-3xl font-black">Downloads</a>
-        <a href="#gallery" onclick="toggleMobileMenu()" class="text-3xl font-black">Moments</a>
-        <a href="#contact" onclick="toggleMobileMenu()" class="px-10 py-4 bg-brand-primary text-white rounded-xl font-bold text-lg">Contact Us</a>
+    <div id="mobile-menu"
+        class="fixed inset-0 bg-white/95 backdrop-blur-2xl z-[60] flex flex-col items-center justify-center gap-10 hidden">
+        <button onclick="toggleMobileMenu()"
+            class="absolute top-10 right-10 w-12 h-12 flex items-center justify-center bg-slate-100 rounded-2xl text-2xl text-slate-400">&times;</button>
+        <a href="#home" id="mob-home" onclick="toggleMobileMenu()" class="text-3xl font-black text-brand-primary">Home</a>
+        <a href="#results" id="mob-standings" onclick="toggleMobileMenu()" class="text-3xl font-black">Standings</a>
+        <a href="#downloads" id="mob-downloads" onclick="toggleMobileMenu()" class="text-3xl font-black">Downloads</a>
+        <a href="#gallery" id="mob-moments" onclick="toggleMobileMenu()" class="text-3xl font-black">Moments</a>
+        <a href="#contact" id="mob-contact" onclick="toggleMobileMenu()"
+            class="px-10 py-4 bg-brand-primary text-white rounded-xl font-bold text-lg">Contact Us</a>
     </div>
 
     <!-- Hero Section -->
     <section id="home" class="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden bg-white">
         <!-- Floating Elements -->
         <!-- Decoration -->
-        <div class="absolute top-1/4 -right-20 w-[400px] h-[400px] bg-brand-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+        <div
+            class="absolute top-1/4 -right-20 w-[400px] h-[400px] bg-brand-primary/5 rounded-full blur-[100px] pointer-events-none">
+        </div>
 
         <div class="max-w-7xl mx-auto px-8 w-full grid lg:grid-cols-12 gap-16 items-center">
             <div class="lg:col-span-7 space-y-8 sm:space-y-10 text-center lg:text-left">
@@ -126,21 +231,26 @@
                     </div>
                     <span class="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] sm:tracking-[0.25em] text-slate-500">Live Updates — 2026</span>
                 </div>
-                
+
                 <h1 class="text-[clamp(42px,10vw,88px)] font-black leading-[0.95] heading-tight text-slate-900">
                     Artistry in <span class="text-brand-primary">Motion</span>,<br>
                     Excellence in <span class="text-brand-secondary">Spirit.</span>
                 </h1>
-                
-                <p class="text-lg sm:text-xl text-slate-500 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium tracking-tight px-2 sm:px-0">
-                    Dive into the most prestigious cultural celebration of the year. Track live rankings, download event media, and relive every moment of pure talent.
+
+                <p
+                    class="text-lg sm:text-xl text-slate-500 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium tracking-tight px-2 sm:px-0">
+                    Dive into the most prestigious cultural celebration of the year. Track live rankings, download event
+                    media, and relive every moment of pure talent.
                 </p>
 
                 <div class="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start pt-6">
-                    <a href="results.html" class="w-full sm:w-auto px-8 py-4 bg-brand-primary text-white rounded-xl font-bold text-lg hover:bg-brand-primary/90 transition-colors flex items-center justify-center gap-3 group">
-                        Live Standings <i class="fi fi-rr-arrow-right mt-1 group-hover:translate-x-1 transition-transform"></i>
+                    <a href="results.html"
+                        class="w-full sm:w-auto px-8 py-4 bg-brand-primary text-white rounded-xl font-bold text-lg hover:bg-brand-primary/90 transition-colors flex items-center justify-center gap-3 group">
+                        Live Standings <i
+                            class="fi fi-rr-arrow-right mt-1 group-hover:translate-x-1 transition-transform"></i>
                     </a>
-                    <a href="gallery.html" class="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 rounded-xl font-bold text-lg border border-slate-200 hover:bg-slate-50 transition-colors flex items-center justify-center gap-3 group">
+                    <a href="gallery.html"
+                        class="w-full sm:w-auto px-8 py-4 bg-white text-slate-900 rounded-xl font-bold text-lg border border-slate-200 hover:bg-slate-50 transition-colors flex items-center justify-center gap-3 group">
                         Explore Gallery
                     </a>
                 </div>
@@ -149,19 +259,25 @@
             </div>
 
             <div class="lg:col-span-5 relative hidden lg:block">
-                <div class="relative bg-white p-4 rounded-3xl border border-slate-200">
-                    <div class="rounded-2xl overflow-hidden aspect-[4/5]">
-                        <img id="hero-img" src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop" 
-                            alt="Festival" class="w-full h-full object-cover">
+                <div class="relative bg-white p-4 rounded-3xl border border-slate-200 overflow-hidden group">
+                    <div class="rounded-2xl overflow-hidden aspect-[4/5] relative">
+                        <img id="hero-img"
+                            src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop"
+                            alt="Festival" class="w-full h-full object-cover transition-all duration-1000">
+                        <div id="slider-dots" class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 hidden"></div>
                     </div>
-                    <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl border border-slate-200 flex flex-col gap-2 max-w-[220px]">
+                    <div
+                        class="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl border border-slate-200 flex flex-col gap-2 max-w-[220px] shadow-xl z-10">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-brand-secondary rounded-lg flex items-center justify-center text-white text-sm">
+                            <div
+                                class="w-8 h-8 bg-brand-secondary rounded-lg flex items-center justify-center text-white text-sm">
                                 <i class="fi fi-rr-flame"></i>
                             </div>
                             <p class="text-xs font-bold text-slate-800">Grand Finale Countdown</p>
                         </div>
-                        <p class="text-[11px] text-slate-500 font-medium">Join us for the ultimate showdown of talent and creativity.</p>
+                        <p id="countdown-display" class="text-[14px] font-black text-brand-primary tabular-nums">00:00:00:00</p>
+                        <p class="text-[10px] text-slate-400 font-medium">Join us for the ultimate showdown of talent
+                            and creativity.</p>
                     </div>
                 </div>
             </div>
@@ -169,40 +285,52 @@
     </section>
 
     <!-- Colorful Stats Cards -->
-    <section class="py-12 bg-white relative z-20 -mt-12">
+    <section id="stats-section" class="py-12 bg-white relative z-20 -mt-12">
         <div class="max-w-7xl mx-auto px-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
                 <!-- Card 1 -->
-                <div class="relative overflow-hidden bg-amber-50 rounded-3xl p-6 sm:p-8 border border-amber-100 group transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-500/10">
+                <div
+                    class="relative overflow-hidden bg-amber-50 rounded-3xl p-6 sm:p-8 border border-amber-100 group transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-500/10">
                     <div class="relative z-10">
-                        <h3 class="text-4xl sm:text-5xl font-black text-amber-500 mb-2 tracking-tight flex items-baseline gap-1" id="stat-cands">--</h3>
+                        <h3 class="text-4xl sm:text-5xl font-black text-amber-500 mb-2 tracking-tight flex items-baseline gap-1"
+                            id="stat-cands">--</h3>
                         <p class="text-sm sm:text-base font-bold text-slate-600">Candidates</p>
                     </div>
-                    <i class="fi fi-rr-graduation-cap absolute -bottom-6 -right-6 text-[8rem] text-amber-500/10 group-hover:scale-110 transition-transform duration-500"></i>
+                    <i
+                        class="fi fi-rr-graduation-cap absolute -bottom-6 -right-6 text-[8rem] text-amber-500/10 group-hover:scale-110 transition-transform duration-500"></i>
                 </div>
                 <!-- Card 2 -->
-                <div class="relative overflow-hidden bg-teal-50 rounded-3xl p-6 sm:p-8 border border-teal-100 group transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-teal-500/10">
+                <div
+                    class="relative overflow-hidden bg-teal-50 rounded-3xl p-6 sm:p-8 border border-teal-100 group transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-teal-500/10">
                     <div class="relative z-10">
-                        <h3 class="text-4xl sm:text-5xl font-black text-teal-500 mb-2 tracking-tight flex items-baseline gap-1" id="stat-teams">--</h3>
+                        <h3 class="text-4xl sm:text-5xl font-black text-teal-500 mb-2 tracking-tight flex items-baseline gap-1"
+                            id="stat-teams">--</h3>
                         <p class="text-sm sm:text-base font-bold text-slate-600">Teams</p>
                     </div>
-                    <i class="fi fi-rr-building absolute -bottom-6 -right-6 text-[8rem] text-teal-500/10 group-hover:scale-110 transition-transform duration-500"></i>
+                    <i
+                        class="fi fi-rr-building absolute -bottom-6 -right-6 text-[8rem] text-teal-500/10 group-hover:scale-110 transition-transform duration-500"></i>
                 </div>
                 <!-- Card 3 -->
-                <div class="relative overflow-hidden bg-blue-50 rounded-3xl p-6 sm:p-8 border border-blue-100 group transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/10">
+                <div
+                    class="relative overflow-hidden bg-blue-50 rounded-3xl p-6 sm:p-8 border border-blue-100 group transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/10">
                     <div class="relative z-10">
-                        <h3 class="text-4xl sm:text-5xl font-black text-blue-500 mb-2 tracking-tight flex items-baseline gap-1" id="stat-progs">--</h3>
+                        <h3 class="text-4xl sm:text-5xl font-black text-blue-500 mb-2 tracking-tight flex items-baseline gap-1"
+                            id="stat-progs">--</h3>
                         <p class="text-sm sm:text-base font-bold text-slate-600">Programs</p>
                     </div>
-                    <i class="fi fi-rr-microphone absolute -bottom-6 -right-6 text-[8rem] text-blue-500/10 group-hover:scale-110 transition-transform duration-500"></i>
+                    <i
+                        class="fi fi-rr-microphone absolute -bottom-6 -right-6 text-[8rem] text-blue-500/10 group-hover:scale-110 transition-transform duration-500"></i>
                 </div>
                 <!-- Card 4 -->
-                <div class="relative overflow-hidden bg-rose-50 rounded-3xl p-6 sm:p-8 border border-rose-100 group transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-rose-500/10">
+                <div
+                    class="relative overflow-hidden bg-rose-50 rounded-3xl p-6 sm:p-8 border border-rose-100 group transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-rose-500/10">
                     <div class="relative z-10">
-                        <h3 class="text-4xl sm:text-5xl font-black text-rose-500 mb-2 tracking-tight flex items-baseline gap-1" id="stat-completed">--</h3>
+                        <h3 class="text-4xl sm:text-5xl font-black text-rose-500 mb-2 tracking-tight flex items-baseline gap-1"
+                            id="stat-completed">--</h3>
                         <p class="text-sm sm:text-base font-bold text-slate-600">Completed</p>
                     </div>
-                    <i class="fi fi-rr-flag-checkered absolute -bottom-6 -right-6 text-[8rem] text-rose-500/10 group-hover:scale-110 transition-transform duration-500"></i>
+                    <i
+                        class="fi fi-rr-flag-checkered absolute -bottom-6 -right-6 text-[8rem] text-rose-500/10 group-hover:scale-110 transition-transform duration-500"></i>
                 </div>
             </div>
         </div>
@@ -211,23 +339,28 @@
     <!-- Standings Section -->
     <section id="results" class="py-24 bg-slate-50 text-slate-900 overflow-hidden relative">
         <!-- Decoration -->
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-primary/10 rounded-full blur-[100px] pointer-events-none opacity-50"></div>
+        <div
+            class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-primary/10 rounded-full blur-[100px] pointer-events-none opacity-50">
+        </div>
 
         <div class="max-w-7xl mx-auto px-8 relative z-10">
             <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-20">
                 <div class="space-y-6">
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-primary/20 border border-brand-primary/30 rounded-full">
+                    <div
+                        class="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-primary/20 border border-brand-primary/30 rounded-full">
                         <span class="w-2 h-2 bg-brand-secondary rounded-full animate-pulse"></span>
-                        <span class="text-[10px] font-black text-brand-secondary uppercase tracking-widest">Real-time Data</span>
+                        <span class="text-[10px] font-black text-brand-secondary uppercase tracking-widest">Real-time
+                            Data</span>
                     </div>
                     <h2 class="text-[clamp(36px,6vw,56px)] font-black leading-[1.1] tracking-tight">
                         Current <span class="text-brand-secondary">Leaderboard</span>
                     </h2>
                     <p class="text-slate-400 font-medium max-w-xl text-lg">
-                        The race to the championship trophy is heating up. Track the overall points across all sections and categories.
+                        The race to the championship trophy is heating up. Track the overall points across all sections
+                        and categories.
                     </p>
                 </div>
-                
+
                 <div class="flex flex-wrap gap-4">
                     <div class="px-6 py-4 bg-white border border-slate-200 shadow-sm rounded-xl min-w-[150px]">
                         <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1">Leader</p>
@@ -252,34 +385,29 @@
 
                 <!-- STATS & CTA -->
                 <div class="lg:col-span-5 flex flex-col gap-6">
-                    <div class="p-8 sm:p-10 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-center space-y-6 flex-1">
+                    <div
+                        class="p-8 sm:p-10 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-center space-y-6 flex-1">
                         <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center">
                             <i class="fi fi-rr-chart-pyramid text-2xl text-brand-secondary"></i>
                         </div>
                         <h3 class="text-2xl font-bold leading-tight">Every Point Matters.</h3>
                         <p class="text-slate-500 font-medium leading-relaxed text-base">
-                            Our automated result system ensures absolute transparency. View full section-wise breakdowns in the portal.
+                            Our automated result system ensures absolute transparency. View full section-wise breakdowns
+                            in the portal.
                         </p>
                         <div class="pt-4">
-                            <a href="results.html" class="inline-flex items-center gap-3 px-8 py-4 bg-brand-primary text-white rounded-xl font-bold hover:bg-brand-primary/90 transition-colors group">
-                                Open Scoreboard <i class="fi fi-rr-arrow-right mt-1 group-hover:translate-x-1 transition-transform"></i>
+                            <a href="results.html"
+                                class="inline-flex items-center gap-3 px-8 py-4 bg-brand-primary text-white rounded-xl font-bold hover:bg-brand-primary/90 transition-colors group">
+                                Open Scoreboard <i
+                                    class="fi fi-rr-arrow-right mt-1 group-hover:translate-x-1 transition-transform"></i>
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Notification Ticker -->
-            <div class="mt-12 rounded-2xl bg-white border border-slate-200 shadow-sm p-5 overflow-hidden flex items-center gap-4 max-w-4xl mx-auto w-full">
-                <div class="shrink-0 w-10 h-10 bg-brand-secondary/10 text-brand-secondary rounded-full flex items-center justify-center animate-pulse">
-                    <i class="fi fi-rr-bell-ring"></i>
-                </div>
-                <div class="flex-1 overflow-hidden relative">
-                    <div class="whitespace-nowrap flex gap-8 items-center" id="notification-ticker" style="animation: scrollLeft 15s linear infinite;">
-                        <span class="text-sm font-bold text-slate-600">Waiting for latest updates...</span>
-                    </div>
-                </div>
-            </div>
+
+            <!-- Alerts Container (Hidden by default) -->
+            <div id="alerts-container" class="mt-12 hidden flex flex-wrap gap-4 max-w-4xl mx-auto w-full"></div>
         </div>
     </section>
 
@@ -290,10 +418,12 @@
                 <div class="inline-flex px-5 py-2 bg-slate-100 rounded-full">
                     <span class="text-[11px] font-black uppercase tracking-widest text-slate-500">Resource Hub</span>
                 </div>
-                <h2 class="text-[clamp(32px,5vw,52px)] font-black tracking-tight text-slate-900">Essential <span class="text-brand-primary">Downloads</span></h2>
-                <p class="text-slate-500 font-medium text-lg max-w-2xl mx-auto">Access everything from event schedules to official rulebooks and high-resolution promotional materials.</p>
+                <h2 class="text-[clamp(32px,5vw,52px)] font-black tracking-tight text-slate-900">Essential <span
+                        class="text-brand-primary">Downloads</span></h2>
+                <p class="text-slate-500 font-medium text-lg max-w-2xl mx-auto">Access everything from event schedules
+                    to official rulebooks and high-resolution promotional materials.</p>
             </div>
-            
+
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8" id="download-list">
                 <!-- Skeletons -->
                 <div class="p-8 rounded-3xl bg-slate-50 border border-slate-100 h-60 skeleton"></div>
@@ -305,16 +435,23 @@
 
     <!-- Gallery Section -->
     <section id="gallery" class="py-32 bg-slate-50 relative overflow-hidden">
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(19,78,142,0.03),transparent)]"></div>
-        
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(19,78,142,0.03),transparent)]">
+        </div>
+
         <div class="max-w-7xl mx-auto px-8 relative z-10">
-            <div class="flex flex-col md:flex-row items-center md:items-end justify-between gap-10 mb-20 text-center md:text-left">
+            <div
+                class="flex flex-col md:flex-row items-center md:items-end justify-between gap-10 mb-20 text-center md:text-left">
                 <div class="space-y-6">
-                    <h2 class="text-[clamp(32px,5vw,52px)] font-black tracking-tight text-slate-900">Capturing the <span class="text-brand-primary">Magic</span></h2>
-                    <p class="text-slate-500 font-medium text-lg max-w-xl">A visual journey through the most unforgettable moments of Festival 2026.</p>
+                    <h2 class="text-[clamp(32px,5vw,52px)] font-black tracking-tight text-slate-900">Capturing the <span
+                            class="text-brand-primary">Magic</span></h2>
+                    <p class="text-slate-500 font-medium text-lg max-w-xl">A visual journey through the most
+                        unforgettable moments of Festival 2026.</p>
                 </div>
-                <a href="gallery.html" class="hidden sm:flex items-center gap-4 text-brand-primary font-black uppercase tracking-[0.2em] text-[12px] hover:gap-6 transition-all group">
-                    View Full Gallery <i class="fi fi-rr-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                <a href="gallery.html"
+                    class="hidden sm:flex items-center gap-4 text-brand-primary font-black uppercase tracking-[0.2em] text-[12px] hover:gap-6 transition-all group">
+                    View Full Gallery <i
+                        class="fi fi-rr-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </a>
             </div>
 
@@ -326,14 +463,35 @@
                 <div class="aspect-square rounded-xl skeleton opacity-40"></div>
                 <div class="aspect-square rounded-xl skeleton opacity-40"></div>
             </div>
-            
+
             <div class="mt-12 text-center sm:hidden">
-                <a href="#" class="inline-flex items-center gap-4 text-brand-primary font-black uppercase tracking-widest text-[12px]">
+                <a href="#"
+                    class="inline-flex items-center gap-4 text-brand-primary font-black uppercase tracking-widest text-[12px]">
                     Open Full Gallery <i class="fi fi-rr-arrow-right"></i>
                 </a>
             </div>
         </div>
     </section>
+
+    <!-- Alert Modal -->
+    <div id="alert-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4" onclick="if(event.target === this) closeAlertModal()">
+        <div class="bg-white rounded-[2.5rem] w-full max-w-lg shadow-2xl overflow-hidden animate-in">
+            <div class="p-8 pb-0 flex justify-end">
+                <button onclick="closeAlertModal()" class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-slate-100 transition-all">
+                    <i class="fi fi-rr-cross-small"></i>
+                </button>
+            </div>
+            <div class="p-10 pt-4 text-center">
+                <div class="w-20 h-20 bg-amber-50 text-amber-500 rounded-[2rem] flex items-center justify-center mx-auto mb-8">
+                    <i class="fi fi-rr-bell-ring text-4xl"></i>
+                </div>
+                <h3 id="modal-alert-title" class="text-3xl font-black text-slate-900 mb-4 tracking-tight leading-tight"></h3>
+                <div class="bg-slate-50 rounded-3xl p-8 text-left">
+                    <p id="modal-alert-desc" class="text-slate-600 font-medium leading-relaxed text-lg"></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer id="contact" class="bg-white border-t border-slate-100 pt-32 pb-16 relative">
@@ -346,12 +504,15 @@
                                 <img src="../logo-512.svg" alt="Logo" class="w-7 h-7 object-contain">
                             </div>
                             <div class="flex flex-col">
-                                <span class="font-bold text-2xl tracking-tight text-brand-primary fest-name-display">FEST'26</span>
-                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Excellence Defined</span>
+                                <span
+                                    class="font-bold text-2xl tracking-tight text-brand-primary fest-name-display">FEST'26</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Excellence
+                                    Defined</span>
                             </div>
                         </div>
                         <p class="text-xl text-slate-500 font-medium leading-relaxed">
-                            A platform dedicated to celebrating talent, fostering community, and pushing the boundaries of creativity.
+                            A platform dedicated to celebrating talent, fostering community, and pushing the boundaries
+                            of creativity.
                         </p>
                     </div>
 
@@ -361,7 +522,8 @@
                             <p class="text-lg font-bold text-slate-700">Central Arts Complex,<br>Kerala, India</p>
                         </div>
                         <div class="space-y-4">
-                            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Direct Contact</p>
+                            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Direct Contact
+                            </p>
                             <p class="text-lg font-bold text-slate-700">hello@fest2026.com<br>+91 90000 12345</p>
                         </div>
                     </div>
@@ -373,18 +535,23 @@
                         <div class="grid sm:grid-cols-2 gap-6">
                             <div class="space-y-1.5">
                                 <label class="text-[11px] font-black text-slate-400 uppercase ml-1">Full Name</label>
-                                <input type="text" placeholder="John Doe" class="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-brand-primary/5 focus:border-brand-primary/30 transition-all font-medium bg-white">
+                                <input type="text" placeholder="John Doe"
+                                    class="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-brand-primary/5 focus:border-brand-primary/30 transition-all font-medium bg-white">
                             </div>
                             <div class="space-y-1.5">
-                                <label class="text-[11px] font-black text-slate-400 uppercase ml-1">Email Address</label>
-                                <input type="email" placeholder="john@example.com" class="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-brand-primary/5 focus:border-brand-primary/30 transition-all font-medium bg-white">
+                                <label class="text-[11px] font-black text-slate-400 uppercase ml-1">Email
+                                    Address</label>
+                                <input type="email" placeholder="john@example.com"
+                                    class="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-brand-primary/5 focus:border-brand-primary/30 transition-all font-medium bg-white">
                             </div>
                             <div class="sm:col-span-2 space-y-1.5">
                                 <label class="text-[11px] font-black text-slate-400 uppercase ml-1">Your Message</label>
-                                <textarea placeholder="How can we help you?" rows="4" class="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-brand-primary/5 focus:border-brand-primary/30 transition-all font-medium bg-white resize-none"></textarea>
+                                <textarea placeholder="How can we help you?" rows="4"
+                                    class="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-4 focus:ring-brand-primary/5 focus:border-brand-primary/30 transition-all font-medium bg-white resize-none"></textarea>
                             </div>
                             <div class="sm:col-span-2">
-                                <button class="w-full py-4 bg-brand-primary text-white rounded-xl font-bold text-lg transition-colors hover:bg-brand-primary/90">
+                                <button
+                                    class="w-full py-4 bg-brand-primary text-white rounded-xl font-bold text-lg transition-colors hover:bg-brand-primary/90">
                                     Submit Message
                                 </button>
                             </div>
@@ -396,9 +563,15 @@
             <div class="flex flex-col md:flex-row justify-between items-center gap-10 pt-16 border-t border-slate-100">
                 <p class="text-sm font-medium text-slate-400">© 2026 Festival Management. Designed with ❤️ in India.</p>
                 <div class="flex items-center gap-3">
-                    <a href="#" class="w-10 h-10 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-400 hover:text-brand-primary transition-colors"><i class="fi fi-rr-instagram"></i></a>
-                    <a href="#" class="w-10 h-10 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-400 hover:text-brand-primary transition-colors"><i class="fi fi-rr-facebook"></i></a>
-                    <a href="#" class="w-10 h-10 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-400 hover:text-brand-primary transition-colors"><i class="fi fi-rr-twitter"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-400 hover:text-brand-primary transition-colors"><i
+                            class="fi fi-rr-instagram"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-400 hover:text-brand-primary transition-colors"><i
+                            class="fi fi-rr-facebook"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 bg-white border border-slate-200 rounded-lg flex items-center justify-center text-slate-400 hover:text-brand-primary transition-colors"><i
+                            class="fi fi-rr-twitter"></i></a>
                 </div>
             </div>
         </div>
@@ -407,7 +580,7 @@
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    
+
     <script>
         // Firebase Configuration
         const firebaseConfig = {
@@ -528,7 +701,7 @@
             });
 
             const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
-            
+
             _data.results.forEach(res => {
                 if (!publishedProgIds.has(res.programId)) return;
                 const teamName = res.team || res.teamName;
@@ -561,7 +734,7 @@
             // Update Notification Ticker
             const ticker = document.getElementById('notification-ticker');
             const published = _data.programs.filter(p => p.resultsPublished);
-            if(published.length > 0) {
+            if (published.length > 0) {
                 // Get last 5 published programs (assuming append order or just random)
                 const recent = published.slice(-5);
                 ticker.innerHTML = recent.map(p => `
@@ -594,9 +767,9 @@
                 const initials = team.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
                 let medalClass = 'bg-slate-100 text-slate-700';
                 let medalIcon = rank;
-                if(rank === 1) { medalClass = 'bg-brand-secondary text-brand-dark'; medalIcon = '<i class="fi fi-rr-trophy"></i>'; }
-                else if(rank === 2) { medalClass = 'bg-slate-200 text-slate-900'; }
-                else if(rank === 3) { medalClass = 'bg-amber-100 text-amber-700'; }
+                if (rank === 1) { medalClass = 'bg-brand-secondary text-brand-dark'; medalIcon = '<i class="fi fi-rr-trophy"></i>'; }
+                else if (rank === 2) { medalClass = 'bg-slate-200 text-slate-900'; }
+                else if (rank === 3) { medalClass = 'bg-amber-100 text-amber-700'; }
 
                 return `
                 <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex items-center justify-between leaderboard-card hover:shadow-md transition-shadow">
@@ -643,8 +816,8 @@
             container.innerHTML = list.map(dl => {
                 let iconClass = 'bg-blue-50 text-blue-500';
                 let icon = 'fi-rr-document';
-                if(dl.category === 'schedule') { iconClass = 'bg-amber-50 text-amber-500'; icon = 'fi-rr-calendar'; }
-                else if(dl.category === 'rules') { iconClass = 'bg-rose-50 text-rose-500'; icon = 'fi-rr-shield-check'; }
+                if (dl.category === 'schedule') { iconClass = 'bg-amber-50 text-amber-500'; icon = 'fi-rr-calendar'; }
+                else if (dl.category === 'rules') { iconClass = 'bg-rose-50 text-rose-500'; icon = 'fi-rr-shield-check'; }
 
                 return `
                 <div class="p-8 rounded-2xl bg-white border border-slate-100 group hover:border-brand-primary/30 transition-all flex flex-col h-full">
@@ -684,29 +857,224 @@
         function initPublicAlerts() {
             db.collection('alerts')
                 .where('target', '==', 'public')
-                .orderBy('createdAt', 'desc')
                 .onSnapshot(snap => {
-                    if (snap.empty) return; // keep program-result ticker if no alerts
+                    const container = document.getElementById('alerts-container');
+                    if (!container) return;
+
+                    if (snap.empty) {
+                        container.classList.add('hidden');
+                        return;
+                    }
+                    container.classList.remove('hidden');
 
                     const alerts = snap.docs.map(d => d.data());
-                    const ticker = document.getElementById('notification-ticker');
+                    // Sort client-side
+                    alerts.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
 
-                    ticker.innerHTML = alerts.map(a => `
-                        <span class="flex items-center gap-2 text-sm font-bold text-slate-700 whitespace-nowrap">
-                            <span class="w-2 h-2 rounded-full bg-brand-accent animate-pulse shrink-0"></span>
-                            ${a.title}: ${a.description}
-                        </span>
-                        <span class="text-slate-300 shrink-0">|</span>
-                    `).join('');
-
-                    ticker.style.animation = `scrollLeft ${Math.max(18, alerts.length * 6)}s linear infinite`;
+                    container.innerHTML = alerts.map(a => {
+                        const safeTitle = a.title.replace(/'/g, "\\'");
+                        const safeDesc = a.description.replace(/'/g, "\\'");
+                        
+                        return `
+                        <div onclick="openAlertModal('${safeTitle}', '${safeDesc}')" class="flex-1 min-w-[300px] bg-white border border-slate-100 rounded-[2rem] p-5 flex items-start gap-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all group cursor-pointer">
+                            <div class="w-12 h-12 bg-brand-primary/5 text-brand-primary rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                                <i class="fi fi-rr-bell text-xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between mb-1">
+                                    <h4 class="text-[15px] font-black text-slate-800 tracking-tight">${a.title}</h4>
+                                    <span class="text-[9px] font-bold text-slate-300 uppercase tracking-widest">Just Now</span>
+                                </div>
+                                <p class="text-[13px] font-medium text-slate-500 leading-relaxed">${a.description}</p>
+                            </div>
+                        </div>`;
+                    }).join('');
                 });
+        }
+
+        function openAlertModal(title, desc) {
+            document.getElementById('modal-alert-title').innerText = title;
+            document.getElementById('modal-alert-desc').innerText = desc;
+            document.getElementById('alert-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAlertModal() {
+            document.getElementById('alert-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
         }
 
         // Initialize
         initDataSync();
         initPublicAlerts();
+        initWebsiteConfig();
+        incrementPageView();
+
+        // ════════════════════════════════════════════════════════════
+        // 4. WEBSITE CONFIG & VISIBILITY
+        // ════════════════════════════════════════════════════════════
+        let heroSliderInterval;
+        let currentSlideIdx = 0;
+
+        function incrementPageView() {
+            // Use a simple session-based or local-storage based check to avoid spamming
+            if (!sessionStorage.getItem('fest_view_counted')) {
+                db.collection('config').doc('website').update({
+                    views: firebase.firestore.FieldValue.increment(1)
+                }).then(() => {
+                    sessionStorage.setItem('fest_view_counted', 'true');
+                }).catch(e => console.warn("View count error:", e));
+            }
+        }
+
+        function initWebsiteConfig() {
+            db.collection('config').doc('website').onSnapshot(doc => {
+                if (doc.exists) {
+                    const config = doc.data();
+                    handleWebsiteStatus(config.isWebsiteOn);
+                    handlePageVisibility(config.visiblePages || []);
+                    handleHeroSlides(config.heroSlides || []);
+                    handleCountdown(config.countdownEnd);
+                }
+            });
+        }
+
+        function handleWebsiteStatus(isOn) {
+            let overlay = document.getElementById('maintenance-overlay');
+            if (!isOn) {
+                if (!overlay) {
+                    overlay = document.createElement('div');
+                    overlay.id = 'maintenance-overlay';
+                    overlay.className = 'fixed inset-0 bg-white z-[1000] flex flex-col items-center justify-center p-8 text-center';
+                    overlay.innerHTML = `
+                        <div class="w-32 h-32 bg-slate-50 rounded-[3rem] flex items-center justify-center mb-8 border border-slate-100">
+                            <img src="../logo-512.svg" class="w-16 h-16 grayscale opacity-30">
+                        </div>
+                        <h1 class="text-4xl font-black text-slate-900 mb-4 tracking-tight">Under Maintenance</h1>
+                        <p class="text-slate-500 max-w-md font-medium leading-relaxed">We're currently updating the festival portal. Please check back later for the latest scores and moments.</p>
+                        <div class="mt-12 flex gap-4">
+                            <div class="w-2 h-2 rounded-full bg-brand-primary animate-bounce"></div>
+                            <div class="w-2 h-2 rounded-full bg-brand-primary animate-bounce [animation-delay:-0.15s]"></div>
+                            <div class="w-2 h-2 rounded-full bg-brand-primary animate-bounce [animation-delay:-0.3s]"></div>
+                        </div>
+                    `;
+                    document.body.appendChild(overlay);
+                }
+                document.body.style.overflow = 'hidden';
+            } else {
+                if (overlay) overlay.remove();
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function handlePageVisibility(visiblePages) {
+            const pages = {
+                'home': { sec: ['home', 'stats-section'], nav: 'nav-home', mob: 'mob-home' },
+                'standings': { sec: ['results'], nav: 'nav-standings', mob: 'mob-standings' },
+                'downloads': { sec: ['downloads'], nav: 'nav-downloads', mob: 'mob-downloads' },
+                'moments': { sec: ['gallery'], nav: 'nav-moments', mob: 'mob-moments' },
+                'contact': { sec: ['contact'], nav: 'nav-contact', mob: 'mob-contact' }
+            };
+
+            Object.keys(pages).forEach(key => {
+                const isVisible = visiblePages.includes(key);
+                const config = pages[key];
+                
+                const sections = Array.isArray(config.sec) ? config.sec : [config.sec];
+                sections.forEach(sId => {
+                    const sec = document.getElementById(sId);
+                    if (sec) sec.classList.toggle('hidden', !isVisible);
+                });
+                
+                const nav = document.getElementById(config.nav);
+                if (nav) nav.classList.toggle('hidden', !isVisible);
+                
+                const mob = document.getElementById(config.mob);
+                if (mob) mob.classList.toggle('hidden', !isVisible);
+            });
+
+            // Handle Nav Separator
+            const navSep = document.getElementById('nav-sep');
+            if (navSep) navSep.classList.toggle('hidden', !visiblePages.includes('contact'));
+        }
+
+        function handleHeroSlides(slides) {
+            const img = document.getElementById('hero-img');
+            const dots = document.getElementById('slider-dots');
+            if (!img) return;
+
+            clearInterval(heroSliderInterval);
+            if (slides.length === 0) {
+                img.src = "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop";
+                if (dots) dots.classList.add('hidden');
+                return;
+            }
+
+            if (slides.length === 1) {
+                img.src = slides[0];
+                if (dots) dots.classList.add('hidden');
+                return;
+            }
+
+            // Multiple slides: Slider mode
+            if (dots) {
+                dots.classList.remove('hidden');
+                dots.innerHTML = slides.map((_, i) => `<div class="w-2 h-2 rounded-full bg-white/40 transition-all ${i === 0 ? 'bg-white scale-125' : ''}"></div>`).join('');
+            }
+
+            currentSlideIdx = 0;
+            img.src = slides[0];
+
+            heroSliderInterval = setInterval(() => {
+                currentSlideIdx = (currentSlideIdx + 1) % slides.length;
+                img.style.opacity = '0';
+                setTimeout(() => {
+                    img.src = slides[currentSlideIdx];
+                    img.style.opacity = '1';
+                    if (dots) {
+                        Array.from(dots.children).forEach((dot, i) => {
+                            dot.className = `w-2 h-2 rounded-full transition-all ${i === currentSlideIdx ? 'bg-white scale-125' : 'bg-white/40'}`;
+                        });
+                    }
+                }, 500);
+            }, 5000);
+        }
+
+        function handleCountdown(endDate) {
+            const display = document.getElementById('countdown-display');
+            if (!display) return;
+
+            if (window.countdownInterval) clearInterval(window.countdownInterval);
+
+            if (!endDate) {
+                display.innerText = '00:00:00:00';
+                return;
+            }
+
+            const update = () => {
+                const end = new Date(endDate).getTime();
+                const now = new Date().getTime();
+                const diff = end - now;
+
+                if (diff < 0) {
+                    display.innerText = 'CONCLUDED';
+                    clearInterval(window.countdownInterval);
+                    return;
+                }
+
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+                display.innerText = `${d.toString().padStart(2, '0')}:${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            };
+
+            update();
+            window.countdownInterval = setInterval(update, 1000);
+        }
 
     </script>
 </body>
+
 </html>
