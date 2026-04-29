@@ -39,6 +39,13 @@
         .gallery-card { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; }
         .image-overlay { opacity: 0; transition: opacity 0.2s ease; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; }
         .gallery-card:hover .image-overlay { opacity: 1; }
+        
+        @media (max-width: 640px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.5rem !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-white text-slate-900 font-sans min-h-screen flex flex-col">
@@ -74,8 +81,8 @@
     </header>
 
     <main class="flex-1 py-12 sm:py-16">
-        <div class="max-w-7xl mx-auto px-6 sm:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8 lg:gap-10" id="gallery-container">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-8 lg:gap-10 gallery-grid" id="gallery-container">
                 <!-- Skeletons -->
                 <div class="aspect-square rounded-2xl bg-slate-200 animate-pulse"></div>
                 <div class="aspect-square rounded-2xl bg-slate-200 animate-pulse"></div>
@@ -136,10 +143,10 @@
             }
 
             container.innerHTML = docs.map(doc => `
-                <div class="group relative aspect-square rounded-2xl overflow-hidden bg-slate-100 gallery-card cursor-pointer" onclick="openLightbox('${doc.url}')">
+                <div class="group relative aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-slate-100 gallery-card cursor-pointer" onclick="openLightbox('${doc.url}')">
                     <img src="${doc.url}" class="w-full h-full object-cover">
                     <div class="absolute inset-0 image-overlay flex items-center justify-center p-6">
-                        <span class="text-white text-[10px] font-bold uppercase tracking-widest border border-white/40 px-4 py-2 rounded-full backdrop-blur-md">View Full</span>
+                        <span class="text-white text-[8px] sm:text-[10px] font-bold uppercase tracking-widest border border-white/40 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full backdrop-blur-md">View Full</span>
                     </div>
                 </div>
             `).join('');

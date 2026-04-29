@@ -108,6 +108,51 @@
         .animate-reveal {
             animation: reveal 0.4s ease-out forwards;
         }
+
+        /* Mobile Table to Cards */
+        @media (max-width: 768px) {
+            .responsive-table thead {
+                display: none;
+            }
+            .responsive-table, .responsive-table tbody, .responsive-table tr, .responsive-table td {
+                display: block;
+                width: 100%;
+            }
+            .responsive-table tr {
+                margin-bottom: 1rem;
+                border: 1px solid #e2e8f0;
+                border-radius: 1rem;
+                padding: 1rem;
+                background: white;
+            }
+            .responsive-table td {
+                text-align: right;
+                padding: 0.5rem 0;
+                border-bottom: 1px solid #f1f5f9;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .responsive-table td:last-child {
+                border-bottom: none;
+            }
+            .responsive-table td::before {
+                content: attr(data-label);
+                font-weight: 800;
+                text-transform: uppercase;
+                font-size: 0.7rem;
+                color: #94a3b8;
+                letter-spacing: 0.05em;
+            }
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 
@@ -155,15 +200,15 @@
                     </div>
                 </div>
 
-                <div class="flex items-center justify-center bg-slate-100 p-1 rounded-xl">
+                <div class="flex items-center bg-slate-100 p-1 rounded-xl overflow-x-auto no-scrollbar max-w-full">
                     <button onclick="switchTab('team')" id="tab-team"
-                        class="px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-white text-brand-primary shadow-sm">Team</button>
+                        class="px-5 py-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all bg-white text-brand-primary shadow-sm whitespace-nowrap">Team</button>
                     <button onclick="switchTab('program')" id="tab-program"
-                        class="px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-slate-700 font-medium hover:text-slate-700">Program</button>
+                        class="px-5 py-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all text-slate-700 font-medium hover:text-slate-700 whitespace-nowrap">Program</button>
                     <button onclick="switchTab('candidate')" id="tab-candidate"
-                        class="px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-slate-700 font-medium hover:text-slate-700">Candidates</button>
+                        class="px-5 py-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all text-slate-700 font-medium hover:text-slate-700 whitespace-nowrap">Candidates</button>
                     <button onclick="switchTab('search')" id="tab-search"
-                        class="px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-slate-700 font-medium hover:text-slate-700">Search</button>
+                        class="px-5 py-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all text-slate-700 font-medium hover:text-slate-700 whitespace-nowrap">Search</button>
                 </div>
             </div>
         </div>
@@ -197,9 +242,9 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+                <div class="bg-transparent sm:bg-white rounded-xl sm:border border-slate-200 overflow-hidden">
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left">
+                        <table class="w-full text-left responsive-table">
                             <thead>
                                 <tr class="bg-white/50 border-b border-slate-200">
                                     <th
@@ -266,9 +311,9 @@
                             class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
                     </div>
                 </div>
-                <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+                <div class="bg-transparent sm:bg-white rounded-xl sm:border border-slate-200 overflow-hidden">
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left">
+                        <table class="w-full text-left responsive-table">
                             <thead>
                                 <tr class="bg-white/50 border-b border-slate-200">
                                     <th
@@ -602,20 +647,20 @@
                 const initials = team.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
                 return `
                 <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
-                    <td class="px-8 py-6"><span class="font-black ${rank <= 3 ? 'text-brand-primary' : 'text-slate-300'}">#${rank.toString().padStart(2, '0')}</span></td>
-                    <td class="px-8 py-6">
+                    <td class="px-8 py-6" data-label="Rank"><span class="font-black ${rank <= 3 ? 'text-brand-primary' : 'text-slate-300'}">#${rank.toString().padStart(2, '0')}</span></td>
+                    <td class="px-8 py-6" data-label="Team">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10 rounded-2xl border border-slate-100 flex items-center justify-center font-bold text-xs text-white shrink-0 shadow-sm" style="background: ${team.color}">${initials}</div>
                             <span class="font-bold text-slate-800 tracking-tight">${team.name}</span>
                         </div>
                     </td>
-                    <td class="px-8 py-6 text-center text-sm font-bold text-slate-700">${team.progs.size}</td>
-                    <td class="px-8 py-6">
-                        <div class="flex flex-wrap justify-center gap-1.5">
+                    <td class="px-8 py-6 text-center text-sm font-bold text-slate-700" data-label="Participation">${team.progs.size}</td>
+                    <td class="px-8 py-6" data-label="Section Pts">
+                        <div class="flex flex-wrap justify-end sm:justify-center gap-1.5">
                             ${Object.keys(team.sectionPts).map(s => `<span class="px-2 py-0.5 bg-brand-primary/5 rounded-md text-[9px] font-black text-brand-primary uppercase tracking-tighter">${s}</span>`).join('') || '--'}
                         </div>
                     </td>
-                    <td class="px-8 py-6 text-right font-black text-brand-primary text-lg">${team.total.toFixed(1)}</td>
+                    <td class="px-8 py-6 text-right font-black text-brand-primary text-lg" data-label="Total Points">${team.total.toFixed(1)}</td>
                 </tr>`;
             }).join('');
         }
@@ -643,7 +688,7 @@
             }
 
             container.innerHTML = publishedPrograms.map(p => {
-                const winners = _data.results.filter(r => r.programId === p.id).sort((a, b) => (parseInt(a.position) || 99) - (parseInt(b.position) || 99));
+                const winners = _data.results.filter(r => r.programId === p.id).sort((a, b) => (parseInt(a.positionLabel) || 99) - (parseInt(b.positionLabel) || 99));
                 return `
                 <div class="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-xl hover:shadow-slate-200/40 transition-all group">
                     <div class="flex justify-between items-start gap-3 mb-6">
@@ -655,26 +700,34 @@
                     </div>
                     <div class="space-y-3">
                         ${winners.map((w, idx) => {
-                            const pos = parseInt(w.position);
-                            const grade = w.grade || '';
+                            const pos = parseInt(w.positionLabel);
+                            const grade = w.gradeLabel || '';
                             const posSuffix = pos === 1 ? 'st' : (pos === 2 ? 'nd' : (pos === 3 ? 'rd' : 'th'));
                             const posDisplay = pos ? `${pos}${posSuffix}` : '';
-                            const combinedStatus = [posDisplay, grade].filter(Boolean).join(' ');
                             
                             return `
                             <div class="flex items-center justify-between text-xs p-3 rounded-xl border ${pos === 1 ? 'bg-brand-primary/5 border-brand-primary/10' : 'bg-slate-50 border-transparent'}">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 flex items-center justify-center font-black ${pos === 1 ? 'text-brand-primary bg-white rounded-lg shadow-sm border border-brand-primary/10' : 'text-slate-400 bg-white/50 rounded-lg border border-slate-100'}">
-                                        ${combinedStatus || '--'}
+                                    <!-- Chest No & Grade (Orange marked area) -->
+                                    <div class="flex flex-col items-center justify-center w-12 h-12 rounded-lg border bg-white shadow-sm border-slate-200">
+                                        <span class="text-[7px] font-black text-slate-400 uppercase tracking-tighter mb-0.5 leading-none">Chest</span>
+                                        <span class="font-black text-slate-900 leading-none text-sm">${w.chestNo || '--'}</span>
                                     </div>
                                     <div>
                                         <p class="font-black text-slate-800 leading-none">${w.candidateName || w.name || 'Unknown'}</p>
                                         <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-1">${w.teamName || w.team || '--'}</p>
                                     </div>
                                 </div>
-                                <div class="text-right">
-                                    <span class="font-black text-brand-primary text-sm block leading-none">${w.totalPoints || w.points || 0}</span>
-                                    <span class="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">Pts</span>
+                                <div class="flex items-center gap-3">
+                                    <!-- Position (Green marked area) -->
+                                    <div class="text-right flex flex-col items-end">
+                                        <span class="font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} text-xs block leading-none">${posDisplay || '--'}</span>
+                                        ${grade ? `<span class="text-[8px] font-black text-brand-secondary mt-1 leading-none uppercase tracking-tighter">${grade} Grade</span>` : `<span class="text-[7px] font-bold text-slate-400 uppercase tracking-tighter">Rank</span>`}
+                                    </div>
+                                    <div class="text-right border-l border-slate-100 pl-3">
+                                        <span class="font-black text-brand-primary text-sm block leading-none">${w.totalPoints || w.points || 0}</span>
+                                        <span class="text-[7px] font-bold text-slate-400 uppercase tracking-tighter">Pts</span>
+                                    </div>
                                 </div>
                             </div>
                         `}).join('') || '<div class="py-4 text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest">No winners recorded</div>'}
@@ -757,14 +810,14 @@
 
                 return `
                 <tr onclick="viewStudentProfile('${c.chestNo}')" class="border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer group">
-                    <td class="px-8 py-5"><span class="font-black ${idx < 3 ? 'text-brand-primary' : 'text-slate-300'}">#${(idx + 1).toString().padStart(2, '0')}</span></td>
-                    <td class="px-8 py-5"><span class="font-black text-slate-500">${c.chestNo}</span></td>
-                    <td class="px-8 py-5"><span class="font-black text-slate-800 tracking-tight group-hover:text-brand-primary transition-colors">${c.name}</span></td>
-                    <td class="px-8 py-5"><span class="text-xs font-black text-slate-600 uppercase tracking-widest">${c.team}</span></td>
-                    <td class="px-8 py-5"><span class="px-2 py-1 bg-slate-100 rounded-md text-[10px] font-bold text-slate-600 uppercase tracking-widest">${sectionsDisplay}</span></td>
-                    <td class="px-8 py-5 text-center"><span class="px-2 py-1 bg-slate-100 rounded-lg text-xs font-bold text-slate-700">${c.progs}</span></td>
-                    <td class="px-8 py-5 text-center"><span class="text-xs font-bold text-slate-500">${percentage}%</span></td>
-                    <td class="px-8 py-5 text-right font-black text-brand-primary text-lg">${c.points.toFixed(1)}</td>
+                    <td class="px-8 py-5" data-label="Rank"><span class="font-black ${idx < 3 ? 'text-brand-primary' : 'text-slate-300'}">#${(idx + 1).toString().padStart(2, '0')}</span></td>
+                    <td class="px-8 py-5" data-label="Chest No"><span class="font-black text-slate-500">${c.chestNo}</span></td>
+                    <td class="px-8 py-5" data-label="Candidate"><span class="font-black text-slate-800 tracking-tight group-hover:text-brand-primary transition-colors">${c.name}</span></td>
+                    <td class="px-8 py-5" data-label="Team"><span class="text-xs font-black text-slate-600 uppercase tracking-widest">${c.team}</span></td>
+                    <td class="px-8 py-5" data-label="Section"><span class="px-2 py-1 bg-slate-100 rounded-md text-[10px] font-bold text-slate-600 uppercase tracking-widest">${sectionsDisplay}</span></td>
+                    <td class="px-8 py-5 text-center" data-label="Programs"><span class="px-2 py-1 bg-slate-100 rounded-lg text-xs font-bold text-slate-700">${c.progs}</span></td>
+                    <td class="px-8 py-5 text-center" data-label="Percentage"><span class="text-xs font-bold text-slate-500">${percentage}%</span></td>
+                    <td class="px-8 py-5 text-right font-black text-brand-primary text-lg" data-label="Total Points">${c.points.toFixed(1)}</td>
                 </tr>
             `}).join('');
         }
@@ -873,26 +926,38 @@
                         <div class="space-y-3">
                             ${candResults.map(r => {
                 const p = programMap[r.programId] || { name: 'Unknown', section: 'Gen' };
-                const position = parseInt(r.position);
+                const pos = parseInt(r.positionLabel);
+                const grade = r.gradeLabel || '';
+                const posSuffix = pos === 1 ? 'st' : (pos === 2 ? 'nd' : (pos === 3 ? 'rd' : 'th'));
+                const posDisplay = pos ? `${pos}${posSuffix}` : '';
+
                 let posColor = 'bg-slate-100 text-slate-400';
-                if (position === 1) posColor = 'bg-amber-100 text-amber-600 border border-amber-200';
-                else if (position === 2) posColor = 'bg-slate-100 text-slate-600 border border-slate-200';
-                else if (position === 3) posColor = 'bg-orange-50 text-orange-600 border border-orange-100';
+                if (pos === 1) posColor = 'bg-amber-100 text-amber-600 border border-amber-200';
+                else if (pos === 2) posColor = 'bg-slate-100 text-slate-600 border border-slate-200';
+                else if (pos === 3) posColor = 'bg-orange-50 text-orange-600 border border-orange-100';
 
                 return `
                                 <div class="flex items-center justify-between p-5 bg-white rounded-2xl border border-slate-100 hover:border-brand-primary/20 transition-all">
                                     <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 ${posColor} rounded-xl flex items-center justify-center font-black text-xs">
-                                            ${r.position ? `#${r.position}` : '-'}
+                                        <!-- Chest No Box -->
+                                        <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-xl flex flex-col items-center justify-center">
+                                            <span class="text-[7px] font-black text-slate-400 uppercase tracking-tighter mb-0.5 leading-none">No.</span>
+                                            <span class="font-black text-slate-900 leading-none text-sm">${r.chestNo || '--'}</span>
                                         </div>
                                         <div>
                                             <p class="font-black text-slate-800 tracking-tight">${p.name}</p>
                                             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${p.section || ''}</p>
                                         </div>
                                     </div>
-                                    <div class="text-right">
-                                        <p class="text-lg font-black text-brand-primary">${r.totalPoints || r.points}</p>
-                                        <p class="text-[9px] text-slate-400 font-bold uppercase">Points</p>
+                                    <div class="flex items-center gap-4">
+                                        <div class="text-right flex flex-col items-end">
+                                            <span class="font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} text-sm block leading-none">${posDisplay || '--'}</span>
+                                            ${grade ? `<span class="text-[9px] font-black text-brand-secondary mt-1 leading-none uppercase tracking-tighter">${grade} Grade</span>` : `<span class="text-[7px] font-bold text-slate-400 uppercase tracking-tighter">Rank</span>`}
+                                        </div>
+                                        <div class="text-right border-l border-slate-100 pl-4">
+                                            <p class="text-lg font-black text-brand-primary">${r.totalPoints || r.points}</p>
+                                            <p class="text-[9px] text-slate-400 font-bold uppercase">Points</p>
+                                        </div>
                                     </div>
                                 </div>`;
             }).join('') || `

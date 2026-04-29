@@ -151,6 +151,13 @@
         .heading-tight {
             letter-spacing: -0.02em;
         }
+
+        @media (max-width: 640px) {
+            .hero-title {
+                font-size: 3rem !important;
+                line-height: 1.1 !important;
+            }
+        }
     </style>
 </head>
 
@@ -232,7 +239,7 @@
                     <span class="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] sm:tracking-[0.25em] text-slate-500">Live Updates — 2026</span>
                 </div>
 
-                <h1 class="text-[clamp(42px,10vw,88px)] font-black leading-[0.95] heading-tight text-slate-900">
+                <h1 class="text-[clamp(42px,10vw,88px)] font-black leading-[0.95] heading-tight text-slate-900 hero-title">
                     Artistry in <span class="text-brand-primary">Motion</span>,<br>
                     Excellence in <span class="text-brand-secondary">Spirit.</span>
                 </h1>
@@ -772,24 +779,24 @@
                 else if (rank === 3) { medalClass = 'bg-amber-100 text-amber-700'; }
 
                 return `
-                <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex items-center justify-between leaderboard-card hover:shadow-md transition-shadow">
-                    <div class="flex items-center gap-6">
-                        <div class="w-12 h-12 rounded-xl ${medalClass} flex items-center justify-center font-bold text-lg">
+                <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between leaderboard-card hover:shadow-md transition-shadow gap-4">
+                    <div class="flex items-center gap-4 sm:gap-6 w-full sm:w-auto">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl ${medalClass} flex items-center justify-center font-bold text-base sm:text-lg shrink-0">
                             ${medalIcon}
                         </div>
-                        <div class="flex items-center gap-5">
-                            <div class="w-12 h-12 rounded-full border border-slate-100 flex items-center justify-center font-black text-sm" style="background: ${team.color}15; color: ${team.color}">
+                        <div class="flex items-center gap-3 sm:gap-5">
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-slate-100 flex items-center justify-center font-black text-xs sm:text-sm shrink-0" style="background: ${team.color}15; color: ${team.color}">
                                 ${initials}
                             </div>
                             <div>
-                                <h4 class="text-2xl font-black tracking-tight text-slate-900">${team.name}</h4>
-                                <p class="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-1">Overall Rank #${rank}</p>
+                                <h4 class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 truncate max-w-[150px] sm:max-w-none">${team.name}</h4>
+                                <p class="text-[9px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-1">Overall Rank #${rank}</p>
                             </div>
                         </div>
                     </div>
-                    <div class="text-right">
-                        <p class="text-3xl font-black text-brand-secondary">${team.pts.toFixed(1)}</p>
-                        <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Points</p>
+                    <div class="text-left sm:text-right w-full sm:w-auto border-t sm:border-t-0 border-slate-50 pt-3 sm:pt-0 flex sm:flex-col justify-between items-center sm:items-end">
+                        <p class="text-2xl sm:text-3xl font-black text-brand-secondary">${team.pts.toFixed(1)}</p>
+                        <p class="text-[9px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-widest">Points</p>
                     </div>
                 </div>`;
             }).join('');
