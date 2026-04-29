@@ -229,16 +229,27 @@
                 </div>
             </div>
 
-            <!-- Program View -->
+            <!-- Program View (Cards Layout) -->
             <div id="view-program" class="tab-view hidden">
-                <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center">
-                    <div class="relative w-full sm:w-80">
-                        <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="search-program" placeholder="Search program name..."
-                            class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
+                <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center justify-between">
+                    <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+                        <div class="relative w-full sm:w-80">
+                            <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="text" id="search-program" placeholder="Search program name..."
+                                class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
+                        </div>
+                        <div class="relative w-full sm:w-auto min-w-[160px]">
+                            <select id="program-section-filter"
+                                class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-bold text-sm text-slate-600 appearance-none cursor-pointer">
+                                <option value="all">All Sections</option>
+                            </select>
+                            <i
+                                class="fi fi-rr-angle-small-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest">
-                        <span class="w-2 h-2 bg-brand-primary rounded-full"></span> Only Published results shown
+                    <div
+                        class="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        <span class="w-2 h-2 bg-brand-primary rounded-full animate-pulse"></span> Only Published results
                     </div>
                 </div>
                 <div id="program-results-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -251,7 +262,7 @@
                 <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center">
                     <div class="relative w-full sm:w-80">
                         <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="search-candidate" placeholder="Search candidate name..."
+                        <input type="text" id="search-candidate" placeholder="Search candidate name or chest no..."
                             class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
                     </div>
                 </div>
@@ -265,13 +276,22 @@
                                         Rank</th>
                                     <th
                                         class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                        Chest No</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
                                         Candidate</th>
                                     <th
                                         class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
                                         Team</th>
                                     <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                        Section</th>
+                                    <th
                                         class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">
                                         Programs</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">
+                                        Percentage</th>
                                     <th
                                         class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">
                                         Total Points</th>
@@ -287,20 +307,51 @@
 
             <!-- Search Chest No View -->
             <div id="view-search" class="tab-view hidden">
-                <div class="max-w-2xl mx-auto text-center space-y-8 py-12">
-                    <div class="space-y-4">
-                        <h2 class="text-2xl font-bold text-slate-800">Student Profile Search</h2>
-                        <p class="text-slate-700 font-medium">Enter a chest number to view all participating programs
-                            and total points earned.</p>
+                <div class="max-w-4xl mx-auto space-y-12 py-12">
+                    <div class="text-center space-y-4">
+                        <h2 class="text-3xl font-black text-slate-900 tracking-tight">Creative Profile Search</h2>
+                        <p class="text-slate-500 font-medium max-w-lg mx-auto">Search by <span
+                                class="text-brand-primary font-bold">Chest Number</span> or <span
+                                class="text-brand-primary font-bold">Student Name</span> to view complete performance
+                            insights.</p>
                     </div>
-                    <div class="relative max-w-md mx-auto">
-                        <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="search-chest" oninput="searchByChestNo()"
-                            placeholder="Enter Chest Number (e.g. 101)"
-                            class="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary text-center text-xl font-bold tracking-widest">
+
+                    <div class="relative max-w-2xl mx-auto group">
+                        <div
+                            class="absolute -inset-1 bg-gradient-to-r from-brand-primary/20 to-brand-secondary/20 rounded-2xl blur opacity-25 group-focus-within:opacity-100 transition duration-1000">
+                        </div>
+                        <div
+                            class="relative flex items-center bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm focus-within:border-brand-primary focus-within:ring-4 focus-within:ring-brand-primary/5 transition-all">
+                            <div class="pl-6 text-slate-400">
+                                <i class="fi fi-rr-search text-xl"></i>
+                            </div>
+                            <input type="text" id="search-chest" oninput="searchCreative()"
+                                placeholder="Enter chest no. or student name..."
+                                class="w-full px-4 py-6 bg-transparent focus:outline-none text-xl font-bold placeholder:text-slate-300">
+                            <div id="search-loading" class="pr-6 hidden">
+                                <div
+                                    class="w-5 h-5 border-2 border-slate-200 border-t-brand-primary rounded-full animate-spin">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Suggestions Dropdown -->
+                        <div id="search-suggestions"
+                            class="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-2xl shadow-xl z-10 hidden overflow-hidden">
+                            <!-- Suggestions injected here -->
+                        </div>
                     </div>
-                    <div id="chest-result-area" class="text-left">
+
+                    <div id="chest-result-area" class="animate-reveal">
                         <!-- Result Card -->
+                        <div class="py-20 text-center space-y-6">
+                            <div
+                                class="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center mx-auto text-slate-200">
+                                <i class="fi fi-rr-search-heart text-4xl"></i>
+                            </div>
+                            <p class="text-slate-400 font-bold uppercase tracking-widest text-xs">Ready to discover
+                                greatness</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -357,11 +408,11 @@
 
             document.querySelectorAll('header button').forEach(b => {
                 b.classList.remove('bg-white', 'text-brand-primary', 'shadow-sm');
-                b.classList.add('text-slate-700 font-medium');
+                b.classList.add('text-slate-700', 'font-medium');
             });
             const activeTab = document.getElementById('tab-' + tabId);
             activeTab.classList.add('bg-white', 'text-brand-primary', 'shadow-sm');
-            activeTab.classList.remove('text-slate-700 font-medium');
+            activeTab.classList.remove('text-slate-700', 'font-medium');
 
             render();
         }
@@ -389,12 +440,19 @@
             // Sections for filter
             db.collection('sections').where('isActive', '==', true).onSnapshot(snap => {
                 _data.sections = snap.docs.map(d => d.data().name);
-                const select = document.getElementById('section-filter');
+                const teamSelect = document.getElementById('section-filter');
+                const progSelect = document.getElementById('program-section-filter');
+
+                // Clear existing options (except "All")
+                while (teamSelect.options.length > 1) teamSelect.remove(1);
+                if (progSelect) while (progSelect.options.length > 1) progSelect.remove(1);
+
                 _data.sections.forEach(s => {
                     const opt = document.createElement('option');
                     opt.value = s;
                     opt.innerText = s;
-                    select.appendChild(opt);
+                    teamSelect.appendChild(opt.cloneNode(true));
+                    if (progSelect) progSelect.appendChild(opt);
                 });
                 _isLoaded.sections = true;
                 render();
@@ -435,17 +493,54 @@
         function render() {
             if (!Object.values(_isLoaded).every(v => v)) return;
 
+            updateGlobalStats();
+
             const activeTab = document.querySelector('header button.bg-white').id.replace('tab-', '');
 
-            if (activeTab === 'team') renderTeamTable();
-            else if (activeTab === 'program') renderProgramGrid();
-            else if (activeTab === 'candidate') renderCandidateTable();
-            else if (activeTab === 'search') searchByChestNo();
+            try {
+                if (activeTab === 'team') renderTeamTable();
+                else if (activeTab === 'program') renderProgramGrid();
+                else if (activeTab === 'candidate') renderCandidateTable();
+            } catch (err) {
+                console.error("Render error in " + activeTab + ":", err);
+            }
+        }
+
+        function updateGlobalStats() {
+            const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
+            
+            const teamStats = {};
+            _data.teams.forEach(t => teamStats[t.name] = 0);
+
+            _data.results.forEach(res => {
+                if (!publishedProgIds.has(res.programId)) return;
+                const teamName = res.team || res.teamName;
+                if (teamName && teamStats[teamName] !== undefined) {
+                    teamStats[teamName] += parseFloat(res.totalPoints || res.points || 0);
+                }
+            });
+
+            _data.negMarks.forEach(neg => {
+                const penalty = parseFloat(neg.marks || 0);
+                const teams = Array.isArray(neg.teams) ? neg.teams : [neg.teams].filter(Boolean);
+                teams.forEach(tName => {
+                    if (teamStats[tName] !== undefined) teamStats[tName] = Math.max(0, teamStats[tName] - penalty);
+                });
+            });
+
+            let totalFestPts = 0;
+            Object.values(teamStats).forEach(pts => totalFestPts += pts);
+
+            if (document.getElementById('total-pts')) document.getElementById('total-pts').innerText = totalFestPts.toFixed(0);
+            if (document.getElementById('total-progs')) document.getElementById('total-progs').innerText = publishedProgIds.size;
+            if (document.getElementById('last-updated')) {
+                document.getElementById('last-updated').innerText = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
         }
 
         function renderTeamTable() {
             const sectionFilter = document.getElementById('section-filter').value;
-            const searchQuery = document.getElementById('search-team').value.toLowerCase();
+            const searchQuery = (document.getElementById('search-team').value || '').toLowerCase();
 
             const stats = {};
             _data.teams.forEach(t => {
@@ -473,7 +568,7 @@
                 if (pts <= 0) return;
 
                 const prog = programMap[res.programId];
-                const progSection = prog ? (prog.section || 'Uncategorized') : 'Uncategorized';
+                const progSection = prog ? (prog.section || 'General') : 'General';
 
                 if (sectionFilter !== 'all' && progSection !== sectionFilter) return;
 
@@ -493,188 +588,386 @@
             });
 
             const sorted = Object.values(stats)
-                .filter(t => t.name.toLowerCase().includes(searchQuery))
+                .filter(t => (t.name || '').toLowerCase().includes(searchQuery))
                 .sort((a, b) => b.total - a.total);
 
-            // Update Stats
-            if (document.getElementById('total-pts')) {
-                let totalFestPts = 0;
-                sorted.forEach(t => totalFestPts += t.total);
-                document.getElementById('total-pts').innerText = totalFestPts.toFixed(0);
-                document.getElementById('total-progs').innerText = publishedProgIds.size;
-            }
-            if (document.getElementById('last-updated')) {
-                document.getElementById('last-updated').innerText = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const body = document.getElementById('results-table-body');
+            if (sorted.length === 0) {
+                body.innerHTML = `<tr><td colspan="5" class="px-8 py-20 text-center text-slate-400 font-bold">No teams found matching your criteria.</td></tr>`;
+                return;
             }
 
-            const body = document.getElementById('results-table-body');
             body.innerHTML = sorted.map((team, idx) => {
                 const rank = idx + 1;
                 const initials = team.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
                 return `
-                <tr class="border-b border-slate-50 hover:bg-white/50 transition-colors">
-                    <td class="px-8 py-6"><span class="font-black ${rank <= 3 ? 'text-brand-primary' : 'text-slate-400'}">#${rank}</span></td>
+                <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                    <td class="px-8 py-6"><span class="font-black ${rank <= 3 ? 'text-brand-primary' : 'text-slate-300'}">#${rank.toString().padStart(2, '0')}</span></td>
                     <td class="px-8 py-6">
                         <div class="flex items-center gap-4">
-                            <div class="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center font-bold text-[10px] text-white shrink-0" style="background: ${team.color}">${initials}</div>
-                            <span class="font-bold text-slate-800">${team.name}</span>
+                            <div class="w-10 h-10 rounded-2xl border border-slate-100 flex items-center justify-center font-bold text-xs text-white shrink-0 shadow-sm" style="background: ${team.color}">${initials}</div>
+                            <span class="font-bold text-slate-800 tracking-tight">${team.name}</span>
                         </div>
                     </td>
                     <td class="px-8 py-6 text-center text-sm font-bold text-slate-700">${team.progs.size}</td>
-                    <td class="px-8 py-6 text-center">
-                        <div class="flex flex-wrap justify-center gap-1">
-                            ${Object.keys(team.sectionPts).map(s => `<span class="px-1.5 py-0.5 bg-slate-100 rounded text-[9px] font-bold text-slate-700 font-medium uppercase">${s.substring(0, 3)}</span>`).join('') || '--'}
+                    <td class="px-8 py-6">
+                        <div class="flex flex-wrap justify-center gap-1.5">
+                            ${Object.keys(team.sectionPts).map(s => `<span class="px-2 py-0.5 bg-brand-primary/5 rounded-md text-[9px] font-black text-brand-primary uppercase tracking-tighter">${s}</span>`).join('') || '--'}
                         </div>
                     </td>
-                    <td class="px-8 py-6 text-right font-black text-brand-primary">${team.total.toFixed(1)}</td>
+                    <td class="px-8 py-6 text-right font-black text-brand-primary text-lg">${team.total.toFixed(1)}</td>
                 </tr>`;
             }).join('');
         }
 
         function renderProgramGrid() {
             const searchQuery = document.getElementById('search-program').value.toLowerCase();
-            const publishedPrograms = _data.programs.filter(p => p.resultsPublished && p.name.toLowerCase().includes(searchQuery));
+            const sectionFilter = document.getElementById('program-section-filter').value;
+
+            const publishedPrograms = _data.programs.filter(p => {
+                const matchesSearch = (p.name || '').toLowerCase().includes(searchQuery);
+                const matchesSection = sectionFilter === 'all' || p.section === sectionFilter;
+                return p.resultsPublished && matchesSearch && matchesSection;
+            });
+
             const container = document.getElementById('program-results-grid');
 
             if (publishedPrograms.length === 0) {
-                container.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400 font-bold">No results found for your search.</div>`;
+                container.innerHTML = `<div class="col-span-full py-20 text-center space-y-4">
+                    <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto text-slate-300">
+                        <i class="fi fi-rr-search text-2xl"></i>
+                    </div>
+                    <p class="text-slate-400 font-bold uppercase tracking-widest text-xs">No programs found</p>
+                </div>`;
                 return;
             }
 
             container.innerHTML = publishedPrograms.map(p => {
-                const winners = _data.results.filter(r => r.programId === p.id).sort((a, b) => (b.points || 0) - (a.points || 0));
+                const winners = _data.results.filter(r => r.programId === p.id).sort((a, b) => (parseInt(a.position) || 99) - (parseInt(b.position) || 99));
                 return `
-                <div class="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
-                    <div class="flex justify-between items-start gap-3">
-                        <h4 class="font-bold text-slate-900 leading-tight">${p.name}</h4>
-                        <span class="px-2 py-0.5 bg-slate-100 rounded text-[9px] font-bold text-slate-700 font-medium uppercase">${p.section || 'Gen'}</span>
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-xl hover:shadow-slate-200/40 transition-all group">
+                    <div class="flex justify-between items-start gap-3 mb-6">
+                        <div class="space-y-1">
+                            <h4 class="font-black text-slate-900 leading-tight group-hover:text-brand-primary transition-colors">${p.name || 'Unknown'}</h4>
+                            <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest">${p.category || ''} ${p.type || ''}</p>
+                        </div>
+                        <span class="px-2 py-0.5 bg-slate-100 rounded text-[9px] font-black text-slate-500 uppercase tracking-tighter">${p.section || 'GEN'}</span>
                     </div>
-                    <div class="space-y-2">
-                        ${winners.map((w, idx) => `
-                            <div class="flex items-center justify-between text-xs p-2 rounded ${idx === 0 ? 'bg-amber-50 border border-amber-100' : 'bg-white'}">
-                                <div class="flex items-center gap-2">
-                                    <span class="w-5 h-5 flex items-center justify-center font-bold ${idx === 0 ? 'text-amber-600' : 'text-slate-400'}">${idx + 1}</span>
+                    <div class="space-y-3">
+                        ${winners.map((w, idx) => {
+                            const pos = parseInt(w.position);
+                            const grade = w.grade || '';
+                            const posSuffix = pos === 1 ? 'st' : (pos === 2 ? 'nd' : (pos === 3 ? 'rd' : 'th'));
+                            const posDisplay = pos ? `${pos}${posSuffix}` : '';
+                            const combinedStatus = [posDisplay, grade].filter(Boolean).join(' ');
+                            
+                            return `
+                            <div class="flex items-center justify-between text-xs p-3 rounded-xl border ${pos === 1 ? 'bg-brand-primary/5 border-brand-primary/10' : 'bg-slate-50 border-transparent'}">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 flex items-center justify-center font-black ${pos === 1 ? 'text-brand-primary bg-white rounded-lg shadow-sm border border-brand-primary/10' : 'text-slate-400 bg-white/50 rounded-lg border border-slate-100'}">
+                                        ${combinedStatus || '--'}
+                                    </div>
                                     <div>
-                                        <p class="font-bold text-slate-800">${w.candidateName || w.name || 'Unknown'}</p>
-                                        <p class="text-[10px] text-slate-700 font-medium font-medium">${w.teamName || w.team}</p>
+                                        <p class="font-black text-slate-800 leading-none">${w.candidateName || w.name || 'Unknown'}</p>
+                                        <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-1">${w.teamName || w.team || '--'}</p>
                                     </div>
                                 </div>
-                                <span class="font-black text-brand-primary">${w.totalPoints || w.points}</span>
+                                <div class="text-right">
+                                    <span class="font-black text-brand-primary text-sm block leading-none">${w.totalPoints || w.points || 0}</span>
+                                    <span class="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">Pts</span>
+                                </div>
                             </div>
-                        `).join('') || '<p class="text-[10px] text-slate-400 italic">No winners data found</p>'}
+                        `}).join('') || '<div class="py-4 text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest">No winners recorded</div>'}
                     </div>
                 </div>`;
             }).join('');
         }
 
         function renderCandidateTable() {
-            const searchQuery = document.getElementById('search-candidate').value.toLowerCase();
+            const searchQuery = (document.getElementById('search-candidate').value || '').toLowerCase();
             const candStats = {};
+            const teamTotals = {};
 
             const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
+            const programMap = {};
+            _data.programs.forEach(p => programMap[p.id] = p);
 
             _data.results.forEach(res => {
                 if (!publishedProgIds.has(res.programId)) return;
+
+                const pts = parseFloat(res.totalPoints || res.points || 0);
+                const teamName = res.teamName || res.team || '--';
+
+                // Aggregate Team Totals for percentage calculation
+                if (teamName !== '--') {
+                    teamTotals[teamName] = (teamTotals[teamName] || 0) + pts;
+                }
+
                 const key = res.candidateId || res.chestNo || res.candidateName;
                 if (!key) return;
 
                 if (!candStats[key]) {
                     candStats[key] = {
+                        id: res.candidateId || null,
+                        chestNo: res.chestNo || '--',
                         name: res.candidateName || res.name || 'Unknown',
-                        team: res.teamName || res.team || '--',
+                        team: teamName,
                         points: 0,
-                        progs: 0
+                        progs: 0,
+                        sections: new Set()
                     };
                 }
-                candStats[key].points += parseFloat(res.totalPoints || res.points || 0);
+
+                candStats[key].points += pts;
                 candStats[key].progs++;
+
+                const prog = programMap[res.programId];
+                if (prog && prog.section) {
+                    candStats[key].sections.add(prog.section);
+                }
+            });
+
+            // Optimized candidate lookup
+            const candidateRefMap = {};
+            _data.candidates.forEach(c => {
+                if (c.chestNo) candidateRefMap[c.chestNo] = c;
+                if (c.id) candidateRefMap[c.id] = c;
+            });
+
+            Object.values(candStats).forEach(c => {
+                const dbCand = candidateRefMap[c.chestNo] || candidateRefMap[c.id];
+                if (dbCand && dbCand.category) {
+                    c.sections.add(dbCand.category);
+                }
             });
 
             const sorted = Object.values(candStats)
-                .filter(c => c.name.toLowerCase().includes(searchQuery))
-                .sort((a, b) => b.points - a.points)
-                .slice(0, 50);
+                .filter(c => (c.name || '').toLowerCase().includes(searchQuery) || (c.chestNo || '').toString().toLowerCase().includes(searchQuery))
+                .sort((a, b) => b.points - a.points);
 
             const body = document.getElementById('candidate-table-body');
-            body.innerHTML = sorted.map((c, idx) => `
-                <tr class="border-b border-slate-50 hover:bg-white/50 transition-colors">
-                    <td class="px-8 py-4"><span class="font-bold text-slate-400">#${idx + 1}</span></td>
-                    <td class="px-8 py-4 font-bold text-slate-800">${c.name}</td>
-                    <td class="px-8 py-4 text-sm text-slate-700 font-medium font-bold">${c.team}</td>
-                    <td class="px-8 py-4 text-center text-sm font-bold text-slate-700">${c.progs}</td>
-                    <td class="px-8 py-4 text-right font-black text-brand-primary">${c.points.toFixed(1)}</td>
-                </tr>
-            `).join('');
-        }
-
-        function searchByChestNo() {
-            const query = document.getElementById('search-chest').value.trim();
-            const area = document.getElementById('chest-result-area');
-            if (!query) { area.innerHTML = ''; return; }
-
-            const cand = _data.candidates.find(c => c.chestNo == query);
-            if (!cand) {
-                area.innerHTML = `<div class="p-8 text-center text-slate-400 font-bold border border-dashed border-slate-200 rounded-xl">Chest number not found.</div>`;
+            if (sorted.length === 0) {
+                body.innerHTML = `<tr><td colspan="8" class="px-8 py-20 text-center text-slate-400 font-bold uppercase text-xs tracking-widest">No candidates found</td></tr>`;
                 return;
             }
 
+            body.innerHTML = sorted.map((c, idx) => {
+                const percentage = teamTotals[c.team] ? ((c.points / teamTotals[c.team]) * 100).toFixed(1) : '0.0';
+                const sectionsDisplay = Array.from(c.sections).join(', ') || '--';
+
+                return `
+                <tr onclick="viewStudentProfile('${c.chestNo}')" class="border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer group">
+                    <td class="px-8 py-5"><span class="font-black ${idx < 3 ? 'text-brand-primary' : 'text-slate-300'}">#${(idx + 1).toString().padStart(2, '0')}</span></td>
+                    <td class="px-8 py-5"><span class="font-black text-slate-500">${c.chestNo}</span></td>
+                    <td class="px-8 py-5"><span class="font-black text-slate-800 tracking-tight group-hover:text-brand-primary transition-colors">${c.name}</span></td>
+                    <td class="px-8 py-5"><span class="text-xs font-black text-slate-600 uppercase tracking-widest">${c.team}</span></td>
+                    <td class="px-8 py-5"><span class="px-2 py-1 bg-slate-100 rounded-md text-[10px] font-bold text-slate-600 uppercase tracking-widest">${sectionsDisplay}</span></td>
+                    <td class="px-8 py-5 text-center"><span class="px-2 py-1 bg-slate-100 rounded-lg text-xs font-bold text-slate-700">${c.progs}</span></td>
+                    <td class="px-8 py-5 text-center"><span class="text-xs font-bold text-slate-500">${percentage}%</span></td>
+                    <td class="px-8 py-5 text-right font-black text-brand-primary text-lg">${c.points.toFixed(1)}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function viewStudentProfile(chestNo) {
+            document.getElementById('search-chest').value = chestNo;
+            switchTab('search');
+            searchCreative();
+        }
+
+        let searchTimeout = null;
+        function searchCreative() {
+            const query = document.getElementById('search-chest').value.trim().toLowerCase();
+            const suggestions = document.getElementById('search-suggestions');
+            const loader = document.getElementById('search-loading');
+
+            if (!query) {
+                suggestions.classList.add('hidden');
+                return;
+            }
+
+            // Show suggestions
+            const filtered = _data.candidates.filter(c =>
+                c.name.toLowerCase().includes(query) ||
+                (c.chestNo && c.chestNo.toString().includes(query))
+            ).slice(0, 5);
+
+            if (filtered.length > 0) {
+                suggestions.innerHTML = filtered.map(c => `
+                    <div onclick="selectSuggestion('${c.chestNo}')" class="px-6 py-4 hover:bg-slate-50 cursor-pointer border-b border-slate-50 last:border-0 flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-brand-primary/5 rounded-xl flex items-center justify-center text-brand-primary font-black text-xs">
+                                ${c.chestNo}
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-slate-900">${c.name}</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${c.team}</span>
+                            </div>
+                        </div>
+                        <i class="fi fi-rr-arrow-small-right text-slate-300"></i>
+                    </div>
+                `).join('');
+                suggestions.classList.remove('hidden');
+            } else {
+                suggestions.classList.add('hidden');
+            }
+
+            // Real-time search result if it's a direct chest no match or after a short delay
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const exactMatch = _data.candidates.find(c => c.chestNo == query);
+                if (exactMatch) {
+                    suggestions.classList.add('hidden');
+                    renderProfile(exactMatch);
+                } else if (query.length > 3) {
+                    // If no exact match but long query, maybe show the first filtered result
+                    if (filtered.length === 1) renderProfile(filtered[0]);
+                }
+            }, 500);
+        }
+
+        function selectSuggestion(chestNo) {
+            document.getElementById('search-chest').value = chestNo;
+            document.getElementById('search-suggestions').classList.add('hidden');
+            const cand = _data.candidates.find(c => c.chestNo == chestNo);
+            if (cand) renderProfile(cand);
+        }
+
+        function renderProfile(cand) {
+            const area = document.getElementById('chest-result-area');
             const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
-            const candResults = _data.results.filter(r => (r.candidateId === cand.id || r.chestNo == query) && publishedProgIds.has(r.programId));
+            const candResults = _data.results.filter(r => (r.candidateId === cand.id || r.chestNo == cand.chestNo) && publishedProgIds.has(r.programId));
             const total = candResults.reduce((sum, r) => sum + parseFloat(r.totalPoints || r.points || 0), 0);
 
             const programMap = {};
             _data.programs.forEach(p => programMap[p.id] = p);
 
             area.innerHTML = `
-            <div class="bg-white border border-slate-200 rounded-xl p-8 space-y-8 animate-reveal">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-6 border-b border-slate-200 pb-8">
-                    <div class="flex items-center gap-6">
-                        <div class="w-20 h-20 bg-brand-primary/5 rounded-full flex items-center justify-center text-brand-primary text-3xl font-black">
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 space-y-12 animate-reveal shadow-xl shadow-slate-200/20">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-b border-slate-100 pb-12">
+                    <div class="flex items-center gap-8">
+                        <div class="w-24 h-24 bg-gradient-to-br from-brand-primary to-brand-primary/80 rounded-[2.5rem] flex items-center justify-center text-white text-4xl font-black shadow-lg shadow-brand-primary/20">
                             ${cand.chestNo}
                         </div>
-                        <div>
-                            <h3 class="text-2xl font-black text-slate-900">${cand.name}</h3>
-                            <p class="text-sm font-bold text-brand-primary uppercase tracking-widest">${cand.team}</p>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">${cand.category || ''} | ${cand.gender || ''}</p>
+                        <div class="space-y-1">
+                            <h3 class="text-4xl font-black text-slate-900 tracking-tight">${cand.name}</h3>
+                            <div class="flex flex-wrap items-center gap-3">
+                                <span class="px-3 py-1 bg-brand-primary/10 text-brand-primary rounded-full text-[10px] font-black uppercase tracking-widest">${cand.team}</span>
+                                <span class="w-1.5 h-1.5 bg-slate-200 rounded-full"></span>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${cand.category || 'General'} | ${cand.gender || 'Common'}</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="text-center sm:text-right">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Overall Points</p>
-                        <p class="text-5xl font-black text-brand-primary">${total.toFixed(1)}</p>
+                    <div class="bg-slate-50 px-8 py-6 rounded-3xl text-center md:text-right border border-slate-100">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Accumulated Points</p>
+                        <p class="text-6xl font-black text-brand-primary tracking-tighter">${total.toFixed(1)}</p>
                     </div>
                 </div>
-                <div class="space-y-4">
-                    <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest">Participated Programs</h4>
-                    <div class="grid gap-3">
-                        ${candResults.map(r => {
+
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <div class="space-y-6">
+                        <h4 class="text-xs font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                            <span class="w-1 h-4 bg-brand-primary rounded-full"></span>
+                            Participation & Results
+                        </h4>
+                        <div class="space-y-3">
+                            ${candResults.map(r => {
                 const p = programMap[r.programId] || { name: 'Unknown', section: 'Gen' };
+                const position = parseInt(r.position);
+                let posColor = 'bg-slate-100 text-slate-400';
+                if (position === 1) posColor = 'bg-amber-100 text-amber-600 border border-amber-200';
+                else if (position === 2) posColor = 'bg-slate-100 text-slate-600 border border-slate-200';
+                else if (position === 3) posColor = 'bg-orange-50 text-orange-600 border border-orange-100';
+
                 return `
-                            <div class="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-8 h-8 bg-white border border-slate-200 rounded-xl flex items-center justify-center font-bold text-[10px] text-brand-primary">#${r.position || '-'}</div>
-                                    <div>
-                                        <p class="text-sm font-bold text-slate-800">${p.name}</p>
-                                        <p class="text-[10px] text-slate-400 font-bold uppercase">${p.section || ''}</p>
+                                <div class="flex items-center justify-between p-5 bg-white rounded-2xl border border-slate-100 hover:border-brand-primary/20 transition-all">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-10 h-10 ${posColor} rounded-xl flex items-center justify-center font-black text-xs">
+                                            ${r.position ? `#${r.position}` : '-'}
+                                        </div>
+                                        <div>
+                                            <p class="font-black text-slate-800 tracking-tight">${p.name}</p>
+                                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${p.section || ''}</p>
+                                        </div>
                                     </div>
+                                    <div class="text-right">
+                                        <p class="text-lg font-black text-brand-primary">${r.totalPoints || r.points}</p>
+                                        <p class="text-[9px] text-slate-400 font-bold uppercase">Points</p>
+                                    </div>
+                                </div>`;
+            }).join('') || `
+                                <div class="py-12 text-center bg-slate-50 rounded-3xl border border-dashed border-slate-200">
+                                    <p class="text-slate-400 font-bold uppercase text-[10px] tracking-widest">No published results found</p>
                                 </div>
-                                <div class="text-right">
-                                    <p class="text-sm font-black text-brand-primary">${r.totalPoints || r.points}</p>
-                                    <p class="text-[9px] text-slate-400 font-bold uppercase">Points</p>
-                                </div>
-                            </div>`;
-            }).join('') || '<div class="py-12 text-center text-slate-400 italic">No published results found for this student.</div>'}
+                            `}
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <h4 class="text-xs font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                            <span class="w-1 h-4 bg-brand-secondary rounded-full"></span>
+                            Performance Stats
+                        </h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100">
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Programs</p>
+                                <p class="text-3xl font-black text-slate-800">${candResults.length}</p>
+                            </div>
+                            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100">
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Rank</p>
+                                <p class="text-3xl font-black text-slate-800">#${getStudentRank(cand.chestNo)}</p>
+                            </div>
+                            <div class="col-span-2 bg-brand-primary/5 p-6 rounded-3xl border border-brand-primary/10">
+                                <p class="text-[10px] font-black text-brand-primary/60 uppercase tracking-widest mb-2">Contribution to ${cand.team}</p>
+                                <p class="text-2xl font-black text-brand-primary">${((total / getTeamTotal(cand.team)) * 100 || 0).toFixed(1)}% <span class="text-xs font-bold text-slate-400">of team total</span></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>`;
         }
 
+        function getStudentRank(chestNo) {
+            // Simple rank calculator based on current loaded data
+            const candStats = {};
+            const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
+            _data.results.forEach(res => {
+                if (!publishedProgIds.has(res.programId)) return;
+                const key = res.chestNo || res.candidateName;
+                if (!key) return;
+                if (!candStats[key]) candStats[key] = 0;
+                candStats[key] += parseFloat(res.totalPoints || res.points || 0);
+            });
+            const sorted = Object.entries(candStats).sort((a, b) => b[1] - a[1]);
+            const rank = sorted.findIndex(s => s[0] == chestNo) + 1;
+            return rank > 0 ? rank : '--';
+        }
+
+        function getTeamTotal(teamName) {
+            let total = 0;
+            const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
+            _data.results.forEach(res => {
+                if (!publishedProgIds.has(res.programId)) return;
+                if ((res.team || res.teamName) === teamName) total += parseFloat(res.totalPoints || res.points || 0);
+            });
+            return total || 1;
+        }
+
         // Listeners for sub-searches
         document.getElementById('search-program').addEventListener('input', render);
+        document.getElementById('program-section-filter').addEventListener('change', render);
         document.getElementById('search-candidate').addEventListener('input', render);
 
         // Listeners
         document.getElementById('section-filter').addEventListener('change', render);
         document.getElementById('search-team').addEventListener('input', render);
+
+        // Global click to close suggestions
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.group')) {
+                document.getElementById('search-suggestions').classList.add('hidden');
+            }
+        });
 
         // Init
         initSync();
