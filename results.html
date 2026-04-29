@@ -699,30 +699,31 @@
                         <span class="px-2 py-0.5 bg-slate-100 rounded text-[9px] font-black text-slate-500 uppercase tracking-tighter">${p.section || 'GEN'}</span>
                     </div>
                     <div class="space-y-3">
-                        ${winners.map((w, idx) => {
+                            ${winners.map((w, idx) => {
                             const pos = parseInt(w.positionLabel);
-                            const grade = w.gradeLabel || '';
+                            const gradeRaw = w.gradeLabel || '';
+                            const grade = gradeRaw.split(' ')[0].split('(')[0].trim();
                             const posSuffix = pos === 1 ? 'st' : (pos === 2 ? 'nd' : (pos === 3 ? 'rd' : 'th'));
                             const posDisplay = pos ? `${pos}${posSuffix}` : '';
                             
                             return `
-                            <div class="flex items-center justify-between text-xs p-3 rounded-xl border ${pos === 1 ? 'bg-brand-primary/5 border-brand-primary/10' : 'bg-slate-50 border-transparent'}">
-                                <div class="flex items-center gap-3">
-                                    <!-- Chest No & Grade (Orange marked area) -->
-                                    <div class="flex flex-col items-center justify-center w-12 h-12 rounded-lg border bg-white shadow-sm border-slate-200">
+                            <div class="flex flex-col xs:flex-row items-center justify-between text-xs p-3 rounded-xl border ${pos === 1 ? 'bg-brand-primary/5 border-brand-primary/10' : 'bg-slate-50 border-transparent'} gap-4 sm:gap-0">
+                                <div class="flex items-center gap-3 w-full sm:w-auto">
+                                    <!-- Chest No & Grade -->
+                                    <div class="flex flex-col items-center justify-center w-12 h-12 rounded-lg border bg-white shadow-sm border-slate-200 shrink-0">
                                         <span class="text-[7px] font-black text-slate-400 uppercase tracking-tighter mb-0.5 leading-none">Chest</span>
                                         <span class="font-black text-slate-900 leading-none text-sm">${w.chestNo || '--'}</span>
                                     </div>
-                                    <div>
-                                        <p class="font-black text-slate-800 leading-none">${w.candidateName || w.name || 'Unknown'}</p>
-                                        <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-1">${w.teamName || w.team || '--'}</p>
+                                    <div class="min-w-0">
+                                        <p class="font-black text-slate-800 leading-none truncate">${w.candidateName || w.name || 'Unknown'}</p>
+                                        <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-1 truncate">${w.teamName || w.team || '--'}</p>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-3">
-                                    <!-- Position (Green marked area) -->
+                                <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto border-t sm:border-t-0 border-slate-100 pt-3 sm:pt-0">
+                                    <!-- Position -->
                                     <div class="text-right flex flex-col items-end">
                                         <span class="font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} text-xs block leading-none">${posDisplay || '--'}</span>
-                                        ${grade ? `<span class="text-[8px] font-black text-brand-secondary mt-1 leading-none uppercase tracking-tighter">${grade} Grade</span>` : `<span class="text-[7px] font-bold text-slate-400 uppercase tracking-tighter">Rank</span>`}
+                                        ${grade ? `<span class="text-[10px] font-black text-brand-secondary mt-1 leading-none uppercase tracking-tighter">${grade}</span>` : `<span class="text-[7px] font-bold text-slate-400 uppercase tracking-tighter">Rank</span>`}
                                     </div>
                                     <div class="text-right border-l border-slate-100 pl-3">
                                         <span class="font-black text-brand-primary text-sm block leading-none">${w.totalPoints || w.points || 0}</span>
@@ -896,7 +897,7 @@
             _data.programs.forEach(p => programMap[p.id] = p);
 
             area.innerHTML = `
-            <div class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 space-y-12 animate-reveal shadow-xl shadow-slate-200/20">
+            <div class="bg-white border border-slate-200 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 space-y-8 sm:space-y-12 animate-reveal shadow-xl shadow-slate-200/20">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-b border-slate-100 pb-12">
                     <div class="flex items-center gap-8">
                         <div class="w-24 h-24 bg-gradient-to-br from-brand-primary to-brand-primary/80 rounded-[2.5rem] flex items-center justify-center text-white text-4xl font-black shadow-lg shadow-brand-primary/20">
@@ -927,7 +928,8 @@
                             ${candResults.map(r => {
                 const p = programMap[r.programId] || { name: 'Unknown', section: 'Gen' };
                 const pos = parseInt(r.positionLabel);
-                const grade = r.gradeLabel || '';
+                const gradeRaw = r.gradeLabel || '';
+                const grade = gradeRaw.split(' ')[0].split('(')[0].trim();
                 const posSuffix = pos === 1 ? 'st' : (pos === 2 ? 'nd' : (pos === 3 ? 'rd' : 'th'));
                 const posDisplay = pos ? `${pos}${posSuffix}` : '';
 
@@ -937,26 +939,26 @@
                 else if (pos === 3) posColor = 'bg-orange-50 text-orange-600 border border-orange-100';
 
                 return `
-                                <div class="flex items-center justify-between p-5 bg-white rounded-2xl border border-slate-100 hover:border-brand-primary/20 transition-all">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-white rounded-2xl border border-slate-100 hover:border-brand-primary/20 transition-all gap-6">
                                     <div class="flex items-center gap-4">
                                         <!-- Chest No Box -->
-                                        <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-xl flex flex-col items-center justify-center">
+                                        <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-xl flex flex-col items-center justify-center shrink-0">
                                             <span class="text-[7px] font-black text-slate-400 uppercase tracking-tighter mb-0.5 leading-none">No.</span>
                                             <span class="font-black text-slate-900 leading-none text-sm">${r.chestNo || '--'}</span>
                                         </div>
                                         <div>
-                                            <p class="font-black text-slate-800 tracking-tight">${p.name}</p>
+                                            <p class="font-black text-slate-800 tracking-tight leading-tight mb-1">${p.name}</p>
                                             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${p.section || ''}</p>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-4">
+                                    <div class="flex items-center justify-between sm:justify-end gap-6 border-t sm:border-t-0 border-slate-50 pt-4 sm:pt-0">
                                         <div class="text-right flex flex-col items-end">
                                             <span class="font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} text-sm block leading-none">${posDisplay || '--'}</span>
-                                            ${grade ? `<span class="text-[9px] font-black text-brand-secondary mt-1 leading-none uppercase tracking-tighter">${grade} Grade</span>` : `<span class="text-[7px] font-bold text-slate-400 uppercase tracking-tighter">Rank</span>`}
+                                            ${grade ? `<span class="text-[10px] font-black text-brand-secondary mt-1 leading-none uppercase tracking-tighter">${grade}</span>` : `<span class="text-[7px] font-bold text-slate-400 uppercase tracking-tighter">Rank</span>`}
                                         </div>
-                                        <div class="text-right border-l border-slate-100 pl-4">
-                                            <p class="text-lg font-black text-brand-primary">${r.totalPoints || r.points}</p>
-                                            <p class="text-[9px] text-slate-400 font-bold uppercase">Points</p>
+                                        <div class="text-right border-l border-slate-100 pl-6">
+                                            <p class="text-xl font-black text-brand-primary leading-none mb-1">${r.totalPoints || r.points}</p>
+                                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Points</p>
                                         </div>
                                     </div>
                                 </div>`;
