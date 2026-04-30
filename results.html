@@ -153,6 +153,73 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        /* Result Card Premium Styles */
+        .result-card-premium {
+            background: #ffffff;
+            border: 1px solid #eef2f6;
+            border-radius: 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result-card-premium:hover {
+            border-color: #134E8E20;
+            box-shadow: 0 12px 24px -8px rgba(19, 78, 142, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .chest-box-premium {
+            width: 56px;
+            height: 56px;
+            background: #f8fafc;
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #f1f5f9;
+        }
+
+        .vertical-divider {
+            width: 1px;
+            height: 40px;
+            background: #f1f5f9;
+        }
+
+        .program-card-premium {
+            background: #ffffff;
+            border: 1px solid #eef2f6;
+            border-radius: 28px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .program-card-premium:hover {
+            border-color: #134E8E15;
+            box-shadow: 0 20px 40px -12px rgba(19, 78, 142, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .winner-item-premium {
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 20px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .winner-item-premium:hover {
+            background: #ffffff;
+            border-color: #134E8E20;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
     </style>
 </head>
 
@@ -687,51 +754,77 @@
                 return;
             }
 
+            const candidateLookup = {};
+            _data.candidates.forEach(c => {
+                if (c.chestNo) candidateLookup[c.chestNo] = c;
+                if (c.id) candidateLookup[c.id] = c;
+            });
+
             container.innerHTML = publishedPrograms.map(p => {
-                const winners = _data.results.filter(r => r.programId === p.id).sort((a, b) => (parseInt(a.positionLabel) || 99) - (parseInt(b.positionLabel) || 99));
+                const winners = _data.results.filter(r => r.programId === p.id)
+                    .sort((a, b) => (parseInt(a.positionLabel) || 99) - (parseInt(b.positionLabel) || 99));
+                
                 return `
-                <div class="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-xl hover:shadow-slate-200/40 transition-all group">
-                    <div class="flex justify-between items-start gap-3 mb-6">
-                        <div class="space-y-1">
-                            <h4 class="font-black text-slate-900 leading-tight group-hover:text-brand-primary transition-colors">${p.name || 'Unknown'}</h4>
-                            <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest">${p.category || ''} ${p.type || ''}</p>
+                <div class="program-card-premium group">
+                    <div class="flex justify-between items-start gap-4 mb-6">
+                        <div class="min-w-0">
+                            <h4 class="text-lg font-black text-slate-900 leading-tight group-hover:text-brand-primary transition-colors truncate">
+                                ${p.name || 'Unknown'}
+                            </h4>
+                            <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">
+                                ${p.category || ''} ${p.type || ''}
+                            </p>
                         </div>
-                        <span class="px-2 py-0.5 bg-slate-100 rounded text-[9px] font-black text-slate-500 uppercase tracking-tighter">${p.section || 'GEN'}</span>
+                        <span class="px-2.5 py-1 bg-slate-50 rounded-lg text-[9px] font-black text-slate-400 uppercase tracking-tighter shrink-0">
+                            ${p.section || 'GEN'}
+                        </span>
                     </div>
-                    <div class="space-y-3">
-                            ${winners.map((w, idx) => {
-                            const pos = parseInt(w.positionLabel);
-                            const gradeRaw = w.gradeLabel || '';
+
+                    <div class="space-y-3 flex-1">
+                        ${winners.map(res => {
+                            const pos = parseInt(res.positionLabel);
+                            const gradeRaw = res.gradeLabel || '';
                             const grade = gradeRaw.split(' ')[0].split('(')[0].trim();
                             const posSuffix = pos === 1 ? 'st' : (pos === 2 ? 'nd' : (pos === 3 ? 'rd' : 'th'));
                             const posDisplay = pos ? `${pos}${posSuffix}` : '';
-                            
+
+                            const cand = candidateLookup[res.chestNo] || candidateLookup[res.candidateId] || {};
+                            const photoHtml = cand.imageUrl 
+                                ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">`
+                                : `<i class="fi fi-rr-user text-lg text-slate-200"></i>`;
+
                             return `
-                            <div class="flex flex-col xs:flex-row items-center justify-between text-xs p-3 rounded-xl border ${pos === 1 ? 'bg-brand-primary/5 border-brand-primary/10' : 'bg-slate-50 border-transparent'} gap-4 sm:gap-0">
-                                <div class="flex items-center gap-3 w-full sm:w-auto">
-                                    <!-- Chest No & Grade -->
-                                    <div class="flex flex-col items-center justify-center w-12 h-12 rounded-lg border bg-white shadow-sm border-slate-200 shrink-0">
-                                        <span class="text-[7px] font-black text-slate-400 uppercase tracking-tighter mb-0.5 leading-none">Chest</span>
-                                        <span class="font-black text-slate-900 leading-none text-sm">${w.chestNo || '--'}</span>
+                            <div class="winner-item-premium">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <!-- Photo Box -->
+                                    <div class="w-10 h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
+                                        ${photoHtml}
                                     </div>
                                     <div class="min-w-0">
-                                        <p class="font-black text-slate-800 leading-none truncate">${w.candidateName || w.name || 'Unknown'}</p>
-                                        <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-1 truncate">${w.teamName || w.team || '--'}</p>
+                                        <p class="text-xs font-black text-slate-800 truncate leading-none mb-1.5">
+                                            ${res.candidateName || res.name || 'Unknown'}
+                                            <span class="text-[10px] text-brand-primary opacity-60 ml-1 font-bold">#${res.chestNo || '--'}</span>
+                                        </p>
+                                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest truncate leading-none">${res.teamName || res.team || '--'}</p>
                                     </div>
                                 </div>
-                                <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto border-t sm:border-t-0 border-slate-100 pt-3 sm:pt-0">
-                                    <!-- Position -->
-                                    <div class="text-right flex flex-col items-end">
-                                        <span class="font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} text-xs block leading-none">${posDisplay || '--'}</span>
-                                        ${grade ? `<span class="text-[10px] font-black text-brand-secondary mt-1 leading-none uppercase tracking-tighter">${grade}</span>` : `<span class="text-[7px] font-bold text-slate-400 uppercase tracking-tighter">Rank</span>`}
+                                <div class="flex items-center gap-3 shrink-0">
+                                    <div class="text-right">
+                                        <span class="text-[11px] font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} block leading-none mb-1">${posDisplay || '--'}</span>
+                                        <span class="text-[9px] font-black text-brand-secondary uppercase tracking-widest block leading-none">${grade || ''}</span>
                                     </div>
-                                    <div class="text-right border-l border-slate-100 pl-3">
-                                        <span class="font-black text-brand-primary text-sm block leading-none">${w.totalPoints || w.points || 0}</span>
-                                        <span class="text-[7px] font-bold text-slate-400 uppercase tracking-tighter">Pts</span>
+                                    <div class="w-px h-6 bg-slate-100"></div>
+                                    <div class="text-right min-w-[32px]">
+                                        <span class="text-sm font-black text-brand-primary block leading-none mb-0.5">${res.totalPoints || res.points || 0}</span>
+                                        <span class="text-[7px] font-bold text-slate-400 uppercase tracking-widest block leading-none">Pts</span>
                                     </div>
                                 </div>
+                            </div>`;
+                        }).join('') || `
+                            <div class="py-10 text-center bg-slate-50/50 rounded-2xl border border-dashed border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">No results yet</p>
                             </div>
-                        `}).join('') || '<div class="py-4 text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest">No winners recorded</div>'}
+                        `}
                     </div>
                 </div>`;
             }).join('');
@@ -809,11 +902,23 @@
                 const percentage = teamTotals[c.team] ? ((c.points / teamTotals[c.team]) * 100).toFixed(1) : '0.0';
                 const sectionsDisplay = Array.from(c.sections).join(', ') || '--';
 
+                const cand = candidateRefMap[c.chestNo] || candidateRefMap[c.id] || {};
+                const avatarHtml = cand.imageUrl 
+                    ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">`
+                    : `<span class="text-[10px] font-bold text-slate-400">${c.name.charAt(0)}</span>`;
+
                 return `
                 <tr onclick="viewStudentProfile('${c.chestNo}')" class="border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer group">
                     <td class="px-8 py-5" data-label="Rank"><span class="font-black ${idx < 3 ? 'text-brand-primary' : 'text-slate-300'}">#${(idx + 1).toString().padStart(2, '0')}</span></td>
                     <td class="px-8 py-5" data-label="Chest No"><span class="font-black text-slate-500">${c.chestNo}</span></td>
-                    <td class="px-8 py-5" data-label="Candidate"><span class="font-black text-slate-800 tracking-tight group-hover:text-brand-primary transition-colors">${c.name}</span></td>
+                    <td class="px-8 py-5" data-label="Candidate">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full border border-slate-100 bg-slate-50 flex items-center justify-center overflow-hidden shrink-0">
+                                ${avatarHtml}
+                            </div>
+                            <span class="font-black text-slate-800 tracking-tight group-hover:text-brand-primary transition-colors">${c.name}</span>
+                        </div>
+                    </td>
                     <td class="px-8 py-5" data-label="Team"><span class="text-xs font-black text-slate-600 uppercase tracking-widest">${c.team}</span></td>
                     <td class="px-8 py-5" data-label="Section"><span class="px-2 py-1 bg-slate-100 rounded-md text-[10px] font-bold text-slate-600 uppercase tracking-widest">${sectionsDisplay}</span></td>
                     <td class="px-8 py-5 text-center" data-label="Programs"><span class="px-2 py-1 bg-slate-100 rounded-lg text-xs font-bold text-slate-700">${c.progs}</span></td>
@@ -850,11 +955,11 @@
                 suggestions.innerHTML = filtered.map(c => `
                     <div onclick="selectSuggestion('${c.chestNo}')" class="px-6 py-4 hover:bg-slate-50 cursor-pointer border-b border-slate-50 last:border-0 flex items-center justify-between">
                         <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-brand-primary/5 rounded-xl flex items-center justify-center text-brand-primary font-black text-xs">
-                                ${c.chestNo}
+                            <div class="w-10 h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+                                ${c.imageUrl ? `<img src="${c.imageUrl}" class="w-full h-full object-cover">` : `<i class="fi fi-rr-user text-xs text-slate-300"></i>`}
                             </div>
                             <div class="flex flex-col">
-                                <span class="font-bold text-slate-900">${c.name}</span>
+                                <span class="font-bold text-slate-900">${c.name} <span class="text-[10px] text-brand-primary opacity-60 ml-1 font-bold">#${c.chestNo}</span></span>
                                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${c.team}</span>
                             </div>
                         </div>
@@ -900,11 +1005,14 @@
             <div class="bg-white border border-slate-200 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 space-y-8 sm:space-y-12 animate-reveal shadow-xl shadow-slate-200/20">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-b border-slate-100 pb-12">
                     <div class="flex items-center gap-8">
-                        <div class="w-24 h-24 bg-gradient-to-br from-brand-primary to-brand-primary/80 rounded-[2.5rem] flex items-center justify-center text-white text-4xl font-black shadow-lg shadow-brand-primary/20">
-                            ${cand.chestNo}
+                        <div class="w-24 h-24 bg-white border-2 border-slate-100 rounded-[2.5rem] flex items-center justify-center overflow-hidden shadow-lg shadow-slate-200/50">
+                            ${cand.imageUrl ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">` : `<i class="fi fi-rr-user text-4xl text-slate-100"></i>`}
                         </div>
                         <div class="space-y-1">
-                            <h3 class="text-4xl font-black text-slate-900 tracking-tight">${cand.name}</h3>
+                            <h3 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                                ${cand.name}
+                                <span class="text-xl sm:text-2xl text-brand-primary opacity-50 ml-2">#${cand.chestNo}</span>
+                            </h3>
                             <div class="flex flex-wrap items-center gap-3">
                                 <span class="px-3 py-1 bg-brand-primary/10 text-brand-primary rounded-full text-[10px] font-black uppercase tracking-widest">${cand.team}</span>
                                 <span class="w-1.5 h-1.5 bg-slate-200 rounded-full"></span>
@@ -939,29 +1047,42 @@
                 else if (pos === 3) posColor = 'bg-orange-50 text-orange-600 border border-orange-100';
 
                 return `
-                                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-white rounded-2xl border border-slate-100 hover:border-brand-primary/20 transition-all gap-6">
-                                    <div class="flex items-center gap-4">
-                                        <!-- Chest No Box -->
-                                        <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-xl flex flex-col items-center justify-center shrink-0">
-                                            <span class="text-[7px] font-black text-slate-400 uppercase tracking-tighter mb-0.5 leading-none">No.</span>
-                                            <span class="font-black text-slate-900 leading-none text-sm">${r.chestNo || '--'}</span>
-                                        </div>
-                                        <div>
-                                            <p class="font-black text-slate-800 tracking-tight leading-tight mb-1">${p.name}</p>
-                                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${p.section || ''}</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center justify-between sm:justify-end gap-6 border-t sm:border-t-0 border-slate-50 pt-4 sm:pt-0">
-                                        <div class="text-right flex flex-col items-end">
-                                            <span class="font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} text-sm block leading-none">${posDisplay || '--'}</span>
-                                            ${grade ? `<span class="text-[10px] font-black text-brand-secondary mt-1 leading-none uppercase tracking-tighter">${grade}</span>` : `<span class="text-[7px] font-bold text-slate-400 uppercase tracking-tighter">Rank</span>`}
-                                        </div>
-                                        <div class="text-right border-l border-slate-100 pl-6">
-                                            <p class="text-xl font-black text-brand-primary leading-none mb-1">${r.totalPoints || r.points}</p>
-                                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Points</p>
-                                        </div>
-                                    </div>
-                                </div>`;
+                                 <div class="result-card-premium p-4 sm:p-6 flex items-center justify-between gap-4">
+                                     <div class="flex items-center gap-4 sm:gap-6 flex-1 min-w-0">
+                                         <!-- Photo Box -->
+                                         <div class="chest-box-premium shrink-0 overflow-hidden flex items-center justify-center">
+                                             ${cand.imageUrl ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">` : `<i class="fi fi-rr-user text-xl text-slate-200"></i>`}
+                                         </div>
+                                         <div class="min-w-0 flex-1">
+                                             <p class="text-base sm:text-lg font-black text-slate-800 tracking-tight leading-tight mb-1 truncate">
+                                                ${p.name}
+                                                <span class="text-xs sm:text-sm text-brand-primary opacity-50 ml-1 font-bold">#${r.chestNo || '--'}</span>
+                                             </p>
+                                             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${p.section || ''}</p>
+                                         </div>
+
+                                         <!-- Rank & Grade -->
+                                         <div class="hidden sm:flex flex-col items-end shrink-0 px-4">
+                                             <span class="text-xl font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} leading-none mb-1">${posDisplay || '--'}</span>
+                                             <span class="text-[10px] font-black text-brand-secondary uppercase tracking-widest">${grade || ''}</span>
+                                         </div>
+                                     </div>
+                                     <div class="flex items-center gap-4 sm:gap-8 shrink-0">
+                                         <!-- Mobile Rank -->
+                                         <div class="flex sm:hidden flex-col items-end shrink-0">
+                                             <span class="text-base font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} leading-none mb-1">${posDisplay || '--'}</span>
+                                             <span class="text-[8px] font-black text-brand-secondary uppercase tracking-widest">${grade || ''}</span>
+                                         </div>
+
+                                         <div class="vertical-divider"></div>
+
+                                         <!-- Points -->
+                                         <div class="text-right min-w-[60px]">
+                                             <p class="text-2xl sm:text-3xl font-black text-brand-primary leading-none mb-1">${r.totalPoints || r.points}</p>
+                                             <p class="text-[8px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest">Points</p>
+                                         </div>
+                                     </div>
+                                 </div>`;
             }).join('') || `
                                 <div class="py-12 text-center bg-slate-50 rounded-3xl border border-dashed border-slate-200">
                                     <p class="text-slate-400 font-bold uppercase text-[10px] tracking-widest">No published results found</p>
