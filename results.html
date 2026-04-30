@@ -220,6 +220,74 @@
             border-color: #134E8E20;
             box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
+
+        /* Podium Styles */
+        .podium-wrapper {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 0;
+            margin-bottom: 12px;
+        }
+        .podium-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 70px;
+        }
+        .podium-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            border: 2px solid white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+            background: #f1f5f9;
+            margin-bottom: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .podium-item:hover .podium-avatar {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+        }
+        .podium-rank-box {
+            width: 100%;
+            border-radius: 8px 8px 4px 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 14px;
+            color: white;
+            padding-top: 4px;
+        }
+        .podium-1 { height: 56px; background: #134E8E; }
+        .podium-2 { height: 42px; background: #FFB33F; }
+        .podium-3 { height: 32px; background: #94a3b8; }
+        
+        .podium-pts {
+            font-size: 8px;
+            opacity: 0.8;
+            font-weight: 700;
+        }
+
+        .podium-name {
+            font-size: 8px;
+            font-weight: 800;
+            color: #64748b;
+            margin-top: 6px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .podium-1 .podium-avatar { width: 52px; height: 52px; border-color: #134E8E20; }
     </style>
 </head>
 
@@ -343,29 +411,43 @@
 
             <!-- Program View (Cards Layout) -->
             <div id="view-program" class="tab-view hidden">
-                <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center justify-between">
-                    <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
-                        <div class="relative w-full sm:w-80">
-                            <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                            <input type="text" id="search-program" placeholder="Search program name..."
-                                class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
+                <div id="program-list-view">
+                    <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center justify-between">
+                        <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+                            <div class="relative w-full sm:w-80">
+                                <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input type="text" id="search-program" placeholder="Search program name..."
+                                    class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
+                            </div>
+                            <div class="relative w-full sm:w-auto min-w-[160px]">
+                                <select id="program-section-filter"
+                                    class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-bold text-sm text-slate-600 appearance-none cursor-pointer">
+                                    <option value="all">All Sections</option>
+                                </select>
+                                <i
+                                    class="fi fi-rr-angle-small-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                            </div>
                         </div>
-                        <div class="relative w-full sm:w-auto min-w-[160px]">
-                            <select id="program-section-filter"
-                                class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-bold text-sm text-slate-600 appearance-none cursor-pointer">
-                                <option value="all">All Sections</option>
-                            </select>
-                            <i
-                                class="fi fi-rr-angle-small-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                        <div
+                            class="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                            <span class="w-2 h-2 bg-brand-primary rounded-full animate-pulse"></span> Only Published results
                         </div>
                     </div>
-                    <div
-                        class="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                        <span class="w-2 h-2 bg-brand-primary rounded-full animate-pulse"></span> Only Published results
+                    <div id="program-results-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Dynamic -->
                     </div>
                 </div>
-                <div id="program-results-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Dynamic -->
+
+                <!-- Program Detail View -->
+                <div id="program-detail-view" class="hidden">
+                    <div class="mb-8">
+                        <button onclick="backToProgramList()" class="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-bold text-xs transition-all uppercase tracking-widest">
+                            <i class="fi fi-rr-arrow-left"></i> Back to Results
+                        </button>
+                    </div>
+                    <div id="program-detail-content" class="animate-reveal">
+                        <!-- Dynamic -->
+                    </div>
                 </div>
             </div>
 
@@ -517,6 +599,11 @@
         function switchTab(tabId) {
             document.querySelectorAll('.tab-view').forEach(v => v.classList.add('hidden'));
             document.getElementById('view-' + tabId).classList.remove('hidden');
+
+            if (tabId === 'program') {
+                document.getElementById('program-list-view')?.classList.remove('hidden');
+                document.getElementById('program-detail-view')?.classList.add('hidden');
+            }
 
             document.querySelectorAll('header button').forEach(b => {
                 b.classList.remove('bg-white', 'text-brand-primary', 'shadow-sm');
@@ -764,9 +851,45 @@
                 const winners = _data.results.filter(r => r.programId === p.id)
                     .sort((a, b) => (parseInt(a.positionLabel) || 99) - (parseInt(b.positionLabel) || 99));
                 
+                // Get top 3 for podium
+                const top3 = {
+                    1: winners.find(r => parseInt(r.positionLabel) === 1),
+                    2: winners.find(r => parseInt(r.positionLabel) === 2),
+                    3: winners.find(r => parseInt(r.positionLabel) === 3)
+                };
+
+                const getPodiumItem = (pos) => {
+                    const res = top3[pos];
+                    if (!res) return `
+                        <div class="podium-item opacity-20">
+                            <div class="podium-avatar flex items-center justify-center bg-slate-100">
+                                <i class="fi fi-rr-user text-xs text-slate-300"></i>
+                            </div>
+                            <div class="podium-rank-box podium-${pos}">${pos}</div>
+                            <div class="podium-name">--</div>
+                        </div>`;
+                    
+                    const cand = candidateLookup[res.chestNo] || candidateLookup[res.candidateId] || {};
+                    const photoHtml = cand.imageUrl 
+                        ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">`
+                        : `<i class="fi fi-rr-user text-xs text-slate-300"></i>`;
+                    
+                    return `
+                        <div class="podium-item">
+                            <div class="podium-avatar">
+                                ${photoHtml}
+                            </div>
+                            <div class="podium-rank-box podium-${pos}">
+                                ${pos}
+                                <span class="podium-pts">${res.totalPoints || res.points || 0} P</span>
+                            </div>
+                            <div class="podium-name">${res.candidateName || res.name || 'Unknown'}</div>
+                        </div>`;
+                };
+
                 return `
-                <div class="program-card-premium group">
-                    <div class="flex justify-between items-start gap-4 mb-6">
+                <div onclick="viewProgramDetail('${p.id}')" class="program-card-premium group cursor-pointer">
+                    <div class="flex justify-between items-start gap-4 mb-2">
                         <div class="min-w-0">
                             <h4 class="text-lg font-black text-slate-900 leading-tight group-hover:text-brand-primary transition-colors truncate">
                                 ${p.name || 'Unknown'}
@@ -780,54 +903,120 @@
                         </span>
                     </div>
 
-                    <div class="space-y-3 flex-1">
-                        ${winners.map(res => {
-                            const pos = parseInt(res.positionLabel);
-                            const gradeRaw = res.gradeLabel || '';
-                            const grade = gradeRaw.split(' ')[0].split('(')[0].trim();
-                            const posSuffix = pos === 1 ? 'st' : (pos === 2 ? 'nd' : (pos === 3 ? 'rd' : 'th'));
-                            const posDisplay = pos ? `${pos}${posSuffix}` : '';
+                    <!-- Podium Layout -->
+                    <div class="podium-wrapper">
+                        ${getPodiumItem(2)}
+                        ${getPodiumItem(1)}
+                        ${getPodiumItem(3)}
+                    </div>
 
-                            const cand = candidateLookup[res.chestNo] || candidateLookup[res.candidateId] || {};
-                            const photoHtml = cand.imageUrl 
-                                ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">`
-                                : `<i class="fi fi-rr-user text-lg text-slate-200"></i>`;
-
-                            return `
-                            <div class="winner-item-premium">
-                                <div class="flex items-center gap-3 min-w-0">
-                                    <!-- Photo Box -->
-                                    <div class="w-10 h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center shrink-0 shadow-sm overflow-hidden">
-                                        ${photoHtml}
-                                    </div>
-                                    <div class="min-w-0">
-                                        <p class="text-xs font-black text-slate-800 truncate leading-none mb-1.5">
-                                            ${res.candidateName || res.name || 'Unknown'}
-                                            <span class="text-[10px] text-brand-primary opacity-60 ml-1 font-bold">#${res.chestNo || '--'}</span>
-                                        </p>
-                                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest truncate leading-none">${res.teamName || res.team || '--'}</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-3 shrink-0">
-                                    <div class="text-right">
-                                        <span class="text-[11px] font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} block leading-none mb-1">${posDisplay || '--'}</span>
-                                        <span class="text-[9px] font-black text-brand-secondary uppercase tracking-widest block leading-none">${grade || ''}</span>
-                                    </div>
-                                    <div class="w-px h-6 bg-slate-100"></div>
-                                    <div class="text-right min-w-[32px]">
-                                        <span class="text-sm font-black text-brand-primary block leading-none mb-0.5">${res.totalPoints || res.points || 0}</span>
-                                        <span class="text-[7px] font-bold text-slate-400 uppercase tracking-widest block leading-none">Pts</span>
-                                    </div>
-                                </div>
-                            </div>`;
-                        }).join('') || `
-                            <div class="py-10 text-center bg-slate-50/50 rounded-2xl border border-dashed border-slate-100">
-                                <p class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">No results yet</p>
-                            </div>
-                        `}
+                    <div class="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
+                        <span class="text-[9px] font-black text-slate-300 uppercase tracking-widest">Click for details</span>
+                        <div class="flex -space-x-2">
+                            ${winners.slice(0, 5).map(res => {
+                                const cand = candidateLookup[res.chestNo] || candidateLookup[res.candidateId] || {};
+                                return cand.imageUrl 
+                                    ? `<img src="${cand.imageUrl}" class="w-6 h-6 rounded-full border-2 border-white object-cover">`
+                                    : `<div class="w-6 h-6 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center"><i class="fi fi-rr-user text-[8px] text-slate-300"></i></div>`;
+                            }).join('')}
+                            ${winners.length > 5 ? `<div class="w-6 h-6 rounded-full border-2 border-white bg-brand-primary/10 flex items-center justify-center text-[8px] font-black text-brand-primary">+${winners.length - 5}</div>` : ''}
+                        </div>
                     </div>
                 </div>`;
             }).join('');
+        }
+
+        function viewProgramDetail(programId) {
+            const program = _data.programs.find(p => p.id === programId);
+            if (!program) return;
+
+            document.getElementById('program-list-view').classList.add('hidden');
+            document.getElementById('program-detail-view').classList.remove('hidden');
+
+            const winners = _data.results.filter(r => r.programId === programId)
+                .sort((a, b) => (parseInt(a.positionLabel) || 99) - (parseInt(b.positionLabel) || 99));
+
+            const candidateLookup = {};
+            _data.candidates.forEach(c => {
+                if (c.chestNo) candidateLookup[c.chestNo] = c;
+                if (c.id) candidateLookup[c.id] = c;
+            });
+
+            const content = document.getElementById('program-detail-content');
+            content.innerHTML = `
+                <div class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 space-y-12 shadow-xl shadow-slate-200/20">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-b border-slate-100 pb-12">
+                        <div class="space-y-2">
+                            <h3 class="text-4xl font-black text-slate-900 tracking-tight leading-none">${program.name}</h3>
+                            <div class="flex items-center gap-3">
+                                <span class="px-3 py-1 bg-brand-primary/10 text-brand-primary rounded-full text-[10px] font-black uppercase tracking-widest">${program.category}</span>
+                                <span class="w-1.5 h-1.5 bg-slate-200 rounded-full"></span>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${program.type} | ${program.section}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="bg-slate-50 px-8 py-6 rounded-3xl text-center border border-slate-100">
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Participants</p>
+                                <p class="text-4xl font-black text-brand-primary tracking-tighter">${winners.length}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                            <span class="w-1 h-4 bg-brand-primary rounded-full"></span>
+                            Final Standings
+                        </h4>
+                        <div class="grid gap-3">
+                            ${winners.map(res => {
+                                const pos = parseInt(res.positionLabel);
+                                const gradeRaw = res.gradeLabel || '';
+                                const grade = gradeRaw.split(' ')[0].split('(')[0].trim();
+                                const posSuffix = pos === 1 ? 'st' : (pos === 2 ? 'nd' : (pos === 3 ? 'rd' : 'th'));
+                                const posDisplay = pos ? `${pos}${posSuffix}` : '';
+
+                                const cand = candidateLookup[res.chestNo] || candidateLookup[res.candidateId] || {};
+                                const photoHtml = cand.imageUrl 
+                                    ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">`
+                                    : `<i class="fi fi-rr-user text-xl text-slate-200"></i>`;
+
+                                return `
+                                <div class="result-card-premium p-6 flex items-center justify-between gap-6 hover:bg-slate-50/50 transition-all">
+                                    <div class="flex items-center gap-6 flex-1 min-w-0">
+                                        <div class="chest-box-premium shrink-0 overflow-hidden flex items-center justify-center border-slate-200">
+                                            ${photoHtml}
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <p class="text-lg font-black text-slate-800 tracking-tight leading-none mb-2 truncate">
+                                                ${res.candidateName || res.name || 'Unknown'}
+                                                <span class="text-sm text-brand-primary opacity-50 ml-1 font-bold">#${res.chestNo || '--'}</span>
+                                            </p>
+                                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${res.teamName || res.team || '--'}</p>
+                                        </div>
+                                        
+                                        <div class="hidden sm:flex flex-col items-end shrink-0 px-6">
+                                            <span class="text-2xl font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} leading-none mb-1">${posDisplay || '--'}</span>
+                                            <span class="text-[10px] font-black text-brand-secondary uppercase tracking-widest">${grade || ''}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-8 shrink-0">
+                                        <div class="vertical-divider"></div>
+                                        <div class="text-right min-w-[70px]">
+                                            <p class="text-3xl font-black text-brand-primary leading-none mb-1">${res.totalPoints || res.points || 0}</p>
+                                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Points</p>
+                                        </div>
+                                    </div>
+                                </div>`;
+                            }).join('') || `<p class="py-12 text-center text-slate-400 font-bold">No participants found.</p>`}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function backToProgramList() {
+            document.getElementById('program-detail-view').classList.add('hidden');
+            document.getElementById('program-list-view').classList.remove('hidden');
         }
 
         function renderCandidateTable() {
