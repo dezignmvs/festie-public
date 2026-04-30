@@ -16,6 +16,7 @@
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
     <link rel='stylesheet'
         href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
         tailwind.config = {
@@ -314,12 +315,12 @@
             </a>
         </div>
     </nav> <!-- Header -->
-    <header class="py-10 bg-white border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-6 sm:px-8">
+    <header class="py-6 sm:py-10 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
                 <div class="space-y-3 text-center md:text-left">
                     <h1
-                        class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 leading-tight heading-tight">
+                        class="text-2xl sm:text-4xl font-black tracking-tight text-slate-900 leading-tight heading-tight">
                         Live <span class="text-brand-primary">Standings</span></h1>
                     <div
                         class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-400">
@@ -350,8 +351,8 @@
     </header>
 
     <!-- Main Content -->
-    <main class="flex-1 py-12">
-        <div class="max-w-7xl mx-auto px-8">
+    <main class="flex-1 py-8 sm:py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8">
 
             <!-- Dynamic Content Area -->
             <div id="view-team" class="tab-view">
@@ -592,6 +593,9 @@
         };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        
+        // Fix for "Could not reach Cloud Firestore backend" in certain networks
+        db.settings({ experimentalForceLongPolling: true });
 
         const _data = { teams: [], programs: [], results: [], negMarks: [], sections: [], candidates: [] };
         let _isLoaded = { teams: false, programs: false, results: false, negMarks: false, sections: false, candidates: false };
@@ -631,8 +635,11 @@
             db.collection('config').doc('festData').onSnapshot(doc => {
                 if (doc.exists) {
                     const data = doc.data();
+                    window._festConfig = data; // Store for poster generation
                     if (data.name) document.querySelectorAll('#fest-name').forEach(el => el.innerText = data.name);
-                    if (data.logo) document.getElementById('nav-logo').src = data.logo;
+                    
+                    const mainLogo = data.logo502 || data.logo192 || data.logo;
+                    if (mainLogo) document.getElementById('nav-logo').src = mainLogo;
                 }
             });
 
@@ -944,20 +951,20 @@
 
             const content = document.getElementById('program-detail-content');
             content.innerHTML = `
-                <div class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 space-y-12 shadow-xl shadow-slate-200/20">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-b border-slate-100 pb-12">
-                        <div class="space-y-2">
-                            <h3 class="text-4xl font-black text-slate-900 tracking-tight leading-none">${program.name}</h3>
-                            <div class="flex items-center gap-3">
-                                <span class="px-3 py-1 bg-brand-primary/10 text-brand-primary rounded-full text-[10px] font-black uppercase tracking-widest">${program.category}</span>
-                                <span class="w-1.5 h-1.5 bg-slate-200 rounded-full"></span>
-                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${program.type} | ${program.section}</span>
+                <div class="bg-white border border-slate-200 rounded-2xl sm:rounded-3xl p-4 sm:p-12 space-y-8 sm:space-y-12 shadow-xl shadow-slate-200/20">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 sm:gap-8 border-b border-slate-100 pb-8 sm:pb-12">
+                        <div class="space-y-2 w-full">
+                            <h3 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight break-words">${program.name}</h3>
+                            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                                <span class="px-3 py-1 bg-brand-primary/10 text-brand-primary rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest">${program.category}</span>
+                                <span class="w-1.5 h-1.5 bg-slate-200 rounded-full hidden sm:block"></span>
+                                <span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest">${program.type} | ${program.section}</span>
                             </div>
                         </div>
-                        <div class="flex items-center gap-4">
-                            <div class="bg-slate-50 px-8 py-6 rounded-3xl text-center border border-slate-100">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Participants</p>
-                                <p class="text-4xl font-black text-brand-primary tracking-tighter">${winners.length}</p>
+                        <div class="flex items-center gap-4 w-full sm:w-auto">
+                            <div class="bg-slate-50 px-6 sm:px-8 py-4 sm:py-6 rounded-2xl sm:rounded-3xl text-center border border-slate-100 flex-1 sm:flex-none">
+                                <p class="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Participants</p>
+                                <p class="text-3xl sm:text-4xl font-black text-brand-primary tracking-tighter">${winners.length}</p>
                             </div>
                         </div>
                     </div>
@@ -981,30 +988,39 @@
                                     : `<i class="fi fi-rr-user text-xl text-slate-200"></i>`;
 
                                 return `
-                                <div class="result-card-premium p-6 flex items-center justify-between gap-6 hover:bg-slate-50/50 transition-all">
-                                    <div class="flex items-center gap-6 flex-1 min-w-0">
-                                        <div class="chest-box-premium shrink-0 overflow-hidden flex items-center justify-center border-slate-200">
+                                <div class="result-card-premium p-3 sm:p-6 flex items-center justify-between gap-2 sm:gap-6 hover:bg-slate-50/50 transition-all">
+                                    <div class="flex items-center gap-3 sm:gap-6 flex-1 min-w-0">
+                                        <div class="chest-box-premium shrink-0 overflow-hidden flex items-center justify-center border-slate-200 !w-11 !h-11 sm:!w-14 sm:!h-14 !rounded-xl sm:!rounded-2xl">
                                             ${photoHtml}
                                         </div>
                                         <div class="min-w-0 flex-1">
-                                            <p class="text-lg font-black text-slate-800 tracking-tight leading-none mb-2 truncate">
+                                            <p class="text-sm sm:text-lg font-black text-slate-800 tracking-tight leading-tight mb-0.5 truncate">
                                                 ${res.candidateName || res.name || 'Unknown'}
-                                                <span class="text-sm text-brand-primary opacity-50 ml-1 font-bold">#${res.chestNo || '--'}</span>
+                                                <span class="text-[9px] sm:text-sm text-brand-primary opacity-50 ml-0.5 font-bold">#${res.chestNo || '--'}</span>
                                             </p>
-                                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${res.teamName || res.team || '--'}</p>
+                                            <p class="text-[8px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest truncate">${res.teamName || res.team || '--'}</p>
                                         </div>
                                         
-                                        <div class="hidden sm:flex flex-col items-end shrink-0 px-6">
-                                            <span class="text-2xl font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} leading-none mb-1">${posDisplay || '--'}</span>
-                                            <span class="text-[10px] font-black text-brand-secondary uppercase tracking-widest">${grade || ''}</span>
+                                        <div class="hidden sm:flex items-center gap-3 shrink-0 px-6 border-r border-slate-100">
+                                            <span class="text-2xl font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} leading-none">${posDisplay || '--'}</span>
+                                            ${grade ? `<span class="text-slate-300 font-light text-2xl">|</span> <span class="text-xl font-black text-brand-secondary uppercase tracking-widest">${grade}</span>` : ''}
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-8 shrink-0">
-                                        <div class="vertical-divider"></div>
-                                        <div class="text-right min-w-[70px]">
-                                            <p class="text-3xl font-black text-brand-primary leading-none mb-1">${res.totalPoints || res.points || 0}</p>
-                                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Points</p>
-                                        </div>
+                                    <div class="flex items-center gap-3">
+                                        <button onclick="event.stopPropagation(); downloadAchievement('${program.name}', '${res.candidateName || res.name}', '${cand.imageUrl || ''}', '${posDisplay}', '${grade}', '${res.chestNo}', '${res.teamName || res.team}')" 
+                                            class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-brand-primary/5 hover:bg-brand-primary hover:text-white text-brand-primary flex items-center justify-center transition-all group/dl shadow-sm" title="Download Achievement Poster">
+                                            <i class="fi fi-rr-download text-base sm:text-lg"></i>
+                                        </button>
+                                     </div>
+
+                                    <div class="flex sm:hidden items-center gap-1.5 shrink-0 px-2">
+                                        <span class="text-base font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} leading-none">${posDisplay || '--'}</span>
+                                        ${grade ? `<span class="text-slate-300 font-light">|</span> <span class="text-[10px] font-black text-brand-secondary uppercase tracking-widest">${grade}</span>` : ''}
+                                    </div>
+                                    <div class="vertical-divider h-6 sm:h-10 opacity-50 sm:opacity-100"></div>
+                                    <div class="text-right min-w-[45px] sm:min-w-[70px]">
+                                        <p class="text-lg sm:text-3xl font-black text-brand-primary leading-none mb-0.5">${res.totalPoints || res.points || 0}</p>
+                                        <p class="text-[7px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pts</p>
                                     </div>
                                 </div>`;
                             }).join('') || `<p class="py-12 text-center text-slate-400 font-bold">No participants found.</p>`}
@@ -1142,17 +1158,17 @@
 
             if (filtered.length > 0) {
                 suggestions.innerHTML = filtered.map(c => `
-                    <div onclick="selectSuggestion('${c.chestNo}')" class="px-6 py-4 hover:bg-slate-50 cursor-pointer border-b border-slate-50 last:border-0 flex items-center justify-between">
-                        <div class="flex items-center gap-4">
+                    <div onclick="selectSuggestion('${c.chestNo}')" class="px-4 sm:px-6 py-3 sm:py-4 hover:bg-slate-50 cursor-pointer border-b border-slate-50 last:border-0 flex items-center justify-between">
+                        <div class="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
                             <div class="w-10 h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
                                 ${c.imageUrl ? `<img src="${c.imageUrl}" class="w-full h-full object-cover">` : `<i class="fi fi-rr-user text-xs text-slate-300"></i>`}
                             </div>
-                            <div class="flex flex-col">
-                                <span class="font-bold text-slate-900">${c.name} <span class="text-[10px] text-brand-primary opacity-60 ml-1 font-bold">#${c.chestNo}</span></span>
-                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${c.team}</span>
+                            <div class="flex flex-col min-w-0">
+                                <span class="font-bold text-slate-900 truncate">${c.name} <span class="text-[10px] text-brand-primary opacity-60 ml-1 font-bold">#${c.chestNo}</span></span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest truncate">${c.team}</span>
                             </div>
                         </div>
-                        <i class="fi fi-rr-arrow-small-right text-slate-300"></i>
+                        <i class="fi fi-rr-arrow-small-right text-slate-300 ml-2"></i>
                     </div>
                 `).join('');
                 suggestions.classList.remove('hidden');
@@ -1193,25 +1209,25 @@
             area.innerHTML = `
             <div class="bg-white border border-slate-200 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 space-y-8 sm:space-y-12 animate-reveal shadow-xl shadow-slate-200/20">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-b border-slate-100 pb-12">
-                    <div class="flex items-center gap-8">
-                        <div class="w-24 h-24 bg-white border-2 border-slate-100 rounded-[2.5rem] flex items-center justify-center overflow-hidden shadow-lg shadow-slate-200/50">
-                            ${cand.imageUrl ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">` : `<i class="fi fi-rr-user text-4xl text-slate-100"></i>`}
+                    <div class="flex items-center gap-4 sm:gap-8 w-full">
+                        <div class="w-20 h-20 sm:w-24 sm:h-24 bg-white border-2 border-slate-100 rounded-2xl sm:rounded-[2.5rem] flex items-center justify-center overflow-hidden shadow-lg shadow-slate-200/50 shrink-0">
+                            ${cand.imageUrl ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">` : `<i class="fi fi-rr-user text-3xl sm:text-4xl text-slate-100"></i>`}
                         </div>
-                        <div class="space-y-1">
-                            <h3 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+                        <div class="space-y-1 min-w-0">
+                            <h3 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight break-words">
                                 ${cand.name}
-                                <span class="text-xl sm:text-2xl text-brand-primary opacity-50 ml-2">#${cand.chestNo}</span>
+                                <span class="text-lg sm:text-2xl text-brand-primary opacity-50 ml-1 sm:ml-2">#${cand.chestNo}</span>
                             </h3>
-                            <div class="flex flex-wrap items-center gap-3">
-                                <span class="px-3 py-1 bg-brand-primary/10 text-brand-primary rounded-full text-[10px] font-black uppercase tracking-widest">${cand.team}</span>
-                                <span class="w-1.5 h-1.5 bg-slate-200 rounded-full"></span>
-                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${cand.category || 'General'} | ${cand.gender || 'Common'}</span>
+                            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                                <span class="px-3 py-1 bg-brand-primary/10 text-brand-primary rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest">${cand.team}</span>
+                                <span class="w-1.5 h-1.5 bg-slate-200 rounded-full hidden sm:block"></span>
+                                <span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest">${cand.category || 'General'} | ${cand.gender || 'Common'}</span>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-slate-50 px-8 py-6 rounded-3xl text-center md:text-right border border-slate-100">
+                    <div class="bg-slate-50 px-8 py-6 rounded-3xl text-center md:text-right border border-slate-100 w-full md:w-auto">
                         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Accumulated Points</p>
-                        <p class="text-6xl font-black text-brand-primary tracking-tighter">${total.toFixed(1)}</p>
+                        <p class="text-5xl sm:text-6xl font-black text-brand-primary tracking-tighter">${total.toFixed(1)}</p>
                     </div>
                 </div>
 
@@ -1236,39 +1252,42 @@
                 else if (pos === 3) posColor = 'bg-orange-50 text-orange-600 border border-orange-100';
 
                 return `
-                                 <div class="result-card-premium p-4 sm:p-6 flex items-center justify-between gap-4">
-                                     <div class="flex items-center gap-4 sm:gap-6 flex-1 min-w-0">
+                                 <div class="result-card-premium p-3 sm:p-6 flex items-center justify-between gap-2 sm:gap-4">
+                                     <div class="flex items-center gap-3 sm:gap-6 flex-1 min-w-0">
                                          <!-- Photo Box -->
-                                         <div class="chest-box-premium shrink-0 overflow-hidden flex items-center justify-center">
+                                         <div class="chest-box-premium shrink-0 overflow-hidden flex items-center justify-center !w-11 !h-11 sm:!w-14 sm:!h-14">
                                              ${cand.imageUrl ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">` : `<i class="fi fi-rr-user text-xl text-slate-200"></i>`}
                                          </div>
                                          <div class="min-w-0 flex-1">
-                                             <p class="text-base sm:text-lg font-black text-slate-800 tracking-tight leading-tight mb-1 truncate">
+                                             <p class="text-sm sm:text-lg font-black text-slate-800 tracking-tight leading-tight mb-0.5 truncate">
                                                 ${p.name}
-                                                <span class="text-xs sm:text-sm text-brand-primary opacity-50 ml-1 font-bold">#${r.chestNo || '--'}</span>
+                                                <span class="text-[9px] sm:text-sm text-brand-primary opacity-50 ml-0.5 font-bold">#${r.chestNo || '--'}</span>
                                              </p>
-                                             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${p.section || ''}</p>
-                                         </div>
-
-                                         <!-- Rank & Grade -->
-                                         <div class="hidden sm:flex flex-col items-end shrink-0 px-4">
-                                             <span class="text-xl font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} leading-none mb-1">${posDisplay || '--'}</span>
-                                             <span class="text-[10px] font-black text-brand-secondary uppercase tracking-widest">${grade || ''}</span>
+                                             <p class="text-[8px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest truncate">${p.section || ''}</p>
                                          </div>
                                      </div>
-                                     <div class="flex items-center gap-4 sm:gap-8 shrink-0">
-                                         <!-- Mobile Rank -->
-                                         <div class="flex sm:hidden flex-col items-end shrink-0">
-                                             <span class="text-base font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} leading-none mb-1">${posDisplay || '--'}</span>
-                                             <span class="text-[8px] font-black text-brand-secondary uppercase tracking-widest">${grade || ''}</span>
+                                     <div class="flex items-center gap-4">
+                                         <div class="hidden sm:flex items-center gap-3 px-4 border-r border-slate-100 mr-2">
+                                             <span class="text-2xl font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} leading-none">${posDisplay || '--'}</span>
+                                             ${grade ? `<span class="text-slate-300 font-light text-2xl">|</span> <span class="text-xl font-black text-brand-secondary uppercase tracking-widest">${grade}</span>` : ''}
                                          </div>
+                                         <button onclick="event.stopPropagation(); downloadAchievement('${p.name}', '${cand.name}', '${cand.imageUrl || ''}', '${posDisplay}', '${grade}', '${r.chestNo}', '${cand.team}')" 
+                                            class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-brand-primary/5 hover:bg-brand-primary hover:text-white text-brand-primary flex items-center justify-center transition-all group/dl shadow-sm" title="Download Achievement Poster">
+                                            <i class="fi fi-rr-download text-base sm:text-lg"></i>
+                                         </button>
+                                      </div>
 
-                                         <div class="vertical-divider"></div>
+                                      <!-- Mobile Rank -->
+                                      <div class="flex sm:hidden items-center gap-1.5 shrink-0 px-2">
+                                          <span class="text-base font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} leading-none">${posDisplay || '--'}</span>
+                                          ${grade ? `<span class="text-slate-300 font-light">|</span> <span class="text-[10px] font-black text-brand-secondary uppercase tracking-widest">${grade}</span>` : ''}
+                                      </div>
+                                      <div class="vertical-divider h-6 sm:h-10 opacity-50 sm:opacity-100"></div>
 
                                          <!-- Points -->
-                                         <div class="text-right min-w-[60px]">
-                                             <p class="text-2xl sm:text-3xl font-black text-brand-primary leading-none mb-1">${r.totalPoints || r.points}</p>
-                                             <p class="text-[8px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest">Points</p>
+                                         <div class="text-right min-w-[45px] sm:min-w-[60px]">
+                                             <p class="text-lg sm:text-3xl font-black text-brand-primary leading-none mb-0.5">${r.totalPoints || r.points}</p>
+                                             <p class="text-[7px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pts</p>
                                          </div>
                                      </div>
                                  </div>`;
@@ -1330,21 +1349,99 @@
             return total || 1;
         }
 
-        // Listeners for sub-searches
-        document.getElementById('search-program').addEventListener('input', render);
-        document.getElementById('program-section-filter').addEventListener('change', render);
-        document.getElementById('search-candidate').addEventListener('input', render);
+        async function downloadAchievement(progName, candName, photoUrl, pos, grade, chestNo, team) {
+            const posterDiv = document.createElement('div');
+            posterDiv.style.position = 'fixed';
+            posterDiv.style.left = '-9999px';
+            posterDiv.style.top = '0';
+            
+            const canvasWidth = 1080;
+            const canvasHeight = 1920; 
+            const festConfig = window._festConfig || {};
+            const festName = festConfig.name || "FESTIVAL 2026";
+            const festLogo = festConfig.logo502 || festConfig.logo192 || festConfig.logo || '../logo-512.svg';
 
-        // Listeners
-        document.getElementById('section-filter').addEventListener('change', render);
-        document.getElementById('search-team').addEventListener('input', render);
+            // Premium Self-Generated Design
+            let htmlContent = `
+                <div id="achievement-poster" style="width: ${canvasWidth}px; height: ${canvasHeight}px; background: #ffffff; position: relative; overflow: hidden; font-family: 'Outfit', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    
+                    <!-- Background Elements -->
+                    <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #134E8E 0%, #0F172A 100%);"></div>
+                    <div style="position: absolute; top: -10%; right: -10%; width: 60%; height: 40%; background: radial-gradient(circle, rgba(255,179,63,0.1) 0%, transparent 70%); border-radius: 50%;"></div>
+                    <div style="position: absolute; bottom: -5%; left: -5%; width: 50%; height: 30%; background: radial-gradient(circle, rgba(19,78,142,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
+                    
+                    <!-- Border Frame -->
+                    <div style="position: absolute; inset: 40px; border: 2px solid rgba(255,255,255,0.1); border-radius: 40px;"></div>
 
-        // Global click to close suggestions
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.group')) {
-                document.getElementById('search-suggestions').classList.add('hidden');
+                    <!-- Header Section -->
+                    <div style="position: absolute; top: 100px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                        <img src="${festLogo}" style="width: 140px; height: 140px; object-fit: contain;">
+                        <h2 style="color: white; font-size: 32px; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase; margin: 0; opacity: 0.8;">${festName}</h2>
+                    </div>
+
+                    <!-- Main Content Card -->
+                    <div style="position: relative; width: 85%; background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 60px; padding: 120px 40px 80px 40px; display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 100px;">
+                        
+                        <!-- Candidate Photo -->
+                        <div style="position: absolute; top: -120px; width: 240px; height: 240px; border-radius: 50%; border: 8px solid #ffffff; box-shadow: 0 20px 50px rgba(0,0,0,0.3); overflow: hidden; background: #f1f5f9;">
+                            ${photoUrl ? `<img src="${photoUrl}" style="width: 100%; height: 100%; object-fit: cover;">` : `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #134E8E; color: white; font-size: 80px; font-weight: 900;">${candName.charAt(0)}</div>`}
+                        </div>
+
+                        <!-- Badge -->
+                        <div style="background: #FFB33F; color: #134E8E; padding: 12px 40px; border-radius: 100px; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 40px;">
+                            Official Recognition
+                        </div>
+
+                        <h1 style="color: white; font-size: 72px; font-weight: 900; margin: 0 0 20px 0; line-height: 1.1;">${candName}</h1>
+                        <p style="color: #94a3b8; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 60px 0;">CHEST NO: ${chestNo || '--'} | ${team || '--'}</p>
+
+                        <!-- Rank Display -->
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 60px;">
+                            <div style="font-size: 110px; font-weight: 900; background: linear-gradient(to bottom, #FFD700, #FFB33F); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;">
+                                ${pos || '--'}
+                            </div>
+                            <div style="color: white; font-size: 32px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;">${grade ? `With ${grade} Grade` : 'Achievement'}</div>
+                        </div>
+
+                        <!-- Divider -->
+                        <div style="width: 100px; height: 4px; background: #FFB33F; border-radius: 2px; margin-bottom: 40px;"></div>
+
+                        <p style="color: #cbd5e1; font-size: 28px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">For Outstanding Performance In</p>
+                        <h3 style="color: white; font-size: 42px; font-weight: 900; margin: 15px 0 0 0;">${progName}</h3>
+                    </div>
+
+                    <!-- Footer -->
+                    <div style="position: absolute; bottom: 80px; width: 100%; display: flex; justify-content: center;">
+                        <p style="color: rgba(255,255,255,0.4); font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em;">&copy; 2026 Festival Management Official Merit</p>
+                    </div>
+
+                </div>
+            `;
+            
+            posterDiv.innerHTML = htmlContent;
+            document.body.appendChild(posterDiv);
+            
+            // Allow fonts and images to load
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            try {
+                const canvas = await html2canvas(document.getElementById('achievement-poster'), {
+                    useCORS: true,
+                    scale: 1,
+                    backgroundColor: null
+                });
+                
+                const link = document.createElement('a');
+                link.download = `Achievement_${candName.replace(/\s+/g, '_')}_${progName.replace(/\s+/g, '_')}.png`;
+                link.href = canvas.toDataURL('image/png', 1.0);
+                link.click();
+            } catch (err) {
+                console.error("Self-generated poster failed:", err);
+                alert("Failed to generate poster. Please try again.");
+            } finally {
+                document.body.removeChild(posterDiv);
             }
-        });
+        }
 
         // Init
         initSync();

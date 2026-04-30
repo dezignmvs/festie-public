@@ -600,6 +600,9 @@
         };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        
+        // Fix for "Could not reach Cloud Firestore backend" in certain networks
+        db.settings({ experimentalForceLongPolling: true });
 
         // ════════════════════════════════════════════════════════════
         // 1. DYNAMIC UI CONTROLS
@@ -653,7 +656,9 @@
                         document.querySelectorAll('#fest-name, .fest-name-display').forEach(el => el.innerText = data.name);
                         document.title = data.name + " 2026 — Official Portal";
                     }
-                    if (data.logo) document.getElementById('nav-logo').src = data.logo;
+                    
+                    const mainLogo = data.logo502 || data.logo192 || data.logo;
+                    if (mainLogo) document.getElementById('nav-logo').src = mainLogo;
                 }
             });
 
