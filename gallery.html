@@ -130,10 +130,16 @@
         db.collection('config').doc('festData').onSnapshot(doc => {
             if (doc.exists) {
                 const data = doc.data();
-                if (data.name) document.querySelectorAll('#fest-name').forEach(el => el.innerText = data.name);
+                if (data.name) {
+                    document.querySelectorAll('#fest-name').forEach(el => el.innerText = data.name);
+                    document.title = "Gallery — " + data.name;
+                }
                 
-                const mainLogo = data.logo502 || data.logo192 || data.logo;
-                if (mainLogo) document.getElementById('nav-logo').src = mainLogo;
+                const mainLogo = data.logo512 || data.logo502 || data.logo192 || data.logo;
+                if (mainLogo) {
+                    const navLogo = document.getElementById('nav-logo');
+                    if (navLogo) navLogo.src = mainLogo;
+                }
             }
         });
 

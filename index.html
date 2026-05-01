@@ -283,8 +283,7 @@
                             <p class="text-xs font-bold text-slate-800">Grand Finale Countdown</p>
                         </div>
                         <p id="countdown-display" class="text-[14px] font-black text-brand-primary tabular-nums">00:00:00:00</p>
-                        <p class="text-[10px] text-slate-400 font-medium">Join us for the ultimate showdown of talent
-                            and creativity.</p>
+                        
                     </div>
                 </div>
             </div>
@@ -652,13 +651,17 @@
             db.collection('config').doc('festData').onSnapshot(doc => {
                 if (doc.exists) {
                     const data = doc.data();
+                    window._festConfig = data;
                     if (data.name) {
                         document.querySelectorAll('#fest-name, .fest-name-display').forEach(el => el.innerText = data.name);
                         document.title = data.name + " 2026 — Official Portal";
                     }
                     
-                    const mainLogo = data.logo502 || data.logo192 || data.logo;
-                    if (mainLogo) document.getElementById('nav-logo').src = mainLogo;
+                    const mainLogo = data.logo512 || data.logo502 || data.logo192 || data.logo;
+                    if (mainLogo) {
+                        const navLogo = document.getElementById('nav-logo');
+                        if (navLogo) navLogo.src = mainLogo;
+                    }
                 }
             });
 
@@ -958,9 +961,10 @@
                     overlay = document.createElement('div');
                     overlay.id = 'maintenance-overlay';
                     overlay.className = 'fixed inset-0 bg-white z-[1000] flex flex-col items-center justify-center p-8 text-center';
+                    const mainLogo = window._festConfig?.logo512 || window._festConfig?.logo502 || window._festConfig?.logo192 || window._festConfig?.logo || '../logo-512.svg';
                     overlay.innerHTML = `
                         <div class="w-32 h-32 bg-slate-50 rounded-[3rem] flex items-center justify-center mb-8 border border-slate-100">
-                            <img src="../logo-512.svg" class="w-16 h-16 grayscale opacity-30">
+                            <img src="${mainLogo}" class="w-16 h-16 grayscale opacity-30">
                         </div>
                         <h1 class="text-4xl font-black text-slate-900 mb-4 tracking-tight">Under Maintenance</h1>
                         <p class="text-slate-500 max-w-md font-medium leading-relaxed">We're currently updating the festival portal. Please check back later for the latest scores and moments.</p>

@@ -44,6 +44,16 @@
             scroll-behavior: smooth;
         }
 
+        /* Responsive spacing for Mobile Nav Bar */
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: 80px; /* Prevents content from hiding behind mobile bottom nav */
+            }
+            .mobile-safe-pb {
+                padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+            }
+        }
+
         .minimal-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -115,10 +125,15 @@
             .responsive-table thead {
                 display: none;
             }
-            .responsive-table, .responsive-table tbody, .responsive-table tr, .responsive-table td {
+
+            .responsive-table,
+            .responsive-table tbody,
+            .responsive-table tr,
+            .responsive-table td {
                 display: block;
                 width: 100%;
             }
+
             .responsive-table tr {
                 margin-bottom: 1rem;
                 border: 1px solid #e2e8f0;
@@ -126,6 +141,7 @@
                 padding: 1rem;
                 background: white;
             }
+
             .responsive-table td {
                 text-align: right;
                 padding: 0.5rem 0;
@@ -134,9 +150,11 @@
                 justify-content: space-between;
                 align-items: center;
             }
+
             .responsive-table td:last-child {
                 border-bottom: none;
             }
+
             .responsive-table td::before {
                 content: attr(data-label);
                 font-weight: 800;
@@ -150,6 +168,7 @@
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
+
         .no-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
@@ -219,7 +238,7 @@
         .winner-item-premium:hover {
             background: #ffffff;
             border-color: #134E8E20;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         }
 
         /* Podium Styles */
@@ -231,6 +250,7 @@
             padding: 20px 0;
             margin-bottom: 12px;
         }
+
         .podium-item {
             display: flex;
             flex-direction: column;
@@ -238,21 +258,24 @@
             text-align: center;
             width: 70px;
         }
+
         .podium-avatar {
             width: 44px;
             height: 44px;
             border-radius: 16px;
             border: 2px solid white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             background: #f1f5f9;
             margin-bottom: 8px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .podium-item:hover .podium-avatar {
             transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
         }
+
         .podium-rank-box {
             width: 100%;
             border-radius: 8px 8px 4px 4px;
@@ -265,10 +288,22 @@
             color: white;
             padding-top: 4px;
         }
-        .podium-1 { height: 56px; background: #134E8E; }
-        .podium-2 { height: 42px; background: #FFB33F; }
-        .podium-3 { height: 32px; background: #94a3b8; }
-        
+
+        .podium-1 {
+            height: 56px;
+            background: #134E8E;
+        }
+
+        .podium-2 {
+            height: 42px;
+            background: #FFB33F;
+        }
+
+        .podium-3 {
+            height: 32px;
+            background: #94a3b8;
+        }
+
         .podium-pts {
             font-size: 8px;
             opacity: 0.8;
@@ -288,7 +323,11 @@
             letter-spacing: 0.025em;
         }
 
-        .podium-1 .podium-avatar { width: 52px; height: 52px; border-color: #134E8E20; }
+        .podium-1 .podium-avatar {
+            width: 52px;
+            height: 52px;
+            border-color: #134E8E20;
+        }
     </style>
 </head>
 
@@ -296,7 +335,7 @@
     class="bg-white text-slate-900 font-sans selection:bg-brand-primary/10 selection:text-brand-primary min-h-screen flex flex-col">
 
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 px-4 py-4 sm:px-8 bg-white/80  border-b border-slate-200">
+    <nav class="sticky top-0 z-50 px-4 py-4 sm:px-8 bg-white/80 border-b border-slate-200 backdrop-blur-md">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-3 group">
                 <div class="w-9 h-9 bg-brand-primary rounded-xl flex items-center justify-center">
@@ -310,11 +349,13 @@
                 </div>
             </a>
             <a href="index.html"
-                class="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-brand-primary transition-all">
+                class="hidden md:flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-brand-primary transition-all">
                 <i class="fi fi-rr-arrow-left"></i> Back to Home
             </a>
         </div>
-    </nav> <!-- Header -->
+    </nav> 
+    
+    <!-- Header -->
     <header class="py-6 sm:py-10 bg-white border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
@@ -336,15 +377,28 @@
                     </div>
                 </div>
 
-                <div class="flex items-center bg-slate-100 p-1 rounded-xl overflow-x-auto no-scrollbar max-w-full">
-                    <button onclick="switchTab('team')" id="tab-team"
-                        class="px-5 py-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all bg-white text-brand-primary shadow-sm whitespace-nowrap">Team</button>
-                    <button onclick="switchTab('program')" id="tab-program"
-                        class="px-5 py-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all text-slate-700 font-medium hover:text-slate-700 whitespace-nowrap">Program</button>
-                    <button onclick="switchTab('candidate')" id="tab-candidate"
-                        class="px-5 py-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all text-slate-700 font-medium hover:text-slate-700 whitespace-nowrap">Candidates</button>
-                    <button onclick="switchTab('search')" id="tab-search"
-                        class="px-5 py-2 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-all text-slate-700 font-medium hover:text-slate-700 whitespace-nowrap">Search</button>
+                <!-- Responsive Tab System -->
+                <div class="fixed bottom-0 left-0 right-0 z-[100] bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.08)] border-t border-slate-100 flex justify-around items-center px-2 py-2 mobile-safe-pb md:static md:w-auto md:bg-slate-100 md:border-none md:shadow-none md:p-1 md:rounded-xl md:justify-start md:pb-1">
+                    
+                    <button onclick="switchTab('team')" id="tab-team" class="tab-btn active group flex flex-col items-center justify-center w-full md:w-auto py-2 md:py-2 md:px-5 transition-all md:rounded-xl md:bg-transparent md:group-[.active]:bg-white md:group-[.active]:shadow-sm">
+                        <i class="fi fi-rr-users text-xl md:hidden mb-1 text-slate-400 group-[.active]:text-brand-primary transition-colors"></i>
+                        <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 group-[.active]:text-brand-primary md:text-slate-600 md:group-[.active]:text-brand-primary whitespace-nowrap transition-colors">Team</span>
+                    </button>
+                
+                    <button onclick="switchTab('program')" id="tab-program" class="tab-btn group flex flex-col items-center justify-center w-full md:w-auto py-2 md:py-2 md:px-5 transition-all md:rounded-xl md:bg-transparent md:group-[.active]:bg-white md:group-[.active]:shadow-sm">
+                        <i class="fi fi-rr-apps text-xl md:hidden mb-1 text-slate-400 group-[.active]:text-brand-primary transition-colors"></i>
+                        <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 group-[.active]:text-brand-primary md:text-slate-600 md:group-[.active]:text-brand-primary whitespace-nowrap transition-colors">Program</span>
+                    </button>
+                
+                    <button onclick="switchTab('candidate')" id="tab-candidate" class="tab-btn group flex flex-col items-center justify-center w-full md:w-auto py-2 md:py-2 md:px-5 transition-all md:rounded-xl md:bg-transparent md:group-[.active]:bg-white md:group-[.active]:shadow-sm">
+                        <i class="fi fi-rr-id-badge text-xl md:hidden mb-1 text-slate-400 group-[.active]:text-brand-primary transition-colors"></i>
+                        <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 group-[.active]:text-brand-primary md:text-slate-600 md:group-[.active]:text-brand-primary whitespace-nowrap transition-colors">Candidates</span>
+                    </button>
+                
+                    <button onclick="switchTab('search')" id="tab-search" class="tab-btn group flex flex-col items-center justify-center w-full md:w-auto py-2 md:py-2 md:px-5 transition-all md:rounded-xl md:bg-transparent md:group-[.active]:bg-white md:group-[.active]:shadow-sm">
+                        <i class="fi fi-rr-search text-xl md:hidden mb-1 text-slate-400 group-[.active]:text-brand-primary transition-colors"></i>
+                        <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 group-[.active]:text-brand-primary md:text-slate-600 md:group-[.active]:text-brand-primary whitespace-nowrap transition-colors">Search</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -431,7 +485,8 @@
                         </div>
                         <div
                             class="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                            <span class="w-2 h-2 bg-brand-primary rounded-full animate-pulse"></span> Only Published results
+                            <span class="w-2 h-2 bg-brand-primary rounded-full animate-pulse"></span> Only Published
+                            results
                         </div>
                     </div>
                     <div id="program-results-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -442,7 +497,8 @@
                 <!-- Program Detail View -->
                 <div id="program-detail-view" class="hidden">
                     <div class="mb-8">
-                        <button onclick="backToProgramList()" class="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-bold text-xs transition-all uppercase tracking-widest">
+                        <button onclick="backToProgramList()"
+                            class="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-bold text-xs transition-all uppercase tracking-widest">
                             <i class="fi fi-rr-arrow-left"></i> Back to Results
                         </button>
                     </div>
@@ -538,7 +594,7 @@
                     </div>
 
                     <div id="chest-result-area" class="animate-reveal">
-                        <!-- Result Card -->
+                        <!-- Default Search Placeholder -->
                         <div class="py-20 text-center space-y-6">
                             <div
                                 class="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center mx-auto text-slate-200">
@@ -552,7 +608,7 @@
             </div>
 
             <!-- Note -->
-            <div class="mt-12 p-6 rounded-xl bg-white border border-slate-200 flex items-start gap-4">
+            <div class="mt-12 p-6 rounded-xl bg-white border border-slate-200 flex items-start gap-4 hidden md:flex">
                 <div class="w-9 h-9 bg-slate-200 rounded-xl flex items-center justify-center shrink-0">
                     <i class="fi fi-rr-info text-slate-600"></i>
                 </div>
@@ -567,7 +623,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="py-12 bg-white border-t border-slate-200">
+    <footer class="py-12 bg-white border-t border-slate-200 hidden md:block">
         <div class="max-w-7xl mx-auto px-8 flex flex-col sm:flex-row justify-between items-center gap-6">
             <p class="text-sm font-medium text-slate-400">© 2026 Festival Management Official Results Portal.</p>
             <div class="flex items-center gap-4">
@@ -593,12 +649,12 @@
         };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        
+
         // Fix for "Could not reach Cloud Firestore backend" in certain networks
         db.settings({ experimentalForceLongPolling: true });
 
-        const _data = { teams: [], programs: [], results: [], negMarks: [], sections: [], candidates: [] };
-        let _isLoaded = { teams: false, programs: false, results: false, negMarks: false, sections: false, candidates: false };
+        const _data = { teams: [], programs: [], results: [], negMarks: [], sections: [], candidates: [], posterTemplate: null };
+        let _isLoaded = { teams: false, programs: false, results: false, negMarks: false, sections: false, candidates: false, posterTemplate: false };
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-view').forEach(v => v.classList.add('hidden'));
@@ -609,13 +665,12 @@
                 document.getElementById('program-detail-view')?.classList.add('hidden');
             }
 
-            document.querySelectorAll('header button').forEach(b => {
-                b.classList.remove('bg-white', 'text-brand-primary', 'shadow-sm');
-                b.classList.add('text-slate-700', 'font-medium');
+            // Simplified styling logic for both desktop pill and mobile app-like bar
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active');
             });
             const activeTab = document.getElementById('tab-' + tabId);
-            activeTab.classList.add('bg-white', 'text-brand-primary', 'shadow-sm');
-            activeTab.classList.remove('text-slate-700', 'font-medium');
+            activeTab.classList.add('active');
 
             render();
         }
@@ -629,7 +684,7 @@
                         window.location.href = 'index.html';
                     }
                 }
-            });
+            }, err => console.warn("Website config sync error:", err));
 
             // Fest Config
             db.collection('config').doc('festData').onSnapshot(doc => {
@@ -637,11 +692,11 @@
                     const data = doc.data();
                     window._festConfig = data; // Store for poster generation
                     if (data.name) document.querySelectorAll('#fest-name').forEach(el => el.innerText = data.name);
-                    
-                    const mainLogo = data.logo502 || data.logo192 || data.logo;
+
+                    const mainLogo = data.logo512 || data.logo502 || data.logo192 || data.logo;
                     if (mainLogo) document.getElementById('nav-logo').src = mainLogo;
                 }
-            });
+            }, err => console.warn("Fest config sync error:", err));
 
             // Sections for filter
             db.collection('sections').where('isActive', '==', true).onSnapshot(snap => {
@@ -649,17 +704,30 @@
                 const teamSelect = document.getElementById('section-filter');
                 const progSelect = document.getElementById('program-section-filter');
 
-                // Clear existing options (except "All")
-                while (teamSelect.options.length > 1) teamSelect.remove(1);
-                if (progSelect) while (progSelect.options.length > 1) progSelect.remove(1);
+                if (teamSelect) {
+                    while (teamSelect.options.length > 1) teamSelect.remove(1);
+                    _data.sections.forEach(s => {
+                        const opt = document.createElement('option');
+                        opt.value = s;
+                        opt.innerText = s;
+                        teamSelect.appendChild(opt.cloneNode(true));
+                    });
+                }
+                
+                if (progSelect) {
+                    while (progSelect.options.length > 1) progSelect.remove(1);
+                    _data.sections.forEach(s => {
+                        const opt = document.createElement('option');
+                        opt.value = s;
+                        opt.innerText = s;
+                        progSelect.appendChild(opt);
+                    });
+                }
 
-                _data.sections.forEach(s => {
-                    const opt = document.createElement('option');
-                    opt.value = s;
-                    opt.innerText = s;
-                    teamSelect.appendChild(opt.cloneNode(true));
-                    if (progSelect) progSelect.appendChild(opt);
-                });
+                _isLoaded.sections = true;
+                render();
+            }, err => {
+                console.warn("Sections sync error:", err);
                 _isLoaded.sections = true;
                 render();
             });
@@ -669,10 +737,18 @@
                 _data.teams = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                 _isLoaded.teams = true;
                 render();
+            }, err => {
+                console.warn("Teams sync error:", err);
+                _isLoaded.teams = true;
+                render();
             });
 
             db.collection('programs').onSnapshot(snap => {
                 _data.programs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _isLoaded.programs = true;
+                render();
+            }, err => {
+                console.warn("Programs sync error:", err);
                 _isLoaded.programs = true;
                 render();
             });
@@ -681,27 +757,66 @@
                 _data.results = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                 _isLoaded.results = true;
                 render();
+            }, err => {
+                console.warn("Results sync error:", err);
+                _isLoaded.results = true;
+                render();
             });
 
-            db.collection('negativeMarks').where('status', '==', 'Active').onSnapshot(snap => {
-                _data.negMarks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            db.collection('negMarks').onSnapshot(snap => {
+                _data.negMarks = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                _isLoaded.negMarks = true;
+                render();
+            }, err => {
+                console.warn("NegMarks sync error:", err);
                 _isLoaded.negMarks = true;
                 render();
             });
 
             db.collection('candidates').onSnapshot(snap => {
-                _data.candidates = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _data.candidates = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                _isLoaded.candidates = true;
+                render();
+            }, err => {
+                console.warn("Candidates sync error:", err);
                 _isLoaded.candidates = true;
                 render();
             });
+
+            // Poster Template Config
+            db.collection('settings').doc('posterConfig').onSnapshot(doc => {
+                if (doc.exists) {
+                    _data.posterTemplate = doc.data();
+                    window._posterTemplate = _data.posterTemplate; // Keep global for download fn
+                }
+                _isLoaded.posterTemplate = true;
+                render();
+            }, err => {
+                console.warn("Poster Template sync error:", err);
+                _isLoaded.posterTemplate = true;
+                render();
+            });
         }
+
+        // --- Connectivity Status ---
+        window.addEventListener('online', () => {
+            showToast("<b>✅</b> Connection restored. Data syncing...");
+            document.body.classList.remove('is-offline');
+        });
+
+        window.addEventListener('offline', () => {
+            showToast("<b>⚠️</b> Connection lost. Working in offline mode.");
+            document.body.classList.add('is-offline');
+        });
 
         function render() {
             if (!Object.values(_isLoaded).every(v => v)) return;
 
             updateGlobalStats();
 
-            const activeTab = document.querySelector('header button.bg-white').id.replace('tab-', '');
+            const activeTabBtn = document.querySelector('.tab-btn.active');
+            if(!activeTabBtn) return;
+            const activeTab = activeTabBtn.id.replace('tab-', '');
 
             try {
                 if (activeTab === 'team') renderTeamTable();
@@ -714,7 +829,7 @@
 
         function updateGlobalStats() {
             const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
-            
+
             const teamStats = {};
             _data.teams.forEach(t => teamStats[t.name] = 0);
 
@@ -857,7 +972,7 @@
             container.innerHTML = publishedPrograms.map(p => {
                 const winners = _data.results.filter(r => r.programId === p.id)
                     .sort((a, b) => (parseInt(a.positionLabel) || 99) - (parseInt(b.positionLabel) || 99));
-                
+
                 // Get top 3 for podium
                 const top3 = {
                     1: winners.find(r => parseInt(r.positionLabel) === 1),
@@ -875,12 +990,12 @@
                             <div class="podium-rank-box podium-${pos}">${pos}</div>
                             <div class="podium-name">--</div>
                         </div>`;
-                    
+
                     const cand = candidateLookup[res.chestNo] || candidateLookup[res.candidateId] || {};
-                    const photoHtml = cand.imageUrl 
+                    const photoHtml = cand.imageUrl
                         ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">`
                         : `<i class="fi fi-rr-user text-xs text-slate-300"></i>`;
-                    
+
                     return `
                         <div class="podium-item">
                             <div class="podium-avatar">
@@ -894,39 +1009,46 @@
                         </div>`;
                 };
 
+                const template = _data.posterTemplate;
+                const cardStyle = (template && template.bgImage) 
+                    ? `style="background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${template.bgImage}); background-size: cover; background-position: center; border-color: rgba(19,78,142,0.1);"` 
+                    : '';
+
                 return `
-                <div onclick="viewProgramDetail('${p.id}')" class="program-card-premium group cursor-pointer">
-                    <div class="flex justify-between items-start gap-4 mb-2">
-                        <div class="min-w-0">
-                            <h4 class="text-lg font-black text-slate-900 leading-tight group-hover:text-brand-primary transition-colors truncate">
-                                ${p.name || 'Unknown'}
-                            </h4>
-                            <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">
-                                ${p.category || ''} ${p.type || ''}
-                            </p>
+                <div onclick="viewProgramDetail('${p.id}')" class="program-card-premium group cursor-pointer relative overflow-hidden" ${cardStyle}>
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start gap-4 mb-2">
+                            <div class="min-w-0">
+                                <h4 class="text-lg font-black text-slate-900 leading-tight group-hover:text-brand-primary transition-colors truncate">
+                                    ${p.name || 'Unknown'}
+                                </h4>
+                                <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">
+                                    ${p.category || ''} ${p.type || ''}
+                                </p>
+                            </div>
+                            <span class="px-2.5 py-1 bg-white/80 backdrop-blur-sm border border-slate-100 rounded-lg text-[9px] font-black text-slate-400 uppercase tracking-tighter shrink-0">
+                                ${p.section || 'GEN'}
+                            </span>
                         </div>
-                        <span class="px-2.5 py-1 bg-slate-50 rounded-lg text-[9px] font-black text-slate-400 uppercase tracking-tighter shrink-0">
-                            ${p.section || 'GEN'}
-                        </span>
-                    </div>
-
-                    <!-- Podium Layout -->
-                    <div class="podium-wrapper">
-                        ${getPodiumItem(2)}
-                        ${getPodiumItem(1)}
-                        ${getPodiumItem(3)}
-                    </div>
-
-                    <div class="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
-                        <span class="text-[9px] font-black text-slate-300 uppercase tracking-widest">Click for details</span>
-                        <div class="flex -space-x-2">
-                            ${winners.slice(0, 5).map(res => {
-                                const cand = candidateLookup[res.chestNo] || candidateLookup[res.candidateId] || {};
-                                return cand.imageUrl 
-                                    ? `<img src="${cand.imageUrl}" class="w-6 h-6 rounded-full border-2 border-white object-cover">`
-                                    : `<div class="w-6 h-6 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center"><i class="fi fi-rr-user text-[8px] text-slate-300"></i></div>`;
-                            }).join('')}
-                            ${winners.length > 5 ? `<div class="w-6 h-6 rounded-full border-2 border-white bg-brand-primary/10 flex items-center justify-center text-[8px] font-black text-brand-primary">+${winners.length - 5}</div>` : ''}
+    
+                        <!-- Podium Layout -->
+                        <div class="podium-wrapper">
+                            ${getPodiumItem(2)}
+                            ${getPodiumItem(1)}
+                            ${getPodiumItem(3)}
+                        </div>
+    
+                        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
+                            <span class="text-[9px] font-black text-slate-300 uppercase tracking-widest">Click for details</span>
+                            <div class="flex -space-x-2">
+                                ${winners.slice(0, 5).map(res => {
+                        const cand = candidateLookup[res.chestNo] || candidateLookup[res.candidateId] || {};
+                        return cand.imageUrl
+                            ? `<img src="${cand.imageUrl}" class="w-6 h-6 rounded-full border-2 border-white object-cover">`
+                            : `<div class="w-6 h-6 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center"><i class="fi fi-rr-user text-[8px] text-slate-300"></i></div>`;
+                    }).join('')}
+                                ${winners.length > 5 ? `<div class="w-6 h-6 rounded-full border-2 border-white bg-brand-primary/10 flex items-center justify-center text-[8px] font-black text-brand-primary">+${winners.length - 5}</div>` : ''}
+                            </div>
                         </div>
                     </div>
                 </div>`;
@@ -976,54 +1098,74 @@
                         </h4>
                         <div class="grid gap-3">
                             ${winners.map(res => {
-                                const pos = parseInt(res.positionLabel);
-                                const gradeRaw = res.gradeLabel || '';
-                                const grade = gradeRaw.split(' ')[0].split('(')[0].trim();
-                                const posSuffix = pos === 1 ? 'st' : (pos === 2 ? 'nd' : (pos === 3 ? 'rd' : 'th'));
-                                const posDisplay = pos ? `${pos}${posSuffix}` : '';
+                const pos = parseInt(res.positionLabel);
+                const gradeRaw = res.gradeLabel || '';
+                const grade = gradeRaw.split(' ')[0].split('(')[0].trim();
+                const posSuffix = pos === 1 ? 'st' : (pos === 2 ? 'nd' : (pos === 3 ? 'rd' : 'th'));
+                const posDisplay = pos ? `${pos}${posSuffix}` : '';
 
-                                const cand = candidateLookup[res.chestNo] || candidateLookup[res.candidateId] || {};
-                                const photoHtml = cand.imageUrl 
-                                    ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">`
-                                    : `<i class="fi fi-rr-user text-xl text-slate-200"></i>`;
+                const cand = candidateLookup[res.chestNo] || candidateLookup[res.candidateId] || {};
+                const photoHtml = cand.imageUrl
+                    ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">`
+                    : `<i class="fi fi-rr-user text-xl text-slate-200"></i>`;
 
-                                return `
-                                <div class="result-card-premium p-3 sm:p-6 flex items-center justify-between gap-2 sm:gap-6 hover:bg-slate-50/50 transition-all">
-                                    <div class="flex items-center gap-3 sm:gap-6 flex-1 min-w-0">
-                                        <div class="chest-box-premium shrink-0 overflow-hidden flex items-center justify-center border-slate-200 !w-11 !h-11 sm:!w-14 sm:!h-14 !rounded-xl sm:!rounded-2xl">
+                const template = _data.posterTemplate;
+                const cardStyle = (template && template.bgImage) 
+                    ? `style="background-image: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)), url(${template.bgImage}); background-size: cover; background-position: center;"` 
+                    : '';
+                const photoShape = (template && template.elements && template.elements.candidatePhoto) ? template.elements.candidatePhoto.shape : 'rounded';
+                const photoRadius = photoShape === 'circle' ? 'rounded-full' : (photoShape === 'rounded' ? 'rounded-xl sm:rounded-2xl' : 'rounded-none');
+                
+                const showChest = template ? (template.elements?.chestNo?.visible !== false) : true;
+                const showTeam = template ? (template.elements?.team?.visible !== false) : true;
+
+                return `
+                                <div class="result-card-premium p-4 sm:p-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 sm:gap-6 hover:bg-slate-50/50 transition-all relative overflow-hidden" ${cardStyle}>
+                                    <div class="flex items-center gap-4 sm:gap-6 flex-grow relative z-10">
+                                        <!-- Photo Box -->
+                                        <div class="chest-box-premium shrink-0 overflow-hidden flex items-center justify-center border-slate-200 !w-14 !h-14 sm:!w-16 sm:!h-16 ${photoRadius} shadow-sm bg-white">
                                             ${photoHtml}
                                         </div>
-                                        <div class="min-w-0 flex-1">
-                                            <p class="text-sm sm:text-lg font-black text-slate-800 tracking-tight leading-tight mb-0.5 truncate">
-                                                ${res.candidateName || res.name || 'Unknown'}
-                                                <span class="text-[9px] sm:text-sm text-brand-primary opacity-50 ml-0.5 font-bold">#${res.chestNo || '--'}</span>
-                                            </p>
-                                            <p class="text-[8px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest truncate">${res.teamName || res.team || '--'}</p>
-                                        </div>
                                         
-                                        <div class="hidden sm:flex items-center gap-3 shrink-0 px-6 border-r border-slate-100">
-                                            <span class="text-2xl font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} leading-none">${posDisplay || '--'}</span>
-                                            ${grade ? `<span class="text-slate-300 font-light text-2xl">|</span> <span class="text-xl font-black text-brand-secondary uppercase tracking-widest">${grade}</span>` : ''}
+                                        <!-- Candidate Info -->
+                                        <div class="flex-grow space-y-1">
+                                            <p class="text-base sm:text-xl font-black text-slate-900 leading-tight tracking-tight">
+                                                ${res.candidateName || res.name || 'Unknown'}
+                                                ${showChest ? `<span class="text-[10px] sm:text-sm text-brand-primary opacity-60 ml-1 font-bold">#${res.chestNo || '--'}</span>` : ''}
+                                            </p>
+                                            <div class="flex flex-wrap items-center gap-2">
+                                                ${showTeam ? `<span class="px-2 py-0.5 bg-brand-primary/5 text-brand-primary rounded-md text-[9px] sm:text-[11px] font-black uppercase tracking-widest">${res.teamName || res.team || '--'}</span>` : ''}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-3">
-                                        <button onclick="event.stopPropagation(); downloadAchievement('${program.name}', '${res.candidateName || res.name}', '${cand.imageUrl || ''}', '${posDisplay}', '${grade}', '${res.chestNo}', '${res.teamName || res.team}')" 
-                                            class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-brand-primary/5 hover:bg-brand-primary hover:text-white text-brand-primary flex items-center justify-center transition-all group/dl shadow-sm" title="Download Achievement Poster">
-                                            <i class="fi fi-rr-download text-base sm:text-lg"></i>
-                                        </button>
-                                     </div>
 
-                                    <div class="flex sm:hidden items-center gap-1.5 shrink-0 px-2">
-                                        <span class="text-base font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} leading-none">${posDisplay || '--'}</span>
-                                        ${grade ? `<span class="text-slate-300 font-light">|</span> <span class="text-[10px] font-black text-brand-secondary uppercase tracking-widest">${grade}</span>` : ''}
-                                    </div>
-                                    <div class="vertical-divider h-6 sm:h-10 opacity-50 sm:opacity-100"></div>
-                                    <div class="text-right min-w-[45px] sm:min-w-[70px]">
-                                        <p class="text-lg sm:text-3xl font-black text-brand-primary leading-none mb-0.5">${res.totalPoints || res.points || 0}</p>
-                                        <p class="text-[7px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pts</p>
+                                    <div class="flex items-center justify-between sm:justify-end gap-3 sm:gap-6 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100 shrink-0 relative z-10">
+                                        <!-- Results Info -->
+                                        <div class="flex items-center gap-4">
+                                            <div class="flex flex-col items-center sm:items-end">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="text-xl sm:text-3xl font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-700'} leading-none tracking-tighter">${posDisplay || '--'}</span>
+                                                    ${grade ? `<span class="h-6 w-px bg-slate-200 hidden sm:block"></span><span class="text-lg sm:text-2xl font-black text-brand-secondary uppercase leading-none">${grade}</span>` : ''}
+                                                </div>
+                                                <span class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Achievement</span>
+                                            </div>
+
+                                            <div class="h-10 w-px bg-slate-100 mx-1 sm:mx-2"></div>
+
+                                            <div class="text-right">
+                                                <p class="text-2xl sm:text-4xl font-black text-brand-primary leading-none tracking-tighter">${res.totalPoints || res.points || 0}</p>
+                                                <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Points</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Download Button -->
+                                        <button onclick="event.stopPropagation(); downloadAchievement('${program.name.replace(/'/g, "\\'")}', '${(res.candidateName || res.name || '').replace(/'/g, "\\'")}', '${cand.imageUrl || ''}', '${posDisplay}', '${grade}', '${res.chestNo}', '${(res.teamName || res.team || '').replace(/'/g, "\\'")}', '${(program.category || cand.category || '').replace(/'/g, "\\'")}')" 
+                                            class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-brand-primary text-white hover:scale-105 active:scale-95 flex items-center justify-center transition-all shadow-lg shadow-brand-primary/20 shrink-0" title="Download Achievement Poster">
+                                            <i class="fi fi-rr-download text-lg sm:text-xl"></i>
+                                        </button>
                                     </div>
                                 </div>`;
-                            }).join('') || `<p class="py-12 text-center text-slate-400 font-bold">No participants found.</p>`}
+            }).join('') || `<p class="py-12 text-center text-slate-400 font-bold">No participants found.</p>`}
                         </div>
                     </div>
                 </div>
@@ -1108,7 +1250,7 @@
                 const sectionsDisplay = Array.from(c.sections).join(', ') || '--';
 
                 const cand = candidateRefMap[c.chestNo] || candidateRefMap[c.id] || {};
-                const avatarHtml = cand.imageUrl 
+                const avatarHtml = cand.imageUrl
                     ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">`
                     : `<span class="text-[10px] font-bold text-slate-400">${c.name.charAt(0)}</span>`;
 
@@ -1137,6 +1279,7 @@
             document.getElementById('search-chest').value = chestNo;
             switchTab('search');
             searchCreative();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         let searchTimeout = null;
@@ -1206,92 +1349,113 @@
             const programMap = {};
             _data.programs.forEach(p => programMap[p.id] = p);
 
+            // Refactored Search Result UI: Robust Grid + Flex-row wrapping to solve layout overlapping
             area.innerHTML = `
-            <div class="bg-white border border-slate-200 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-12 space-y-8 sm:space-y-12 animate-reveal shadow-xl shadow-slate-200/20">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-b border-slate-100 pb-12">
-                    <div class="flex items-center gap-4 sm:gap-8 w-full">
-                        <div class="w-20 h-20 sm:w-24 sm:h-24 bg-white border-2 border-slate-100 rounded-2xl sm:rounded-[2.5rem] flex items-center justify-center overflow-hidden shadow-lg shadow-slate-200/50 shrink-0">
-                            ${cand.imageUrl ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">` : `<i class="fi fi-rr-user text-3xl sm:text-4xl text-slate-100"></i>`}
+            <div class="bg-white border border-slate-200 rounded-[2rem] p-6 sm:p-8 md:p-10 space-y-8 sm:space-y-10 animate-reveal shadow-sm">
+                
+                <!-- Enhanced Clean Header -->
+                <div class="flex flex-col md:flex-row justify-between items-center gap-8 border-b border-slate-100 pb-8 sm:pb-10">
+                    <div class="flex items-center gap-5 sm:gap-8 w-full">
+                        <div class="w-20 h-20 sm:w-28 sm:h-28 bg-brand-primary rounded-full flex items-center justify-center overflow-hidden shrink-0 ring-4 ring-slate-50 shadow-md">
+                            ${cand.imageUrl ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">` : `<i class="fi fi-rr-user text-3xl sm:text-5xl text-white/50"></i>`}
                         </div>
-                        <div class="space-y-1 min-w-0">
-                            <h3 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight break-words">
+                        <div class="space-y-2 min-w-0">
+                            <h3 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight flex items-baseline gap-2 flex-wrap">
                                 ${cand.name}
-                                <span class="text-lg sm:text-2xl text-brand-primary opacity-50 ml-1 sm:ml-2">#${cand.chestNo}</span>
+                                <span class="text-lg sm:text-2xl text-slate-400 font-bold">#${cand.chestNo}</span>
                             </h3>
-                            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-                                <span class="px-3 py-1 bg-brand-primary/10 text-brand-primary rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest">${cand.team}</span>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="px-3 py-1 bg-brand-primary/10 text-brand-primary rounded-md text-[9px] sm:text-[10px] font-black uppercase tracking-widest">${cand.team}</span>
                                 <span class="w-1.5 h-1.5 bg-slate-200 rounded-full hidden sm:block"></span>
                                 <span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest">${cand.category || 'General'} | ${cand.gender || 'Common'}</span>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-slate-50 px-8 py-6 rounded-3xl text-center md:text-right border border-slate-100 w-full md:w-auto">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Accumulated Points</p>
+                    
+                    <div class="bg-slate-50 border border-slate-100 px-8 py-5 rounded-3xl text-center shrink-0 w-full md:w-auto min-w-[200px]">
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Accumulated Points</p>
                         <p class="text-5xl sm:text-6xl font-black text-brand-primary tracking-tighter">${total.toFixed(1)}</p>
                     </div>
                 </div>
 
-                <div class="grid lg:grid-cols-2 gap-12">
-                    <div class="space-y-6">
-                        <h4 class="text-xs font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
-                            <span class="w-1 h-4 bg-brand-primary rounded-full"></span>
+                <!-- Structured Grid Body to prevent overlapping -->
+                <div class="grid lg:grid-cols-12 gap-10">
+                    
+                    <!-- Left Column: Participation (7 spans) -->
+                    <div class="lg:col-span-7 xl:col-span-8 space-y-6">
+                        <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                            <span class="w-1 h-4 bg-brand-primary rounded-sm"></span>
                             Participation & Results
                         </h4>
-                        <div class="space-y-3">
-                            ${candResults.map(r => {
-                const p = programMap[r.programId] || { name: 'Unknown', section: 'Gen' };
+                        
+                        <div class="space-y-4">
+                            ${candResults.length > 0 ? candResults.map(r => {
+                const p = programMap[r.programId] || { name: 'Unknown Program', section: 'General' };
+                const pName = p.name || 'Unknown Program';
+                const pSection = p.section || p.category || 'General';
                 const pos = parseInt(r.positionLabel);
                 const gradeRaw = r.gradeLabel || '';
                 const grade = gradeRaw.split(' ')[0].split('(')[0].trim();
                 const posSuffix = pos === 1 ? 'st' : (pos === 2 ? 'nd' : (pos === 3 ? 'rd' : 'th'));
                 const posDisplay = pos ? `${pos}${posSuffix}` : '';
 
-                let posColor = 'bg-slate-100 text-slate-400';
-                if (pos === 1) posColor = 'bg-amber-100 text-amber-600 border border-amber-200';
-                else if (pos === 2) posColor = 'bg-slate-100 text-slate-600 border border-slate-200';
-                else if (pos === 3) posColor = 'bg-orange-50 text-orange-600 border border-orange-100';
+                const template = _data.posterTemplate;
+                const cardStyle = (template && template.bgImage) 
+                    ? `style="background-image: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)), url(${template.bgImage}); background-size: cover; background-position: center;"` 
+                    : '';
+                const photoShape = (template && template.elements && template.elements.candidatePhoto) ? template.elements.candidatePhoto.shape : 'rounded';
+                const photoRadius = photoShape === 'circle' ? 'rounded-2xl' : (photoShape === 'rounded' ? 'rounded-2xl' : 'rounded-none');
+                
+                const showChest = template ? (template.elements?.chestNo?.visible !== false) : true;
+                const showTeam = template ? (template.elements?.team?.visible !== false) : true;
 
                 return `
-                                 <div class="result-card-premium p-3 sm:p-6 flex items-center justify-between gap-2 sm:gap-4">
-                                     <div class="flex items-center gap-3 sm:gap-6 flex-1 min-w-0">
-                                         <!-- Photo Box -->
-                                         <div class="chest-box-premium shrink-0 overflow-hidden flex items-center justify-center !w-11 !h-11 sm:!w-14 sm:!h-14">
-                                             ${cand.imageUrl ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">` : `<i class="fi fi-rr-user text-xl text-slate-200"></i>`}
-                                         </div>
-                                         <div class="min-w-0 flex-1">
-                                             <p class="text-sm sm:text-lg font-black text-slate-800 tracking-tight leading-tight mb-0.5 truncate">
-                                                ${p.name}
-                                                <span class="text-[9px] sm:text-sm text-brand-primary opacity-50 ml-0.5 font-bold">#${r.chestNo || '--'}</span>
-                                             </p>
-                                             <p class="text-[8px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest truncate">${p.section || ''}</p>
-                                         </div>
-                                     </div>
-                                     <div class="flex items-center gap-4">
-                                         <div class="hidden sm:flex items-center gap-3 px-4 border-r border-slate-100 mr-2">
-                                             <span class="text-2xl font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} leading-none">${posDisplay || '--'}</span>
-                                             ${grade ? `<span class="text-slate-300 font-light text-2xl">|</span> <span class="text-xl font-black text-brand-secondary uppercase tracking-widest">${grade}</span>` : ''}
-                                         </div>
-                                         <button onclick="event.stopPropagation(); downloadAchievement('${p.name}', '${cand.name}', '${cand.imageUrl || ''}', '${posDisplay}', '${grade}', '${r.chestNo}', '${cand.team}')" 
-                                            class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-brand-primary/5 hover:bg-brand-primary hover:text-white text-brand-primary flex items-center justify-center transition-all group/dl shadow-sm" title="Download Achievement Poster">
-                                            <i class="fi fi-rr-download text-base sm:text-lg"></i>
-                                         </button>
-                                      </div>
+                                <!-- Responsive Wrapped Card fixing the overlapping issue -->
+                                <div class="bg-white border border-slate-200 rounded-[1.25rem] p-4 sm:p-5 flex flex-col xl:flex-row justify-between items-start xl:items-center gap-5 hover:border-brand-primary/30 hover:shadow-md transition-all relative overflow-hidden" ${cardStyle}>
+                                    
+                                    <!-- Left Section (Program Info) -->
+                                    <div class="flex items-center gap-4 w-full xl:w-auto min-w-0 relative z-10">
+                                        <div class="w-14 h-14 bg-white border border-slate-100 ${photoRadius} flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+                                            ${cand.imageUrl ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">` : `<i class="fi fi-rr-user text-xl text-slate-200"></i>`}
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <h5 class="text-base sm:text-lg font-black text-slate-900 leading-tight truncate pr-2">${pName}</h5>
+                                            <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+                                                <span class="px-2 py-0.5 bg-brand-primary/5 text-brand-primary rounded text-[9px] font-black uppercase tracking-widest">${pSection}</span>
+                                                ${showChest ? `<span class="text-[10px] text-slate-400 font-semibold">Chest: #${r.chestNo || '--'}</span>` : ''}
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                      <!-- Mobile Rank -->
-                                      <div class="flex sm:hidden items-center gap-1.5 shrink-0 px-2">
-                                          <span class="text-base font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-600'} leading-none">${posDisplay || '--'}</span>
-                                          ${grade ? `<span class="text-slate-300 font-light">|</span> <span class="text-[10px] font-black text-brand-secondary uppercase tracking-widest">${grade}</span>` : ''}
-                                      </div>
-                                      <div class="vertical-divider h-6 sm:h-10 opacity-50 sm:opacity-100"></div>
+                                    <!-- Right Section (Stats & Download button wrapped safely) -->
+                                    <div class="flex items-center gap-4 sm:gap-6 w-full xl:w-auto justify-between xl:justify-end border-t xl:border-t-0 border-slate-100 pt-4 xl:pt-0 shrink-0 relative z-10">
+                                        
+                                        <!-- Rank Info -->
+                                        <div class="text-center min-w-[60px]">
+                                            <div class="flex items-baseline justify-center gap-1">
+                                                <span class="text-2xl sm:text-3xl font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-700'} leading-none tracking-tighter">${posDisplay || '--'}</span>
+                                                ${grade ? `<span class="text-lg font-black text-brand-secondary leading-none">${grade}</span>` : ''}
+                                            </div>
+                                            <div class="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">Achievement</div>
+                                        </div>
 
-                                         <!-- Points -->
-                                         <div class="text-right min-w-[45px] sm:min-w-[60px]">
-                                             <p class="text-lg sm:text-3xl font-black text-brand-primary leading-none mb-0.5">${r.totalPoints || r.points}</p>
-                                             <p class="text-[7px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pts</p>
-                                         </div>
-                                     </div>
-                                 </div>`;
-            }).join('') || `
+                                        <div class="w-px h-10 bg-slate-100 hidden sm:block"></div>
+
+                                        <!-- Points Info -->
+                                        <div class="text-center min-w-[50px]">
+                                            <div class="text-2xl sm:text-3xl font-black text-brand-primary leading-none tracking-tighter">${r.totalPoints || r.points || 0}</div>
+                                            <div class="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">Points</div>
+                                        </div>
+
+                                        <!-- Isolated Download Button -->
+                                        <button onclick="event.stopPropagation(); downloadAchievement('${(p.name || '').replace(/'/g, "\\'")}', '${cand.name.replace(/'/g, "\\'")}', '${cand.imageUrl || ''}', '${posDisplay}', '${grade}', '${r.chestNo}', '${cand.team.replace(/'/g, "\\'")}', '${(p.category || cand.category || '').replace(/'/g, "\\'")}')" 
+                                            class="w-12 h-12 bg-brand-primary text-white rounded-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shadow-brand-primary/20 shrink-0" title="Download Achievement Poster">
+                                            <i class="fi fi-rr-download text-lg"></i>
+                                        </button>
+
+                                    </div>
+                                </div>`;
+            }).join('') : `
                                 <div class="py-12 text-center bg-slate-50 rounded-3xl border border-dashed border-slate-200">
                                     <p class="text-slate-400 font-bold uppercase text-[10px] tracking-widest">No published results found</p>
                                 </div>
@@ -1299,26 +1463,29 @@
                         </div>
                     </div>
 
-                    <div class="space-y-6">
-                        <h4 class="text-xs font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
-                            <span class="w-1 h-4 bg-brand-secondary rounded-full"></span>
+                    <!-- Right Column: Stats (5 spans) -->
+                    <div class="lg:col-span-5 xl:col-span-4 space-y-6">
+                        <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                            <span class="w-1 h-4 bg-brand-secondary rounded-sm"></span>
                             Performance Stats
                         </h4>
+                        
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Programs</p>
+                            <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Programs</p>
                                 <p class="text-3xl font-black text-slate-800">${candResults.length}</p>
                             </div>
-                            <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Rank</p>
+                            <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Rank</p>
                                 <p class="text-3xl font-black text-slate-800">#${getStudentRank(cand.chestNo)}</p>
                             </div>
-                            <div class="col-span-2 bg-brand-primary/5 p-6 rounded-3xl border border-brand-primary/10">
-                                <p class="text-[10px] font-black text-brand-primary/60 uppercase tracking-widest mb-2">Contribution to ${cand.team}</p>
-                                <p class="text-2xl font-black text-brand-primary">${((total / getTeamTotal(cand.team)) * 100 || 0).toFixed(1)}% <span class="text-xs font-bold text-slate-400">of team total</span></p>
+                            <div class="col-span-2 bg-slate-50 border border-slate-100 p-6 rounded-2xl">
+                                <p class="text-[9px] font-black text-brand-primary/70 uppercase tracking-widest mb-2">Contribution to ${cand.team}</p>
+                                <p class="text-3xl font-black text-brand-primary tracking-tighter">${((total / getTeamTotal(cand.team)) * 100 || 0).toFixed(1)}% <span class="text-[10px] font-bold text-slate-400 tracking-normal ml-1">of team total</span></p>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>`;
         }
@@ -1349,88 +1516,143 @@
             return total || 1;
         }
 
-        async function downloadAchievement(progName, candName, photoUrl, pos, grade, chestNo, team) {
+        async function downloadAchievement(progName, candName, photoUrl, pos, grade, chestNo, team, category) {
             const posterDiv = document.createElement('div');
             posterDiv.style.position = 'fixed';
             posterDiv.style.left = '-9999px';
             posterDiv.style.top = '0';
-            
+
             const canvasWidth = 1080;
-            const canvasHeight = 1920; 
+            const canvasHeight = 1920;
             const festConfig = window._festConfig || {};
             const festName = festConfig.name || "FESTIVAL 2026";
-            const festLogo = festConfig.logo502 || festConfig.logo192 || festConfig.logo || '../logo-512.svg';
+            const festLogo = festConfig.logo512 || festConfig.logo502 || festConfig.logo192 || festConfig.logo || '../logo-512.svg';
+            const template = window._posterTemplate;
 
-            // Premium Self-Generated Design
-            let htmlContent = `
-                <div id="achievement-poster" style="width: ${canvasWidth}px; height: ${canvasHeight}px; background: #ffffff; position: relative; overflow: hidden; font-family: 'Outfit', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                    
-                    <!-- Background Elements -->
-                    <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #134E8E 0%, #0F172A 100%);"></div>
-                    <div style="position: absolute; top: -10%; right: -10%; width: 60%; height: 40%; background: radial-gradient(circle, rgba(255,179,63,0.1) 0%, transparent 70%); border-radius: 50%;"></div>
-                    <div style="position: absolute; bottom: -5%; left: -5%; width: 50%; height: 30%; background: radial-gradient(circle, rgba(19,78,142,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
-                    
-                    <!-- Border Frame -->
-                    <div style="position: absolute; inset: 40px; border: 2px solid rgba(255,255,255,0.1); border-radius: 40px;"></div>
+            let htmlContent = '';
 
-                    <!-- Header Section -->
-                    <div style="position: absolute; top: 100px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px;">
-                        <img src="${festLogo}" style="width: 140px; height: 140px; object-fit: contain;">
-                        <h2 style="color: white; font-size: 32px; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase; margin: 0; opacity: 0.8;">${festName}</h2>
-                    </div>
+            if (template) {
+                // Template-based dynamic design
+                const scale = 2.4; // Scaling factor from designer preview (~800px) to 1920px
+                const scaledSize = (val) => {
+                    if (!val) return val;
+                    if (val.toString().includes('%')) return val;
+                    return (parseFloat(val) * scale) + 'px';
+                };
 
-                    <!-- Main Content Card -->
-                    <div style="position: relative; width: 85%; background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 60px; padding: 120px 40px 80px 40px; display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 100px;">
+                htmlContent = `
+                    <div id="achievement-poster" style="width: ${canvasWidth}px; height: ${canvasHeight}px; background-image: url(${template.bgImage || ''}); background-size: cover; background-position: center; position: relative; overflow: hidden; font-family: 'Outfit', sans-serif; background-color: #ffffff;">
+                        ${Object.keys(template.elements).map(key => {
+                    const el = template.elements[key];
+                    if (!el.visible) return '';
+
+                    // The absolute positioning matches the editor: uses el.left, el.top, and centers the anchor via transform.
+                    let style = `position: absolute; left: ${el.left}; top: ${el.top}; transform: translateX(-50%); white-space: nowrap;`;
+
+                    if (el.type === 'image') {
+                        let src = '';
+                        if (key === 'logo') src = template.logoImage || festLogo;
+                        else if (key === 'candidatePhoto') src = photoUrl || `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300"><rect width="300" height="300" fill="%23f1f5f9"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="80" fill="%2394a3b8">${candName.charAt(0)}</text></svg>`;
+                        else src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300"><rect width="300" height="300" fill="%23f1f5f9"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="20" fill="%2394a3b8">${key.toUpperCase()}</text></svg>`;
+
+                        const imgWidth = scaledSize(el.width || '150px');
+                        const borderRadius = el.shape === 'circle' ? '50%' : (el.shape === 'rounded' ? scaledSize('20px') : '0');
+
+                        return `
+                            <div style="${style}">
+                                <div style="display: flex; align-items: center; justify-content: center; width: ${imgWidth}; height: ${imgWidth}; overflow: hidden; border-radius: ${borderRadius}; background: #ffffff; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+                                    <img src="${src}" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                            </div>`;
+                    } else {
+                        let text = el.text;
+                        if (key === 'festName') text = festName;
+                        else if (key === 'candidateName') text = candName;
+                        else if (key === 'programName') text = progName;
+                        else if (key === 'rank') text = pos + (grade ? ` (${grade})` : '');
+                        else if (key === 'category') text = category;
+                        else if (key === 'chestNo') text = chestNo;
+                        else if (key === 'team') text = team;
+
+                        const fontSize = scaledSize(el.fontSize || '24px');
+                        style += `font-size: ${fontSize}; color: ${el.color}; font-weight: ${el.fontWeight}; font-style: ${el.fontStyle}; text-align: ${el.textAlign || 'center'};`;
                         
-                        <!-- Candidate Photo -->
-                        <div style="position: absolute; top: -120px; width: 240px; height: 240px; border-radius: 50%; border: 8px solid #ffffff; box-shadow: 0 20px 50px rgba(0,0,0,0.3); overflow: hidden; background: #f1f5f9;">
-                            ${photoUrl ? `<img src="${photoUrl}" style="width: 100%; height: 100%; object-fit: cover;">` : `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #134E8E; color: white; font-size: 80px; font-weight: 900;">${candName.charAt(0)}</div>`}
+                        return `<div style="${style}">${text}</div>`;
+                    }
+                }).join('')}
+                    </div>`;
+            } else {
+                // Fallback Premium Self-Generated Design
+                htmlContent = `
+                    <div id="achievement-poster" style="width: ${canvasWidth}px; height: ${canvasHeight}px; background: #ffffff; position: relative; overflow: hidden; font-family: 'Outfit', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        
+                        <!-- Background Elements -->
+                        <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #134E8E 0%, #0F172A 100%);"></div>
+                        <div style="position: absolute; top: -10%; right: -10%; width: 60%; height: 40%; background: radial-gradient(circle, rgba(255,179,63,0.1) 0%, transparent 70%); border-radius: 50%;"></div>
+                        <div style="position: absolute; bottom: -5%; left: -5%; width: 50%; height: 30%; background: radial-gradient(circle, rgba(19,78,142,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
+                        
+                        <!-- Border Frame -->
+                        <div style="position: absolute; inset: 40px; border: 2px solid rgba(255,255,255,0.1); border-radius: 40px;"></div>
+
+                        <!-- Header Section -->
+                        <div style="position: absolute; top: 100px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                            <img src="${festLogo}" style="width: 140px; height: 140px; object-fit: contain;">
+                            <h2 style="color: white; font-size: 32px; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase; margin: 0; opacity: 0.8;">${festName}</h2>
                         </div>
 
-                        <!-- Badge -->
-                        <div style="background: #FFB33F; color: #134E8E; padding: 12px 40px; border-radius: 100px; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 40px;">
-                            Official Recognition
-                        </div>
-
-                        <h1 style="color: white; font-size: 72px; font-weight: 900; margin: 0 0 20px 0; line-height: 1.1;">${candName}</h1>
-                        <p style="color: #94a3b8; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 60px 0;">CHEST NO: ${chestNo || '--'} | ${team || '--'}</p>
-
-                        <!-- Rank Display -->
-                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 60px;">
-                            <div style="font-size: 110px; font-weight: 900; background: linear-gradient(to bottom, #FFD700, #FFB33F); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;">
-                                ${pos || '--'}
+                        <!-- Main Content Card -->
+                        <div style="position: relative; width: 85%; background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 60px; padding: 120px 40px 80px 40px; display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 100px;">
+                            
+                            <!-- Candidate Photo -->
+                            <div style="position: absolute; top: -120px; width: 240px; height: 240px; border-radius: 50%; border: 8px solid #ffffff; box-shadow: 0 20px 50px rgba(0,0,0,0.3); overflow: hidden; background: #f1f5f9;">
+                                ${photoUrl ? `<img src="${photoUrl}" style="width: 100%; height: 100%; object-fit: cover;">` : `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #134E8E; color: white; font-size: 80px; font-weight: 900;">${candName.charAt(0)}</div>`}
                             </div>
-                            <div style="color: white; font-size: 32px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;">${grade ? `With ${grade} Grade` : 'Achievement'}</div>
+
+                            <!-- Badge -->
+                            <div style="background: #FFB33F; color: #134E8E; padding: 12px 40px; border-radius: 100px; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 40px;">
+                                Official Recognition
+                            </div>
+
+                            <h1 style="color: white; font-size: 72px; font-weight: 900; margin: 0 0 20px 0; line-height: 1.1;">${candName}</h1>
+                            <p style="color: #94a3b8; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 60px 0;">CHEST NO: ${chestNo || '--'} | ${team || '--'}</p>
+
+                            <!-- Rank Display -->
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 60px;">
+                                <div style="font-size: 110px; font-weight: 900; background: linear-gradient(to bottom, #FFD700, #FFB33F); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;">
+                                    ${pos || '--'}
+                                </div>
+                                <div style="color: white; font-size: 32px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;">${grade ? `With ${grade} Grade` : 'Achievement'}</div>
+                            </div>
+
+                            <!-- Divider -->
+                            <div style="width: 100px; height: 4px; background: #FFB33F; border-radius: 2px; margin-bottom: 40px;"></div>
+
+                            <p style="color: #cbd5e1; font-size: 28px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">For Outstanding Performance In</p>
+                            <h3 style="color: white; font-size: 42px; font-weight: 900; margin: 15px 0 0 0;">${progName}</h3>
                         </div>
 
-                        <!-- Divider -->
-                        <div style="width: 100px; height: 4px; background: #FFB33F; border-radius: 2px; margin-bottom: 40px;"></div>
+                        <!-- Footer -->
+                        <div style="position: absolute; bottom: 80px; width: 100%; display: flex; justify-content: center;">
+                            <p style="color: rgba(255,255,255,0.4); font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em;">&copy; 2026 Festival Management Official Merit</p>
+                        </div>
 
-                        <p style="color: #cbd5e1; font-size: 28px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">For Outstanding Performance In</p>
-                        <h3 style="color: white; font-size: 42px; font-weight: 900; margin: 15px 0 0 0;">${progName}</h3>
                     </div>
+                `;
+            }
 
-                    <!-- Footer -->
-                    <div style="position: absolute; bottom: 80px; width: 100%; display: flex; justify-content: center;">
-                        <p style="color: rgba(255,255,255,0.4); font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em;">&copy; 2026 Festival Management Official Merit</p>
-                    </div>
-
-                </div>
-            `;
-            
             posterDiv.innerHTML = htmlContent;
             document.body.appendChild(posterDiv);
-            
+
             // Allow fonts and images to load
             await new Promise(resolve => setTimeout(resolve, 1000));
-            
+
             try {
                 const canvas = await html2canvas(document.getElementById('achievement-poster'), {
                     useCORS: true,
                     scale: 1,
                     backgroundColor: null
                 });
-                
+
                 const link = document.createElement('a');
                 link.download = `Achievement_${candName.replace(/\s+/g, '_')}_${progName.replace(/\s+/g, '_')}.png`;
                 link.href = canvas.toDataURL('image/png', 1.0);
