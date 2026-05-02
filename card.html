@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievement Card | ArtFest</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.cdnfonts.com/css/satoshi" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500,400,300&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #111;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            min-height: 100vh;
+            font-family: 'Satoshi', sans-serif;
+        }
+
+        #achievement-poster {
+            width: 1080px;
+            height: 1920px;
+            /* Updated Background */
+            background-color: #0056cc;
+            background-image: url('https://res.cloudinary.com/da6fjyirm/image/upload/v1777701981/datat_copysddd_i9bynn.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.5);
+            /* Scale for preview on web */
+            transform-origin: top center;
+        }
+
+        @media (max-width: 1100px) {
+            #achievement-poster {
+                transform: scale(0.5);
+                margin-bottom: -960px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            #achievement-poster {
+                transform: scale(0.3);
+                margin-bottom: -1344px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="achievement-poster">
+
+        <!-- Top Right Logo & Fest Name -->
+        <div style="position: absolute; top: 70px; right: 70px; display: flex; align-items: center; gap: 20px; z-index: 10;">
+            <div id="display-festName" style="font-family: 'Clash Display', sans-serif; font-weight: 600; font-size: 65px; color: white;">Fest Name</div>
+            <div style="background: white; width: 100px; height: 100px; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+                <img id="display-logo" src="../logo-512.svg" style="width: 70px; height: 70px; object-fit: contain;">
+            </div>
+        </div>
+
+        <!-- Achievement Badge (Pill) -->
+        <div style="position: absolute; top: 280px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.15); border: 2px solid rgba(255, 255, 255, 0.8); border-radius: 100px; padding: 12px; padding-right: 40px; display: flex; align-items: center; gap: 20px; z-index: 10; white-space: nowrap;">
+            <div style="width: 85px; height: 85px; background: #ffcc00; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4); flex-shrink: 0;">
+                <i class="fi fi-rr-medal" style="font-size: 45px; color: #0056cc;"></i>
+            </div>
+            <div style="font-family: 'Clash Display', sans-serif; font-size: 58px; color: white; display: flex; align-items: center;">
+                <span id="display-rank" style="font-weight: 700;">1st</span> 
+                <span style="font-weight: 300; margin: 0 15px; opacity: 0.8;">|</span> 
+                <span id="display-grade" style="font-weight: 500;">A Grade</span>
+            </div>
+        </div>
+
+        <!-- Candidate Photo Section -->
+        <div style="position: absolute; top: 440px; left: 50%; transform: translateX(-50%); width: 650px; height: 650px; background: white; border-radius: 50%; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.15);">
+            <div id="photo-container" style="width: 100%; height: 100%; position: relative; background: white;">
+                <!-- Photo will be injected here -->
+            </div>
+        </div>
+
+        <!-- Info Area (Chest No, Program, Section) -->
+        <div style="position: absolute; top: 1150px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 30px; width: 100%; justify-content: center; white-space: nowrap;">
+            <div id="display-chestNo" style="background: #ffcc00; color: black; padding: 18px 40px; border-radius: 15px; font-family: 'Clash Display', sans-serif; font-weight: 700; font-size: 60px; line-height: 1;">
+                101
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start;">
+                <div id="display-program" style="font-family: 'Clash Display', sans-serif; font-weight: 600; font-size: 48px; color: #ffcc00; line-height: 1.2;">Program Name</div>
+                <div id="display-team" style="font-family: 'Satoshi', sans-serif; font-weight: 500; font-size: 38px; color: white; line-height: 1.2;">Section</div>
+            </div>
+        </div>
+
+        <!-- Candidate Name -->
+        <div id="display-name" style="position: absolute; top: 1300px; left: 50%; transform: translateX(-50%); font-family: 'Clash Display', sans-serif; font-weight: 600; font-size: 75px; color: #ffcc00; text-align: center; letter-spacing: 1px; width: 100%;">
+            Candidate Name
+        </div>
+
+    </div>
+
+    <script>
+        function getParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function initCard() {
+            const name = getParam('name') || 'Candidate Name';
+            const chest = getParam('chest') || '---';
+            const program = getParam('program') || 'Program Name';
+            const team = getParam('team') || 'Section';
+            const rank = getParam('rank') || 'Rank';
+            const grade = getParam('grade') || 'Grade';
+            const photo = getParam('photo');
+            const fest = getParam('fest') || 'Fest Name';
+            const logo = getParam('logo');
+
+            document.getElementById('display-name').innerText = name;
+            document.getElementById('display-chestNo').innerText = chest;
+            document.getElementById('display-program').innerText = program;
+            document.getElementById('display-team').innerText = team;
+            document.getElementById('display-rank').innerText = rank;
+            document.getElementById('display-grade').innerText = grade.includes('Grade') ? grade : grade + ' Grade';
+            document.getElementById('display-festName').innerText = fest;
+            
+            if (logo) {
+                document.getElementById('display-logo').src = logo;
+            }
+
+            const photoContainer = document.getElementById('photo-container');
+            if (photo) {
+                photoContainer.innerHTML = `<img src="${photo}" style="width: 100%; height: 100%; object-fit: cover;">`;
+            } else {
+                photoContainer.innerHTML = `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 200px; color: #ccc; font-family: 'Clash Display', sans-serif; font-weight: 600;">${name.charAt(0)}</div>`;
+            }
+        }
+
+        initCard();
+    </script>
+</body>
+
+</html>

@@ -13,7 +13,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
-    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&f[]=clash-display@700,600,500,400,300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/brittany-signature-script" rel="stylesheet">
     <link rel='stylesheet'
         href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -1152,11 +1154,14 @@
                                             </div>
                                         </div>
 
-                                        <!-- Download Button -->
-                                        <button onclick="event.stopPropagation(); downloadAchievement('${program.name.replace(/'/g, "\\'")}', '${(res.candidateName || res.name || '').replace(/'/g, "\\'")}', '${cand.imageUrl || ''}', '${posDisplay}', '${grade}', '${res.chestNo}', '${(res.teamName || res.team || '').replace(/'/g, "\\'")}', '${(program.category || cand.category || '').replace(/'/g, "\\'")}')" 
-                                            class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-brand-primary text-white hover:scale-105 active:scale-95 flex items-center justify-center transition-all shadow-lg shadow-brand-primary/20 shrink-0" title="Download Achievement Poster">
-                                            <i class="fi fi-rr-download text-lg sm:text-xl"></i>
-                                        </button>
+                                        <!-- View Poster Link -->
+                                        <div class="flex items-center gap-2">
+                                            <a href="card.html?name=${encodeURIComponent(res.candidateName || res.name || 'Unknown')}&chest=${res.chestNo || ''}&program=${encodeURIComponent(program.name)}&rank=${posDisplay}&grade=${grade}&team=${encodeURIComponent(res.teamName || res.team || '')}&fest=${encodeURIComponent(window._festConfig?.name || 'Fest')}&logo=${encodeURIComponent(window._festConfig?.logo || '../logo-512.svg')}&photo=${encodeURIComponent(cand.imageUrl || '')}" 
+                                                target="_blank"
+                                                class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-brand-primary text-white hover:scale-105 active:scale-95 flex items-center justify-center transition-all shadow-lg shadow-brand-primary/20 shrink-0" title="View & Download Poster">
+                                                <i class="fi fi-rr-eye text-lg sm:text-xl"></i>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>`;
             }).join('') || `<p class="py-12 text-center text-slate-400 font-bold">No participants found.</p>`}
@@ -1438,11 +1443,14 @@
                                             <div class="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">Points</div>
                                         </div>
 
-                                        <!-- Isolated Download Button -->
-                                        <button onclick="event.stopPropagation(); downloadAchievement('${(p.name || '').replace(/'/g, "\\'")}', '${cand.name.replace(/'/g, "\\'")}', '${cand.imageUrl || ''}', '${posDisplay}', '${grade}', '${r.chestNo}', '${cand.team.replace(/'/g, "\\'")}', '${(p.category || cand.category || '').replace(/'/g, "\\'")}')" 
-                                            class="w-12 h-12 bg-brand-primary text-white rounded-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shadow-brand-primary/20 shrink-0" title="Download Achievement Poster">
-                                            <i class="fi fi-rr-download text-lg"></i>
-                                        </button>
+                                        <!-- View Poster Link -->
+                                        <div class="flex items-center gap-2">
+                                            <a href="card.html?name=${encodeURIComponent(cand.name)}&chest=${r.chestNo || ''}&program=${encodeURIComponent(pName)}&rank=${posDisplay}&grade=${grade}&team=${encodeURIComponent(cand.team)}&fest=${encodeURIComponent(window._festConfig?.name || 'Fest')}&logo=${encodeURIComponent(window._festConfig?.logo || '../logo-512.svg')}&photo=${encodeURIComponent(cand.imageUrl || '')}" 
+                                                target="_blank"
+                                                class="w-12 h-12 bg-brand-primary text-white rounded-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shadow-brand-primary/20 shrink-0" title="View & Download Poster">
+                                                <i class="fi fi-rr-eye text-lg"></i>
+                                            </a>
+                                        </div>
 
                                     </div>
                                 </div>`;
@@ -1507,154 +1515,6 @@
             return total || 1;
         }
 
-        async function downloadAchievement(progName, candName, photoUrl, pos, grade, chestNo, team, category) {
-            const posterDiv = document.createElement('div');
-            posterDiv.style.position = 'fixed';
-            posterDiv.style.left = '-9999px';
-            posterDiv.style.top = '0';
-
-            const canvasWidth = 1080;
-            const canvasHeight = 1920;
-            const festConfig = window._festConfig || {};
-            const festName = festConfig.name || "FESTIVAL 2026";
-            const festLogo = festConfig.logo512 || festConfig.logo502 || festConfig.logo192 || festConfig.logo || '../logo-512.svg';
-            const template = window._posterTemplate;
-
-            let htmlContent = '';
-
-            if (template) {
-                // Template-based dynamic design
-                const scale = 2.4; // Scaling factor from designer preview (~800px) to 1920px
-                const scaledSize = (val) => {
-                    if (!val) return val;
-                    if (val.toString().includes('%')) return val;
-                    return (parseFloat(val) * scale) + 'px';
-                };
-
-                htmlContent = `
-                    <div id="achievement-poster" style="width: ${canvasWidth}px; height: ${canvasHeight}px; background-image: url(${template.bgImage || ''}); background-size: cover; background-position: center; position: relative; overflow: hidden; font-family: 'Outfit', sans-serif; background-color: #ffffff;">
-                        ${Object.keys(template.elements).map(key => {
-                    const el = template.elements[key];
-                    if (!el.visible) return '';
-
-                    // The absolute positioning matches the editor: uses el.left, el.top, and centers the anchor via transform.
-                    let style = `position: absolute; left: ${el.left}; top: ${el.top}; transform: translateX(-50%); white-space: nowrap;`;
-
-                    if (el.type === 'image') {
-                        let src = '';
-                        if (key === 'logo') src = template.logoImage || festLogo;
-                        else if (key === 'candidatePhoto') src = photoUrl || `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300"><rect width="300" height="300" fill="%23f1f5f9"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="80" fill="%2394a3b8">${candName.charAt(0)}</text></svg>`;
-                        else src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300"><rect width="300" height="300" fill="%23f1f5f9"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="20" fill="%2394a3b8">${key.toUpperCase()}</text></svg>`;
-
-                        const imgWidth = scaledSize(el.width || '150px');
-                        const borderRadius = el.shape === 'circle' ? '50%' : (el.shape === 'rounded' ? scaledSize('20px') : '0');
-
-                        const escapedSrc = src.replace(/'/g, "\\'");
-                        return `
-                            <div style="${style}">
-                                <div style="width: ${imgWidth}; height: ${imgWidth}; overflow: hidden; border-radius: ${borderRadius}; background-image: url('${escapedSrc}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                                </div>
-                            </div>`;
-                    } else {
-                        let text = el.text;
-                        if (key === 'festName') text = festName;
-                        else if (key === 'candidateName') text = candName;
-                        else if (key === 'programName') text = progName;
-                        else if (key === 'rank') text = pos + (grade ? ` (${grade})` : '');
-                        else if (key === 'category') text = category;
-                        else if (key === 'chestNo') text = chestNo;
-                        else if (key === 'team') text = team;
-
-                        const fontSize = scaledSize(el.fontSize || '24px');
-                        style += `font-size: ${fontSize}; color: ${el.color}; font-weight: ${el.fontWeight}; font-style: ${el.fontStyle}; text-align: ${el.textAlign || 'center'};`;
-                        
-                        return `<div style="${style}">${text}</div>`;
-                    }
-                }).join('')}
-                    </div>`;
-            } else {
-                // Fallback Premium Self-Generated Design
-                htmlContent = `
-                    <div id="achievement-poster" style="width: ${canvasWidth}px; height: ${canvasHeight}px; background: #ffffff; position: relative; overflow: hidden; font-family: 'Outfit', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                        
-                        <!-- Background Elements -->
-                        <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #134E8E 0%, #0F172A 100%);"></div>
-                        <div style="position: absolute; top: -10%; right: -10%; width: 60%; height: 40%; background: radial-gradient(circle, rgba(255,179,63,0.1) 0%, transparent 70%); border-radius: 50%;"></div>
-                        <div style="position: absolute; bottom: -5%; left: -5%; width: 50%; height: 30%; background: radial-gradient(circle, rgba(19,78,142,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
-                        
-                        <!-- Border Frame -->
-                        <div style="position: absolute; inset: 40px; border: 2px solid rgba(255,255,255,0.1); border-radius: 40px;"></div>
-
-                        <!-- Header Section -->
-                        <div style="position: absolute; top: 100px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px;">
-                            <img src="${festLogo}" style="width: 140px; height: 140px; object-fit: contain;">
-                            <h2 style="color: white; font-size: 32px; font-weight: 900; letter-spacing: 0.2em; text-transform: uppercase; margin: 0; opacity: 0.8;">${festName}</h2>
-                        </div>
-
-                        <!-- Main Content Card -->
-                        <div style="position: relative; width: 85%; background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 60px; padding: 120px 40px 80px 40px; display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 100px;">
-                            
-                            <!-- Candidate Photo -->
-                            <div style="position: absolute; top: -120px; width: 240px; height: 240px; border-radius: 50%; border: 8px solid #ffffff; box-shadow: 0 20px 50px rgba(0,0,0,0.3); overflow: hidden; background: #f1f5f9;">
-                                ${photoUrl ? `<div style="width: 100%; height: 100%; background-image: url('${photoUrl.replace(/'/g, "\\'")}'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>` : `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #134E8E; color: white; font-size: 80px; font-weight: 900;">${candName.charAt(0)}</div>`}
-                            </div>
-
-                            <!-- Badge -->
-                            <div style="background: #FFB33F; color: #134E8E; padding: 12px 40px; border-radius: 100px; font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 40px;">
-                                Official Recognition
-                            </div>
-
-                            <h1 style="color: white; font-size: 72px; font-weight: 900; margin: 0 0 20px 0; line-height: 1.1;">${candName}</h1>
-                            <p style="color: #94a3b8; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 60px 0;">CHEST NO: ${chestNo || '--'} | ${team || '--'}</p>
-
-                            <!-- Rank Display -->
-                            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 60px;">
-                                <div style="font-size: 110px; font-weight: 900; background: linear-gradient(to bottom, #FFD700, #FFB33F); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1;">
-                                    ${pos || '--'}
-                                </div>
-                                <div style="color: white; font-size: 32px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;">${grade ? `With ${grade} Grade` : 'Achievement'}</div>
-                            </div>
-
-                            <!-- Divider -->
-                            <div style="width: 100px; height: 4px; background: #FFB33F; border-radius: 2px; margin-bottom: 40px;"></div>
-
-                            <p style="color: #cbd5e1; font-size: 28px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">For Outstanding Performance In</p>
-                            <h3 style="color: white; font-size: 42px; font-weight: 900; margin: 15px 0 0 0;">${progName}</h3>
-                        </div>
-
-                        <!-- Footer -->
-                        <div style="position: absolute; bottom: 80px; width: 100%; display: flex; justify-content: center;">
-                            <p style="color: rgba(255,255,255,0.4); font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em;">&copy; 2026 Festival Management Official Merit</p>
-                        </div>
-
-                    </div>
-                `;
-            }
-
-            posterDiv.innerHTML = htmlContent;
-            document.body.appendChild(posterDiv);
-
-            // Allow fonts and images to load
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            try {
-                const canvas = await html2canvas(document.getElementById('achievement-poster'), {
-                    useCORS: true,
-                    scale: 1,
-                    backgroundColor: null
-                });
-
-                const link = document.createElement('a');
-                link.download = `Achievement_${candName.replace(/\s+/g, '_')}_${progName.replace(/\s+/g, '_')}.png`;
-                link.href = canvas.toDataURL('image/png', 1.0);
-                link.click();
-            } catch (err) {
-                console.error("Self-generated poster failed:", err);
-                alert("Failed to generate poster. Please try again.");
-            } finally {
-                document.body.removeChild(posterDiv);
-            }
-        }
 
         // Init
         initSync();
