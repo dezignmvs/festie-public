@@ -7,7 +7,7 @@
     <title>Results — Festival 2026</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="../logo-512.svg" type="image/svg+xml">
+    <link rel="icon" href="logo-512.svg" type="image/svg+xml">
 
     <!-- Tailwind & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -323,7 +323,7 @@
             letter-spacing: 0.025em;
         }
 
-        .podium-1 .podium-avatar {
+        .podium-item-1 .podium-avatar {
             width: 52px;
             height: 52px;
             border-color: #134E8E20;
@@ -983,7 +983,7 @@
                 const getPodiumItem = (pos) => {
                     const res = top3[pos];
                     if (!res) return `
-                        <div class="podium-item opacity-20">
+                        <div class="podium-item podium-item-${pos} opacity-20">
                             <div class="podium-avatar flex items-center justify-center bg-slate-100">
                                 <i class="fi fi-rr-user text-xs text-slate-300"></i>
                             </div>
@@ -997,7 +997,7 @@
                         : `<i class="fi fi-rr-user text-xs text-slate-300"></i>`;
 
                     return `
-                        <div class="podium-item">
+                        <div class="podium-item podium-item-${pos}">
                             <div class="podium-avatar">
                                 ${photoHtml}
                             </div>
@@ -1010,12 +1010,9 @@
                 };
 
                 const template = _data.posterTemplate;
-                const cardStyle = (template && template.bgImage) 
-                    ? `style="background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${template.bgImage}); background-size: cover; background-position: center; border-color: rgba(19,78,142,0.1);"` 
-                    : '';
 
                 return `
-                <div onclick="viewProgramDetail('${p.id}')" class="program-card-premium group cursor-pointer relative overflow-hidden" ${cardStyle}>
+                <div onclick="viewProgramDetail('${p.id}')" class="program-card-premium group cursor-pointer relative overflow-hidden">
                     <div class="relative z-10">
                         <div class="flex justify-between items-start gap-4 mb-2">
                             <div class="min-w-0">
@@ -1110,9 +1107,6 @@
                     : `<i class="fi fi-rr-user text-xl text-slate-200"></i>`;
 
                 const template = _data.posterTemplate;
-                const cardStyle = (template && template.bgImage) 
-                    ? `style="background-image: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)), url(${template.bgImage}); background-size: cover; background-position: center;"` 
-                    : '';
                 const photoShape = (template && template.elements && template.elements.candidatePhoto) ? template.elements.candidatePhoto.shape : 'rounded';
                 const photoRadius = photoShape === 'circle' ? 'rounded-full' : (photoShape === 'rounded' ? 'rounded-xl sm:rounded-2xl' : 'rounded-none');
                 
@@ -1120,7 +1114,7 @@
                 const showTeam = template ? (template.elements?.team?.visible !== false) : true;
 
                 return `
-                                <div class="result-card-premium p-4 sm:p-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 sm:gap-6 hover:bg-slate-50/50 transition-all relative overflow-hidden" ${cardStyle}>
+                                <div class="result-card-premium p-4 sm:p-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 sm:gap-6 hover:bg-slate-50/50 transition-all relative overflow-hidden">
                                     <div class="flex items-center gap-4 sm:gap-6 flex-grow relative z-10">
                                         <!-- Photo Box -->
                                         <div class="chest-box-premium shrink-0 overflow-hidden flex items-center justify-center border-slate-200 !w-14 !h-14 sm:!w-16 sm:!h-16 ${photoRadius} shadow-sm bg-white">
@@ -1400,9 +1394,6 @@
                 const posDisplay = pos ? `${pos}${posSuffix}` : '';
 
                 const template = _data.posterTemplate;
-                const cardStyle = (template && template.bgImage) 
-                    ? `style="background-image: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)), url(${template.bgImage}); background-size: cover; background-position: center;"` 
-                    : '';
                 const photoShape = (template && template.elements && template.elements.candidatePhoto) ? template.elements.candidatePhoto.shape : 'rounded';
                 const photoRadius = photoShape === 'circle' ? 'rounded-2xl' : (photoShape === 'rounded' ? 'rounded-2xl' : 'rounded-none');
                 
@@ -1411,7 +1402,7 @@
 
                 return `
                                 <!-- Responsive Wrapped Card fixing the overlapping issue -->
-                                <div class="bg-white border border-slate-200 rounded-[1.25rem] p-4 sm:p-5 flex flex-col xl:flex-row justify-between items-start xl:items-center gap-5 hover:border-brand-primary/30 hover:shadow-md transition-all relative overflow-hidden" ${cardStyle}>
+                                <div class="bg-white border border-slate-200 rounded-[1.25rem] p-4 sm:p-5 flex flex-col xl:flex-row justify-between items-start xl:items-center gap-5 hover:border-brand-primary/30 hover:shadow-md transition-all relative overflow-hidden">
                                     
                                     <!-- Left Section (Program Info) -->
                                     <div class="flex items-center gap-4 w-full xl:w-auto min-w-0 relative z-10">
@@ -1558,10 +1549,10 @@
                         const imgWidth = scaledSize(el.width || '150px');
                         const borderRadius = el.shape === 'circle' ? '50%' : (el.shape === 'rounded' ? scaledSize('20px') : '0');
 
+                        const escapedSrc = src.replace(/'/g, "\\'");
                         return `
                             <div style="${style}">
-                                <div style="display: flex; align-items: center; justify-content: center; width: ${imgWidth}; height: ${imgWidth}; overflow: hidden; border-radius: ${borderRadius}; background: #ffffff; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
-                                    <img src="${src}" style="width: 100%; height: 100%; object-fit: cover;">
+                                <div style="width: ${imgWidth}; height: ${imgWidth}; overflow: hidden; border-radius: ${borderRadius}; background-image: url('${escapedSrc}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                                 </div>
                             </div>`;
                     } else {
@@ -1605,7 +1596,7 @@
                             
                             <!-- Candidate Photo -->
                             <div style="position: absolute; top: -120px; width: 240px; height: 240px; border-radius: 50%; border: 8px solid #ffffff; box-shadow: 0 20px 50px rgba(0,0,0,0.3); overflow: hidden; background: #f1f5f9;">
-                                ${photoUrl ? `<img src="${photoUrl}" style="width: 100%; height: 100%; object-fit: cover;">` : `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #134E8E; color: white; font-size: 80px; font-weight: 900;">${candName.charAt(0)}</div>`}
+                                ${photoUrl ? `<div style="width: 100%; height: 100%; background-image: url('${photoUrl.replace(/'/g, "\\'")}'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>` : `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #134E8E; color: white; font-size: 80px; font-weight: 900;">${candName.charAt(0)}</div>`}
                             </div>
 
                             <!-- Badge -->
