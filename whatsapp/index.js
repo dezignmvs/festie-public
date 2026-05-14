@@ -238,96 +238,122 @@ async function sendJudgeAlert(programId, program, venues, judges, minutesLeft) {
     }
 }
 
+// HTML Template for Status Pages
+const getStatusTemplate = (content) => `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FestNotify WhatsApp Status</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <style>
+        body { font-family: 'Outfit', sans-serif; background: #0f172a; color: white; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .glow { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+        .status-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot-online { background: #10b981; box-shadow: 0 0 10px #10b981; }
+        .dot-offline { background: #ef4444; box-shadow: 0 0 10px #ef4444; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6">
+    <div class="max-w-md w-full glass rounded-[2.5rem] p-8 text-center relative overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-48 h-48 bg-blue-600/20 blur-[80px]"></div>
+        <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-purple-600/20 blur-[80px]"></div>
+        
+        <div class="mb-8 flex justify-center">
+            <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-600/20">
+                <i class="fi fi-rr-comment-alt text-3xl text-white"></i>
+            </div>
+        </div>
+        
+        ${content}
+        
+        <div class="mt-8 pt-8 border-t border-white/5 text-[10px] text-gray-500 uppercase tracking-[0.2em]">
+            FestNotify Engine v1.0 • Powered by ArtFest
+        </div>
+    </div>
+</body>
+</html>
+`;
+
 // Web Interface Endpoints
 app.get('/', (req, res) => {
-    res.send('<h1>WhatsApp Notification Server</h1><p>Status: ' + (isReady ? 'Online' : 'Offline') + '</p><a href="/qr">View QR Code</a>');
-});
-
-app.get('/pending', async (req, res) => {
-    try {
-        const snapshot = await db.collection('programs')
-            .where('time', '!=', null)
-            .where('judgeAlertSent', '==', false)
-            .get();
+    const statusContent = `
+        <h1 class="text-2xl font-bold mb-2">WhatsApp Service</h1>
+        <p class="text-gray-400 text-sm mb-8">Notification engine status monitor</p>
         
-        const programs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        res.json({ count: programs.length, programs });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
+        <div class="glass rounded-2xl p-6 flex flex-col gap-4 mb-6">
+            <div class="flex items-center justify-between">
+                <span class="text-xs text-gray-400 uppercase tracking-widest font-semibold">Engine Status</span>
+                <div class="flex items-center gap-2">
+                    <div class="status-dot ${isReady ? 'dot-online' : 'dot-offline'}"></div>
+                    <span class="text-xs font-bold ${isReady ? 'text-emerald-400' : 'text-red-400'}">${isReady ? 'ONLINE' : 'OFFLINE'}</span>
+                </div>
+            </div>
+            <div class="h-px bg-white/5 w-full"></div>
+            <div class="flex items-center justify-between">
+                <span class="text-xs text-gray-400 uppercase tracking-widest font-semibold">Device Linked</span>
+                <span class="text-xs font-bold text-blue-400">${isReady ? 'CONNECTED' : 'WAITING'}</span>
+            </div>
+        </div>
 
-app.post('/send-alerts', async (req, res) => {
-    const { programId } = req.body;
-    try {
-        const venuesSnap = await db.collection('venues').get();
-        const venues = {};
-        venuesSnap.forEach(v => venues[v.id] = v.data().name);
-
-        const judgesSnap = await db.collection('judges').get();
-        const judges = {};
-        judgesSnap.forEach(j => judges[j.id] = j.data());
-
-        let query = db.collection('programs');
-        if (programId) {
-            query = query.doc(programId);
-        } else {
-            query = query.where('judgeAlertSent', '==', false);
-        }
-
-        const snapshot = programId ? await query.get() : await query.get();
-        const docs = programId ? [snapshot] : snapshot.docs;
-        
-        let sentCount = 0;
-        for (const doc of docs) {
-            const p = doc.data();
-            if (p.time) {
-                await sendJudgeAlert(doc.id, p, venues, judges, 10); // Manual alert defaults to 10m text
-                await db.collection('programs').doc(doc.id).update({ judgeAlertSent: true });
-                sentCount++;
-            }
-        }
-
-        res.json({ success: true, summary: { sent: sentCount, processed: docs.length } });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+        ${!isReady ? `
+            <a href="/qr" class="block w-full py-4 bg-white text-slate-900 rounded-xl font-bold hover:scale-[1.02] transition-transform active:scale-95 shadow-xl">
+                LINK DEVICE
+            </a>
+        ` : `
+            <div class="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-400 text-sm font-medium">
+                <i class="fi fi-rr-check-circle mr-2"></i> All systems operational
+            </div>
+        `}
+    `;
+    res.send(getStatusTemplate(statusContent));
 });
 
 app.get('/qr', (req, res) => {
     if (isReady) {
-        return res.send('<h1>Already Connected!</h1><p>The WhatsApp client is already logged in and ready.</p>');
-    }
-    if (!lastQr) {
-        return res.send('<h1>No QR Code Yet</h1><p>Please wait for the server to initialize...</p>');
+        return res.redirect('/');
     }
     
-    // Simple HTML to show QR code
-    res.send(`
-        <html>
-            <head>
-                <title>WhatsApp Login</title>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-                <style>
-                    body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f0f2f5; }
-                    #qrcode { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-                    h1 { color: #128c7e; }
-                </style>
-            </head>
-            <body>
-                <h1>Scan with WhatsApp</h1>
-                <div id="qrcode"></div>
-                <p>Refresh page if QR doesn't appear.</p>
-                <script>
-                    new QRCode(document.getElementById("qrcode"), {
-                        text: "${lastQr}",
-                        width: 256,
-                        height: 256
-                    });
-                </script>
-            </body>
-        </html>
-    `);
+    if (!lastQr) {
+        return res.send(getStatusTemplate(`
+            <h1 class="text-2xl font-bold mb-2">Generating QR...</h1>
+            <p class="text-gray-400 text-sm mb-8">Please wait while we initialize the browser engine</p>
+            <div class="w-full aspect-square glass rounded-2xl flex items-center justify-center mb-6">
+                <div class="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+            <script>setTimeout(() => window.location.reload(), 2000)</script>
+        `));
+    }
+
+    const qrContent = `
+        <h1 class="text-2xl font-bold mb-2">Link WhatsApp</h1>
+        <p class="text-gray-400 text-sm mb-8">Scan the code with your phone to start</p>
+        
+        <div class="w-full aspect-square bg-white p-4 rounded-3xl mb-8 glow flex items-center justify-center">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(lastQr)}" class="w-full h-full">
+        </div>
+        
+        <ol class="text-left text-xs text-gray-400 space-y-2 mb-4 px-2">
+            <li>1. Open WhatsApp on your phone</li>
+            <li>2. Go to Settings > Linked Devices</li>
+            <li>3. Tap on Link a Device</li>
+            <li>4. Point your camera at this screen</li>
+        </ol>
+
+        <script>
+            // Refresh logic to check for ready status
+            setInterval(async () => {
+                try {
+                    const resp = await fetch('/');
+                    if (resp.url.endsWith('/') && !resp.url.includes('/qr')) window.location.href = '/';
+                } catch(e) {}
+            }, 3000);
+        </script>
+    `;
+    res.send(getStatusTemplate(qrContent));
 });
 
 // Start Server and WhatsApp
