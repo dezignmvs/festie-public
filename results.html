@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results — Festival 2026</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="logo-512.svg" type="image/svg+xml">
+
+    <!-- Tailwind & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&f[]=clash-display@700,600,500,400,300&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://fonts.cdnfonts.com/css/brittany-signature-script" rel="stylesheet" crossorigin="anonymous">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.1.0/uicons-regular-rounded/css/uicons-regular-rounded.css' crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Satoshi', 'Outfit', 'sans-serif'],
+                        display: ['Satoshi', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            primary: '#134E8E',
+                            secondary: '#FFB33F',
+                            dark: '#0F172A',
+                            accent: '#F43F5E'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Responsive spacing for Mobile Nav Bar */
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: 80px; /* Prevents content from hiding behind mobile bottom nav */
+            }
+            .mobile-safe-pb {
+                padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+            }
+        }
+
+        .minimal-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        .section-reveal {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease-out;
+        }
+
+        .section-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f8fafc;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes reveal {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-reveal {
+            animation: reveal 0.4s ease-out forwards;
+        }
+
+        /* Mobile Table to Cards */
+        @media (max-width: 768px) {
+            .responsive-table thead {
+                display: none;
+            }
+
+            .responsive-table,
+            .responsive-table tbody,
+            .responsive-table tr,
+            .responsive-table td {
+                display: block;
+                width: 100%;
+            }
+
+            .responsive-table tr {
+                margin-bottom: 1rem;
+                border: 1px solid #e2e8f0;
+                border-radius: 1rem;
+                padding: 1rem;
+                background: white;
+            }
+
+            .responsive-table td {
+                text-align: right;
+                padding: 0.5rem 0;
+                border-bottom: 1px solid #f1f5f9;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .responsive-table td:last-child {
+                border-bottom: none;
+            }
+
+            .responsive-table td::before {
+                content: attr(data-label);
+                font-weight: 800;
+                text-transform: uppercase;
+                font-size: 0.7rem;
+                color: #94a3b8;
+                letter-spacing: 0.05em;
+            }
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Result Card Premium Styles */
+        .result-card-premium {
+            background: #ffffff;
+            border: 1px solid #eef2f6;
+            border-radius: 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result-card-premium:hover {
+            border-color: #134E8E20;
+            box-shadow: 0 12px 24px -8px rgba(19, 78, 142, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .chest-box-premium {
+            width: 56px;
+            height: 56px;
+            background: #f8fafc;
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #f1f5f9;
+        }
+
+        .vertical-divider {
+            width: 1px;
+            height: 40px;
+            background: #f1f5f9;
+        }
+
+        .program-card-premium {
+            background: #ffffff;
+            border: 1px solid #eef2f6;
+            border-radius: 28px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .program-card-premium:hover {
+            border-color: #134E8E15;
+            box-shadow: 0 20px 40px -12px rgba(19, 78, 142, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .winner-item-premium {
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 20px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .winner-item-premium:hover {
+            background: #ffffff;
+            border-color: #134E8E20;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Podium Styles */
+        .podium-wrapper {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 0;
+            margin-bottom: 12px;
+        }
+
+        .podium-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 70px;
+        }
+
+        .podium-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 16px;
+            border: 2px solid white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            background: #f1f5f9;
+            margin-bottom: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .podium-item:hover .podium-avatar {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .podium-rank-box {
+            width: 100%;
+            border-radius: 8px 8px 4px 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 14px;
+            color: white;
+            padding-top: 4px;
+        }
+
+        .podium-1 {
+            height: 56px;
+            background: #134E8E;
+        }
+
+        .podium-2 {
+            height: 42px;
+            background: #FFB33F;
+        }
+
+        .podium-3 {
+            height: 32px;
+            background: #94a3b8;
+        }
+
+        .podium-pts {
+            font-size: 8px;
+            opacity: 0.8;
+            font-weight: 700;
+        }
+
+        .podium-name {
+            font-size: 8px;
+            font-weight: 800;
+            color: #64748b;
+            margin-top: 6px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .podium-item-1 .podium-avatar {
+            width: 52px;
+            height: 52px;
+            border-color: #134E8E20;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-white text-slate-900 font-sans selection:bg-brand-primary/10 selection:text-brand-primary min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 px-4 py-4 sm:px-8 bg-white/80 border-b border-slate-200 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-9 h-9 bg-brand-primary rounded-xl flex items-center justify-center">
+                    <img id="nav-logo" src="../logo-512.svg" alt="Logo" class="w-6 h-6 object-contain fest-logo">
+                </div>
+                <div class="flex flex-col">
+                    <span id="fest-name"
+                        class="font-black text-xl tracking-tight text-brand-primary leading-none mb-0.5">FEST'26</span>
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Official
+                        Standings</span>
+                </div>
+            </a>
+            <a href="index.html"
+                class="hidden md:flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-brand-primary transition-all">
+                <i class="fi fi-rr-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </nav> 
+    
+    <!-- Header -->
+    <header class="py-6 sm:py-10 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                <div class="space-y-3 text-center md:text-left">
+                    <h1
+                        class="text-2xl sm:text-4xl font-black tracking-tight text-slate-900 leading-tight heading-tight">
+                        Live <span class="text-brand-primary">Standings</span></h1>
+                    <div
+                        class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                        <div class="flex items-center gap-2">
+                            <span class="text-brand-primary">Total Points:</span>
+                            <span id="total-pts" class="text-slate-700">--</span>
+                        </div>
+                        <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-brand-primary">Programs:</span>
+                            <span id="total-progs" class="text-slate-700">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Responsive Tab System -->
+                <div class="fixed bottom-0 left-0 right-0 z-[100] bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.08)] border-t border-slate-100 flex justify-around items-center px-2 py-2 mobile-safe-pb md:static md:w-auto md:bg-slate-100 md:border-none md:shadow-none md:p-1 md:rounded-xl md:justify-start md:pb-1">
+                    
+                    <button onclick="switchTab('team')" id="tab-team" class="tab-btn active group flex flex-col items-center justify-center w-full md:w-auto py-2 md:py-2 md:px-5 transition-all md:rounded-xl md:bg-transparent md:group-[.active]:bg-white md:group-[.active]:shadow-sm">
+                        <i class="fi fi-rr-users text-xl md:hidden mb-1 text-slate-400 group-[.active]:text-brand-primary transition-colors"></i>
+                        <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 group-[.active]:text-brand-primary md:text-slate-600 md:group-[.active]:text-brand-primary whitespace-nowrap transition-colors">Team</span>
+                    </button>
+                
+                    <button onclick="switchTab('program')" id="tab-program" class="tab-btn group flex flex-col items-center justify-center w-full md:w-auto py-2 md:py-2 md:px-5 transition-all md:rounded-xl md:bg-transparent md:group-[.active]:bg-white md:group-[.active]:shadow-sm">
+                        <i class="fi fi-rr-apps text-xl md:hidden mb-1 text-slate-400 group-[.active]:text-brand-primary transition-colors"></i>
+                        <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 group-[.active]:text-brand-primary md:text-slate-600 md:group-[.active]:text-brand-primary whitespace-nowrap transition-colors">Program</span>
+                    </button>
+                
+                    <button onclick="switchTab('candidate')" id="tab-candidate" class="tab-btn group flex flex-col items-center justify-center w-full md:w-auto py-2 md:py-2 md:px-5 transition-all md:rounded-xl md:bg-transparent md:group-[.active]:bg-white md:group-[.active]:shadow-sm">
+                        <i class="fi fi-rr-id-badge text-xl md:hidden mb-1 text-slate-400 group-[.active]:text-brand-primary transition-colors"></i>
+                        <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 group-[.active]:text-brand-primary md:text-slate-600 md:group-[.active]:text-brand-primary whitespace-nowrap transition-colors">Candidates</span>
+                    </button>
+                
+                    <button onclick="switchTab('search')" id="tab-search" class="tab-btn group flex flex-col items-center justify-center w-full md:w-auto py-2 md:py-2 md:px-5 transition-all md:rounded-xl md:bg-transparent md:group-[.active]:bg-white md:group-[.active]:shadow-sm">
+                        <i class="fi fi-rr-search text-xl md:hidden mb-1 text-slate-400 group-[.active]:text-brand-primary transition-colors"></i>
+                        <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 group-[.active]:text-brand-primary md:text-slate-600 md:group-[.active]:text-brand-primary whitespace-nowrap transition-colors">Search</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 py-8 sm:py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-8">
+
+            <!-- Dynamic Content Area -->
+            <div id="view-team" class="tab-view">
+                <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center justify-between">
+                    <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+                        <div class="relative w-full sm:w-72">
+                            <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="text" id="search-team" placeholder="Search team..."
+                                class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
+                        </div>
+                        <div class="relative w-full sm:w-auto min-w-[160px]">
+                            <select id="section-filter"
+                                class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-bold text-sm text-slate-600 appearance-none cursor-pointer">
+                                <option value="all">All Sections</option>
+                            </select>
+                            <i
+                                class="fi fi-rr-angle-small-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                        </div>
+                    </div>
+                    <div
+                        class="text-[11px] font-black text-slate-400 uppercase tracking-widest text-center lg:text-right">
+                        Last Updated: <span id="last-updated" class="text-slate-600">--</span>
+                    </div>
+                </div>
+
+                <div class="bg-transparent sm:bg-white rounded-xl sm:border border-slate-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left responsive-table">
+                            <thead>
+                                <tr class="bg-white/50 border-b border-slate-200">
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                        Rank</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                        Team</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">
+                                        Participation</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">
+                                        Section Pts</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">
+                                        Total Points</th>
+                                </tr>
+                            </thead>
+                            <tbody id="results-table-body">
+                                <tr class="animate-pulse border-b border-slate-50">
+                                    <td colspan="5" class="px-8 py-6 h-20 bg-white"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Program View (Cards Layout) -->
+            <div id="view-program" class="tab-view hidden">
+                <div id="program-list-view">
+                    <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center justify-between">
+                        <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+                            <div class="relative w-full sm:w-80">
+                                <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input type="text" id="search-program" placeholder="Search program name..."
+                                    class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
+                            </div>
+                            <div class="relative w-full sm:w-auto min-w-[160px]">
+                                <select id="program-section-filter"
+                                    class="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-bold text-sm text-slate-600 appearance-none cursor-pointer">
+                                    <option value="all">All Sections</option>
+                                </select>
+                                <i
+                                    class="fi fi-rr-angle-small-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                            </div>
+                        </div>
+                        <div
+                            class="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                            <span class="w-2 h-2 bg-brand-primary rounded-full animate-pulse"></span> Only Published
+                            results
+                        </div>
+                    </div>
+                    <div id="program-results-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Dynamic -->
+                    </div>
+                </div>
+
+                <!-- Program Detail View -->
+                <div id="program-detail-view" class="hidden">
+                    <div class="mb-8">
+                        <button onclick="backToProgramList()"
+                            class="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-bold text-xs transition-all uppercase tracking-widest">
+                            <i class="fi fi-rr-arrow-left"></i> Back to Results
+                        </button>
+                    </div>
+                    <div id="program-detail-content" class="animate-reveal">
+                        <!-- Dynamic -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Candidate View -->
+            <div id="view-candidate" class="tab-view hidden">
+                <div class="flex flex-col lg:flex-row gap-6 mb-8 items-center">
+                    <div class="relative w-full sm:w-80">
+                        <i class="fi fi-rr-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="search-candidate" placeholder="Search candidate name or chest no..."
+                            class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-brand-primary/40 transition-all font-medium text-sm">
+                    </div>
+                </div>
+                <div class="bg-transparent sm:bg-white rounded-xl sm:border border-slate-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left responsive-table">
+                            <thead>
+                                <tr class="bg-white/50 border-b border-slate-200">
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                        Rank</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                        Chest No</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                        Candidate</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                        Team</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                        Section</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">
+                                        Programs</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-center">
+                                        Percentage</th>
+                                    <th
+                                        class="px-8 py-6 text-[11px] font-black text-slate-400 uppercase tracking-widest text-right">
+                                        Total Points</th>
+                                </tr>
+                            </thead>
+                            <tbody id="candidate-table-body">
+                                <!-- Dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Chest No View -->
+            <div id="view-search" class="tab-view hidden">
+                <div class="max-w-4xl mx-auto space-y-12 py-12">
+                    <div class="text-center space-y-4">
+                        <h2 class="text-3xl font-black text-slate-900 tracking-tight">Creative Profile Search</h2>
+                        <p class="text-slate-500 font-medium max-w-lg mx-auto">Search by <span
+                                class="text-brand-primary font-bold">Chest Number</span> or <span
+                                class="text-brand-primary font-bold">Student Name</span> to view complete performance
+                            insights.</p>
+                    </div>
+
+                    <div class="relative max-w-2xl mx-auto group">
+                        <div
+                            class="absolute -inset-1 bg-gradient-to-r from-brand-primary/20 to-brand-secondary/20 rounded-2xl blur opacity-25 group-focus-within:opacity-100 transition duration-1000">
+                        </div>
+                        <div
+                            class="relative flex items-center bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm focus-within:border-brand-primary focus-within:ring-4 focus-within:ring-brand-primary/5 transition-all">
+                            <div class="pl-6 text-slate-400">
+                                <i class="fi fi-rr-search text-xl"></i>
+                            </div>
+                            <input type="text" id="search-chest" oninput="searchCreative()"
+                                placeholder="Enter chest no. or student name..."
+                                class="w-full px-4 py-6 bg-transparent focus:outline-none text-xl font-bold placeholder:text-slate-300">
+                            <div id="search-loading" class="pr-6 hidden">
+                                <div
+                                    class="w-5 h-5 border-2 border-slate-200 border-t-brand-primary rounded-full animate-spin">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Suggestions Dropdown -->
+                        <div id="search-suggestions"
+                            class="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-2xl shadow-xl z-10 hidden overflow-hidden">
+                            <!-- Suggestions injected here -->
+                        </div>
+                    </div>
+
+                    <div id="chest-result-area" class="animate-reveal">
+                        <!-- Default Search Placeholder -->
+                        <div class="py-20 text-center space-y-6">
+                            <div
+                                class="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center mx-auto text-slate-200">
+                                <i class="fi fi-rr-search-heart text-4xl"></i>
+                            </div>
+                            <p class="text-slate-400 font-bold uppercase tracking-widest text-xs">Ready to discover
+                                greatness</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-white border-t border-slate-200 hidden md:block">
+        <div class="max-w-7xl mx-auto px-8 flex flex-col sm:flex-row justify-between items-center gap-6">
+            <p class="text-sm font-medium text-slate-400">© 2026 Festival Management Official Results Portal.</p>
+            <div class="flex items-center gap-4">
+                <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest">Powered by</span>
+                <span class="text-sm font-black text-brand-primary" id="footer-engine-name">ArtFest 2026 Admin</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKA0k_9UgoJX_RBgEsIeNdiW2w0Okko1o",
+            authDomain: "festie-s1u2h3.firebaseapp.com",
+            projectId: "festie-s1u2h3",
+            storageBucket: "festie-s1u2h3.firebasestorage.app",
+            messagingSenderId: "794049194885",
+            appId: "1:794049194885:web:8f75f0df4c15cde15eb2ec"
+        };
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Fix for "Could not reach Cloud Firestore backend" in certain networks
+        try {
+            db.settings({ experimentalForceLongPolling: true });
+        } catch (e) {
+            console.warn("Firestore settings already initialized");
+        }
+
+        function escapeQuotes(str) {
+            if (!str) return '';
+            return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+
+        async function downloadPoster(event, name, chest, program, rank, grade, team, photoUrl) {
+            event.preventDefault();
+            event.stopPropagation();
+            const btn = event.currentTarget;
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>';
+
+            const festName = window._festConfig?.name || 'Fest';
+            const logo = window._festConfig?.logo || '../logo-512.svg';
+            const gradeText = grade.includes('Grade') ? grade : grade + ' Grade';
+            
+            const photoHtml = photoUrl 
+                ? `<img src="${photoUrl}" style="width: 100%; height: 100%; object-fit: cover;">`
+                : `<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 200px; color: #ccc; font-family: 'Clash Display', sans-serif; font-weight: 600;">${name.charAt(0)}</div>`;
+
+            const html = `
+            <div id="temp-poster-render" style="position: absolute; left: -9999px; top: 0;">
+                <div id="achievement-poster" style="width: 1080px; height: 1920px; background-color: #0056cc; background-image: url('https://res.cloudinary.com/da6fjyirm/image/upload/v1777701981/datat_copysddd_i9bynn.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative; overflow: hidden; color: white; font-family: 'Satoshi', sans-serif;">
+                    
+                    <div style="position: absolute; top: 70px; right: 70px; display: flex; align-items: center; gap: 20px; z-index: 10;">
+                        <div style="font-family: 'Clash Display', sans-serif; font-weight: 600; font-size: 65px; color: white;">${festName}</div>
+                        <div style="background: white; width: 100px; height: 100px; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+                            <img src="${logo}" style="width: 70px; height: 70px; object-fit: contain;">
+                        </div>
+                    </div>
+
+                    <div style="position: absolute; top: 280px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.15); border: 2px solid rgba(255, 255, 255, 0.8); border-radius: 100px; padding: 12px; padding-right: 40px; display: flex; align-items: center; gap: 20px; z-index: 10; white-space: nowrap;">
+                        <div style="width: 85px; height: 85px; background: #ffcc00; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4); flex-shrink: 0;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="#0056cc" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.64-2.25 1.64-1.74 0-2.26-1.03-2.32-1.92h-1.77c.07 1.65 1.14 2.82 2.8 3.21V19h2.36v-1.66c1.83-.31 2.85-1.42 2.85-2.89 0-2.31-1.9-2.96-3.54-3.31z"/></svg>
+                        </div>
+                        <div style="font-family: 'Clash Display', sans-serif; font-size: 58px; color: white; display: flex; align-items: center;">
+                            <span style="font-weight: 700;">${rank}</span> 
+                            <span style="font-weight: 300; margin: 0 15px; opacity: 0.8;">|</span> 
+                            <span style="font-weight: 500;">${gradeText}</span>
+                        </div>
+                    </div>
+
+                    <div style="position: absolute; top: 440px; left: 50%; transform: translateX(-50%); width: 650px; height: 650px; background: white; border-radius: 50%; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.15);">
+                        <div style="width: 100%; height: 100%; position: relative; background: white;">
+                            ${photoHtml}
+                        </div>
+                    </div>
+
+                    <div style="position: absolute; top: 1150px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 30px; width: 100%; justify-content: center; white-space: nowrap;">
+                        <div style="background: #ffcc00; color: black; padding: 18px 40px; border-radius: 15px; font-family: 'Clash Display', sans-serif; font-weight: 700; font-size: 60px; line-height: 1;">
+                            ${chest}
+                        </div>
+                        <div style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start;">
+                            <div style="font-family: 'Clash Display', sans-serif; font-weight: 600; font-size: 48px; color: #ffcc00; line-height: 1.2;">${program}</div>
+                            <div style="font-family: 'Satoshi', sans-serif; font-weight: 500; font-size: 38px; color: white; line-height: 1.2;">${team}</div>
+                        </div>
+                    </div>
+
+                    <div style="position: absolute; top: 1300px; left: 50%; transform: translateX(-50%); font-family: 'Clash Display', sans-serif; font-weight: 600; font-size: 75px; color: #ffcc00; text-align: center; letter-spacing: 1px; width: 100%;">
+                        ${name}
+                    </div>
+                </div>
+            </div>`;
+            
+            document.body.insertAdjacentHTML('beforeend', html);
+            const el = document.getElementById('achievement-poster');
+            
+            try {
+                // Add a small delay to ensure any fonts/images are loaded
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                const dataUrl = await htmlToImage.toPng(el, {
+                    quality: 1,
+                    pixelRatio: 2,
+                    skipAutoScale: true
+                });
+                
+                const a = document.createElement('a');
+                a.href = dataUrl;
+                a.download = `poster_${name.split(' ').join('_')}_${program.split(' ').join('_')}.png`;
+                a.click();
+            } catch(e) {
+                console.error("Poster download error", e);
+                alert("Failed to generate poster.");
+            } finally {
+                btn.innerHTML = originalHtml;
+                document.getElementById('temp-poster-render').remove();
+            }
+        }
+
+        const _data = { teams: [], programs: [], results: [], negMarks: [], sections: [], candidates: [], posterTemplate: null };
+        let _isLoaded = { teams: false, programs: false, results: false, negMarks: false, sections: false, candidates: false, posterTemplate: false };
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-view').forEach(v => v.classList.add('hidden'));
+            document.getElementById('view-' + tabId).classList.remove('hidden');
+
+            if (tabId === 'program') {
+                document.getElementById('program-list-view')?.classList.remove('hidden');
+                document.getElementById('program-detail-view')?.classList.add('hidden');
+            }
+
+            // Simplified styling logic for both desktop pill and mobile app-like bar
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active');
+            });
+            const activeTab = document.getElementById('tab-' + tabId);
+            activeTab.classList.add('active');
+
+            render();
+        }
+
+        function initSync() {
+            // Website Config & Visibility
+            db.collection('config').doc('website').onSnapshot(doc => {
+                if (doc.exists) {
+                    const config = doc.data();
+                    if (config.isWebsiteOn === false || (config.visiblePages && !config.visiblePages.includes('standings'))) {
+                        window.location.href = 'index.html';
+                    }
+                }
+            }, err => console.warn("Website config sync error:", err));
+
+            // Fest Config
+            db.collection('config').doc('festData').onSnapshot(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    window._festConfig = data; // Store for poster generation
+                    if (data.name) {
+                        document.querySelectorAll('#fest-name').forEach(el => el.innerText = data.name);
+                        document.querySelectorAll('#footer-engine-name').forEach(el => el.innerText = data.name + ' Admin');
+                    }
+
+                    const mainLogo = data.logo512 || data.logo502 || data.logo192 || data.logo;
+                    if (mainLogo) document.querySelectorAll('.fest-logo').forEach(img => img.src = mainLogo);
+                }
+            }, err => console.warn("Fest config sync error:", err));
+
+            // Sections for filter
+            db.collection('sections').where('isActive', '==', true).onSnapshot(snap => {
+                _data.sections = snap.docs.map(d => d.data().name);
+                const teamSelect = document.getElementById('section-filter');
+                const progSelect = document.getElementById('program-section-filter');
+
+                if (teamSelect) {
+                    while (teamSelect.options.length > 1) teamSelect.remove(1);
+                    _data.sections.forEach(s => {
+                        const opt = document.createElement('option');
+                        opt.value = s;
+                        opt.innerText = s;
+                        teamSelect.appendChild(opt.cloneNode(true));
+                    });
+                }
+                
+                if (progSelect) {
+                    while (progSelect.options.length > 1) progSelect.remove(1);
+                    _data.sections.forEach(s => {
+                        const opt = document.createElement('option');
+                        opt.value = s;
+                        opt.innerText = s;
+                        progSelect.appendChild(opt);
+                    });
+                }
+
+                _isLoaded.sections = true;
+                render();
+            }, err => {
+                console.warn("Sections sync error:", err);
+                _isLoaded.sections = true;
+                render();
+            });
+
+            // Core Data
+            db.collection('teams').where('isActive', '==', true).onSnapshot(snap => {
+                _data.teams = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _isLoaded.teams = true;
+                render();
+            }, err => {
+                console.warn("Teams sync error:", err);
+                _isLoaded.teams = true;
+                render();
+            });
+
+            db.collection('programs').onSnapshot(snap => {
+                _data.programs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _isLoaded.programs = true;
+                render();
+            }, err => {
+                console.warn("Programs sync error:", err);
+                _isLoaded.programs = true;
+                render();
+            });
+
+            db.collection('programResults').onSnapshot(snap => {
+                _data.results = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _isLoaded.results = true;
+                render();
+            }, err => {
+                console.warn("Results sync error:", err);
+                _isLoaded.results = true;
+                render();
+            });
+
+            db.collection('negMarks').onSnapshot(snap => {
+                _data.negMarks = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                _isLoaded.negMarks = true;
+                render();
+            }, err => {
+                console.warn("NegMarks sync error:", err);
+                _isLoaded.negMarks = true;
+                render();
+            });
+
+            db.collection('candidates').onSnapshot(snap => {
+                _data.candidates = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                _isLoaded.candidates = true;
+                render();
+            }, err => {
+                console.warn("Candidates sync error:", err);
+                _isLoaded.candidates = true;
+                render();
+            });
+
+            // Poster Template Config
+            db.collection('settings').doc('posterConfig').onSnapshot(doc => {
+                if (doc.exists) {
+                    _data.posterTemplate = doc.data();
+                    window._posterTemplate = _data.posterTemplate; // Keep global for download fn
+                }
+                _isLoaded.posterTemplate = true;
+                render();
+            }, err => {
+                console.warn("Poster Template sync error:", err);
+                _isLoaded.posterTemplate = true;
+                render();
+            });
+        }
+
+        // --- Connectivity Status ---
+        window.addEventListener('online', () => {
+            showToast("<b>✅</b> Connection restored. Data syncing...");
+            document.body.classList.remove('is-offline');
+        });
+
+        window.addEventListener('offline', () => {
+            showToast("<b>⚠️</b> Connection lost. Working in offline mode.");
+            document.body.classList.add('is-offline');
+        });
+
+        function render() {
+            if (!Object.values(_isLoaded).every(v => v)) return;
+
+            updateGlobalStats();
+
+            const activeTabBtn = document.querySelector('.tab-btn.active');
+            if(!activeTabBtn) return;
+            const activeTab = activeTabBtn.id.replace('tab-', '');
+
+            try {
+                if (activeTab === 'team') renderTeamTable();
+                else if (activeTab === 'program') renderProgramGrid();
+                else if (activeTab === 'candidate') renderCandidateTable();
+            } catch (err) {
+                console.error("Render error in " + activeTab + ":", err);
+            }
+        }
+
+        function updateGlobalStats() {
+            const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
+
+            const teamStats = {};
+            _data.teams.forEach(t => teamStats[t.name] = 0);
+
+            _data.results.forEach(res => {
+                if (!publishedProgIds.has(res.programId)) return;
+                const teamName = res.team || res.teamName;
+                if (teamName && teamStats[teamName] !== undefined) {
+                    teamStats[teamName] += parseFloat(res.totalPoints || res.points || 0);
+                }
+            });
+
+            _data.negMarks.forEach(neg => {
+                const penalty = parseFloat(neg.marks || 0);
+                const teams = Array.isArray(neg.teams) ? neg.teams : [neg.teams].filter(Boolean);
+                teams.forEach(tName => {
+                    if (teamStats[tName] !== undefined) teamStats[tName] = Math.max(0, teamStats[tName] - penalty);
+                });
+            });
+
+            let totalFestPts = 0;
+            Object.values(teamStats).forEach(pts => totalFestPts += pts);
+
+            if (document.getElementById('total-pts')) document.getElementById('total-pts').innerText = totalFestPts.toFixed(0);
+            if (document.getElementById('total-progs')) document.getElementById('total-progs').innerText = publishedProgIds.size;
+            if (document.getElementById('last-updated')) {
+                document.getElementById('last-updated').innerText = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+        }
+
+        function renderTeamTable() {
+            const sectionFilter = document.getElementById('section-filter').value;
+            const searchQuery = (document.getElementById('search-team').value || '').toLowerCase();
+
+            const stats = {};
+            _data.teams.forEach(t => {
+                stats[t.name] = {
+                    name: t.name,
+                    color: t.color || '#134E8E',
+                    total: 0,
+                    participation: 0,
+                    sectionPts: {},
+                    progs: new Set()
+                };
+            });
+
+            const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
+            const programMap = {};
+            _data.programs.forEach(p => programMap[p.id] = p);
+
+            _data.results.forEach(res => {
+                if (!publishedProgIds.has(res.programId)) return;
+
+                const teamName = res.team || res.teamName;
+                if (!teamName || !stats[teamName]) return;
+
+                const pts = parseFloat(res.totalPoints || res.points || 0);
+                if (pts <= 0) return;
+
+                const prog = programMap[res.programId];
+                const progSection = prog ? (prog.section || 'General') : 'General';
+
+                if (sectionFilter !== 'all' && progSection !== sectionFilter) return;
+
+                stats[teamName].total += pts;
+                stats[teamName].progs.add(res.programId);
+
+                if (!stats[teamName].sectionPts[progSection]) stats[teamName].sectionPts[progSection] = 0;
+                stats[teamName].sectionPts[progSection] += pts;
+            });
+
+            _data.negMarks.forEach(neg => {
+                const penalty = parseFloat(neg.marks || 0);
+                const teams = Array.isArray(neg.teams) ? neg.teams : [neg.teams].filter(Boolean);
+                teams.forEach(tName => {
+                    if (stats[tName]) stats[tName].total = Math.max(0, stats[tName].total - penalty);
+                });
+            });
+
+            const sorted = Object.values(stats)
+                .filter(t => (t.name || '').toLowerCase().includes(searchQuery))
+                .sort((a, b) => b.total - a.total);
+
+            const body = document.getElementById('results-table-body');
+            if (sorted.length === 0) {
+                body.innerHTML = `<tr><td colspan="5" class="px-8 py-20 text-center text-slate-400 font-bold">No teams found matching your criteria.</td></tr>`;
+                return;
+            }
+
+            body.innerHTML = sorted.map((team, idx) => {
+                const rank = idx + 1;
+                const initials = team.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+                return `
+                <tr class="border-b border-slate-50 hover:bg-slate-50/50 transition-colors">
+                    <td class="px-8 py-6" data-label="Rank"><span class="font-black ${rank <= 3 ? 'text-brand-primary' : 'text-slate-300'}">#${rank.toString().padStart(2, '0')}</span></td>
+                    <td class="px-8 py-6" data-label="Team">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-2xl border border-slate-100 flex items-center justify-center font-bold text-xs text-white shrink-0 shadow-sm" style="background: ${team.color}">${initials}</div>
+                            <span class="font-bold text-slate-800 tracking-tight">${team.name}</span>
+                        </div>
+                    </td>
+                    <td class="px-8 py-6 text-center text-sm font-bold text-slate-700" data-label="Participation">${team.progs.size}</td>
+                    <td class="px-8 py-6" data-label="Section Pts">
+                        <div class="flex flex-wrap justify-end sm:justify-center gap-1.5">
+                            ${Object.keys(team.sectionPts).map(s => `<span class="px-2 py-0.5 bg-brand-primary/5 rounded-md text-[9px] font-black text-brand-primary uppercase tracking-tighter">${s}</span>`).join('') || '--'}
+                        </div>
+                    </td>
+                    <td class="px-8 py-6 text-right font-black text-brand-primary text-lg" data-label="Total Points">${team.total.toFixed(1)}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function renderProgramGrid() {
+            const searchQuery = document.getElementById('search-program').value.toLowerCase();
+            const sectionFilter = document.getElementById('program-section-filter').value;
+
+            const publishedPrograms = _data.programs.filter(p => {
+                const matchesSearch = (p.name || '').toLowerCase().includes(searchQuery);
+                const matchesSection = sectionFilter === 'all' || p.section === sectionFilter;
+                return p.resultsPublished && matchesSearch && matchesSection;
+            });
+
+            const container = document.getElementById('program-results-grid');
+
+            if (publishedPrograms.length === 0) {
+                container.innerHTML = `<div class="col-span-full py-20 text-center space-y-4">
+                    <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto text-slate-300">
+                        <i class="fi fi-rr-search text-2xl"></i>
+                    </div>
+                    <p class="text-slate-400 font-bold uppercase tracking-widest text-xs">No programs found</p>
+                </div>`;
+                return;
+            }
+
+            const candidateLookup = {};
+            _data.candidates.forEach(c => {
+                if (c.chestNo) candidateLookup[c.chestNo] = c;
+                if (c.id) candidateLookup[c.id] = c;
+            });
+
+            container.innerHTML = publishedPrograms.map(p => {
+                const winners = _data.results.filter(r => r.programId === p.id)
+                    .sort((a, b) => (parseInt(a.positionLabel) || 99) - (parseInt(b.positionLabel) || 99));
+
+                // Get top 3 for podium
+                const top3 = {
+                    1: winners.find(r => parseInt(r.positionLabel) === 1),
+                    2: winners.find(r => parseInt(r.positionLabel) === 2),
+                    3: winners.find(r => parseInt(r.positionLabel) === 3)
+                };
+
+                const getPodiumItem = (pos) => {
+                    const res = top3[pos];
+                    if (!res) return `
+                        <div class="podium-item podium-item-${pos} opacity-20">
+                            <div class="podium-avatar flex items-center justify-center bg-slate-100">
+                                <i class="fi fi-rr-user text-xs text-slate-300"></i>
+                            </div>
+                            <div class="podium-rank-box podium-${pos}">${pos}</div>
+                            <div class="podium-name">--</div>
+                        </div>`;
+
+                    const cand = candidateLookup[res.chestNo] || candidateLookup[res.candidateId] || {};
+                    const photoHtml = cand.imageUrl
+                        ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">`
+                        : `<i class="fi fi-rr-user text-xs text-slate-300"></i>`;
+
+                    return `
+                        <div class="podium-item podium-item-${pos}">
+                            <div class="podium-avatar">
+                                ${photoHtml}
+                            </div>
+                            <div class="podium-rank-box podium-${pos}">
+                                ${pos}
+                                <span class="podium-pts">${res.totalPoints || res.points || 0} P</span>
+                            </div>
+                            <div class="podium-name">${res.candidateName || res.name || 'Unknown'}</div>
+                        </div>`;
+                };
+
+                const template = _data.posterTemplate;
+
+                return `
+                <div onclick="viewProgramDetail('${p.id}')" class="program-card-premium group cursor-pointer relative overflow-hidden">
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start gap-4 mb-2">
+                            <div class="min-w-0">
+                                <h4 class="text-lg font-black text-slate-900 leading-tight group-hover:text-brand-primary transition-colors truncate">
+                                    ${p.name || 'Unknown'}
+                                </h4>
+                                <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">
+                                    ${p.category || ''} ${p.type || ''}
+                                </p>
+                            </div>
+                            <span class="px-2.5 py-1 bg-white/80 backdrop-blur-sm border border-slate-100 rounded-lg text-[9px] font-black text-slate-400 uppercase tracking-tighter shrink-0">
+                                ${p.section || 'GEN'}
+                            </span>
+                        </div>
+    
+                        <!-- Podium Layout -->
+                        <div class="podium-wrapper">
+                            ${getPodiumItem(2)}
+                            ${getPodiumItem(1)}
+                            ${getPodiumItem(3)}
+                        </div>
+    
+                        <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
+                            <span class="text-[9px] font-black text-slate-300 uppercase tracking-widest">Click for details</span>
+                            <div class="flex -space-x-2">
+                                ${winners.slice(0, 5).map(res => {
+                        const cand = candidateLookup[res.chestNo] || candidateLookup[res.candidateId] || {};
+                        return cand.imageUrl
+                            ? `<img src="${cand.imageUrl}" class="w-6 h-6 rounded-full border-2 border-white object-cover">`
+                            : `<div class="w-6 h-6 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center"><i class="fi fi-rr-user text-[8px] text-slate-300"></i></div>`;
+                    }).join('')}
+                                ${winners.length > 5 ? `<div class="w-6 h-6 rounded-full border-2 border-white bg-brand-primary/10 flex items-center justify-center text-[8px] font-black text-brand-primary">+${winners.length - 5}</div>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function viewProgramDetail(programId) {
+            const program = _data.programs.find(p => p.id === programId);
+            if (!program) return;
+
+            document.getElementById('program-list-view').classList.add('hidden');
+            document.getElementById('program-detail-view').classList.remove('hidden');
+
+            const winners = _data.results.filter(r => r.programId === programId)
+                .sort((a, b) => (parseInt(a.positionLabel) || 99) - (parseInt(b.positionLabel) || 99));
+
+            const candidateLookup = {};
+            _data.candidates.forEach(c => {
+                if (c.chestNo) candidateLookup[c.chestNo] = c;
+                if (c.id) candidateLookup[c.id] = c;
+            });
+
+            const content = document.getElementById('program-detail-content');
+            content.innerHTML = `
+                <div class="bg-white border border-slate-200 rounded-2xl sm:rounded-3xl p-4 sm:p-12 space-y-8 sm:space-y-12 shadow-xl shadow-slate-200/20">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 sm:gap-8 border-b border-slate-100 pb-8 sm:pb-12">
+                        <div class="space-y-2 w-full">
+                            <h3 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight break-words">${program.name}</h3>
+                            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                                <span class="px-3 py-1 bg-brand-primary/10 text-brand-primary rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-widest">${program.category}</span>
+                                <span class="w-1.5 h-1.5 bg-slate-200 rounded-full hidden sm:block"></span>
+                                <span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest">${program.type} | ${program.section}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 w-full sm:w-auto">
+                            <div class="bg-slate-50 px-6 sm:px-8 py-4 sm:py-6 rounded-2xl sm:rounded-3xl text-center border border-slate-100 flex-1 sm:flex-none">
+                                <p class="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Participants</p>
+                                <p class="text-3xl sm:text-4xl font-black text-brand-primary tracking-tighter">${winners.length}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                            <span class="w-1 h-4 bg-brand-primary rounded-full"></span>
+                            Final Standings
+                        </h4>
+                        <div class="grid gap-3">
+                            ${winners.map(res => {
+                const pos = parseInt(res.positionLabel);
+                const gradeRaw = res.gradeLabel || '';
+                const grade = gradeRaw.split(' ')[0].split('(')[0].trim();
+                const posSuffix = pos === 1 ? 'st' : (pos === 2 ? 'nd' : (pos === 3 ? 'rd' : 'th'));
+                const posDisplay = pos ? `${pos}${posSuffix}` : '';
+
+                const cand = candidateLookup[res.chestNo] || candidateLookup[res.candidateId] || {};
+                const photoHtml = cand.imageUrl
+                    ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">`
+                    : `<i class="fi fi-rr-user text-xl text-slate-200"></i>`;
+
+                const template = _data.posterTemplate;
+                const photoShape = (template && template.elements && template.elements.candidatePhoto) ? template.elements.candidatePhoto.shape : 'rounded';
+                const photoRadius = photoShape === 'circle' ? 'rounded-full' : (photoShape === 'rounded' ? 'rounded-xl sm:rounded-2xl' : 'rounded-none');
+                
+                const showChest = template ? (template.elements?.chestNo?.visible !== false) : true;
+                const showTeam = template ? (template.elements?.team?.visible !== false) : true;
+
+                return `
+                                <div class="result-card-premium p-4 sm:p-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 sm:gap-6 hover:bg-slate-50/50 transition-all relative overflow-hidden">
+                                    <div class="flex items-center gap-4 sm:gap-6 flex-grow relative z-10">
+                                        <!-- Photo Box -->
+                                        <div class="chest-box-premium shrink-0 overflow-hidden flex items-center justify-center border-slate-200 !w-14 !h-14 sm:!w-16 sm:!h-16 ${photoRadius} shadow-sm bg-white">
+                                            ${photoHtml}
+                                        </div>
+                                        
+                                        <!-- Candidate Info -->
+                                        <div class="flex-grow space-y-1">
+                                            <p class="text-base sm:text-xl font-black text-slate-900 leading-tight tracking-tight">
+                                                ${res.candidateName || res.name || 'Unknown'}
+                                                ${showChest ? `<span class="text-[10px] sm:text-sm text-brand-primary opacity-60 ml-1 font-bold">#${res.chestNo || '--'}</span>` : ''}
+                                            </p>
+                                            <div class="flex flex-wrap items-center gap-2">
+                                                ${showTeam ? `<span class="px-2 py-0.5 bg-brand-primary/5 text-brand-primary rounded-md text-[9px] sm:text-[11px] font-black uppercase tracking-widest">${res.teamName || res.team || '--'}</span>` : ''}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between sm:justify-end gap-3 sm:gap-6 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100 shrink-0 relative z-10">
+                                        <!-- Results Info -->
+                                        <div class="flex items-center gap-4">
+                                            <div class="flex flex-col items-center sm:items-end">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="text-xl sm:text-3xl font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-700'} leading-none tracking-tighter">${posDisplay || '--'}</span>
+                                                    ${grade ? `<span class="h-6 w-px bg-slate-200 hidden sm:block"></span><span class="text-lg sm:text-2xl font-black text-brand-secondary uppercase leading-none">${grade}</span>` : ''}
+                                                </div>
+                                                <span class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Achievement</span>
+                                            </div>
+
+                                            <div class="h-10 w-px bg-slate-100 mx-1 sm:mx-2"></div>
+
+                                            <div class="text-right">
+                                                <p class="text-2xl sm:text-4xl font-black text-brand-primary leading-none tracking-tighter">${res.totalPoints || res.points || 0}</p>
+                                                <p class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Points</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- View Poster Link -->
+                                        <div class="flex items-center gap-2">
+                                            <button onclick="downloadPoster(event, '${escapeQuotes(res.candidateName || res.name || 'Unknown')}', '${res.chestNo || ''}', '${escapeQuotes(program.name)}', '${posDisplay}', '${grade}', '${escapeQuotes(res.teamName || res.team || '')}', '${cand.imageUrl || ''}')" 
+                                                class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-brand-secondary text-white hover:scale-105 active:scale-95 flex items-center justify-center transition-all shadow-lg shadow-brand-secondary/20 shrink-0" title="Download Poster">
+                                                <i class="fi fi-rr-download text-lg sm:text-xl"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>`;
+            }).join('') || `<p class="py-12 text-center text-slate-400 font-bold">No participants found.</p>`}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function backToProgramList() {
+            document.getElementById('program-detail-view').classList.add('hidden');
+            document.getElementById('program-list-view').classList.remove('hidden');
+        }
+
+        function renderCandidateTable() {
+            const searchQuery = (document.getElementById('search-candidate').value || '').toLowerCase();
+            const candStats = {};
+            const teamTotals = {};
+
+            const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
+            const programMap = {};
+            _data.programs.forEach(p => programMap[p.id] = p);
+
+            _data.results.forEach(res => {
+                if (!publishedProgIds.has(res.programId)) return;
+
+                const pts = parseFloat(res.totalPoints || res.points || 0);
+                const teamName = res.teamName || res.team || '--';
+
+                // Aggregate Team Totals for percentage calculation
+                if (teamName !== '--') {
+                    teamTotals[teamName] = (teamTotals[teamName] || 0) + pts;
+                }
+
+                const key = res.candidateId || res.chestNo || res.candidateName;
+                if (!key) return;
+
+                if (!candStats[key]) {
+                    candStats[key] = {
+                        id: res.candidateId || null,
+                        chestNo: res.chestNo || '--',
+                        name: res.candidateName || res.name || 'Unknown',
+                        team: teamName,
+                        points: 0,
+                        progs: 0,
+                        sections: new Set()
+                    };
+                }
+
+                candStats[key].points += pts;
+                candStats[key].progs++;
+
+                const prog = programMap[res.programId];
+                if (prog && prog.section) {
+                    candStats[key].sections.add(prog.section);
+                }
+            });
+
+            // Optimized candidate lookup
+            const candidateRefMap = {};
+            _data.candidates.forEach(c => {
+                if (c.chestNo) candidateRefMap[c.chestNo] = c;
+                if (c.id) candidateRefMap[c.id] = c;
+            });
+
+            Object.values(candStats).forEach(c => {
+                const dbCand = candidateRefMap[c.chestNo] || candidateRefMap[c.id];
+                if (dbCand && dbCand.category) {
+                    c.sections.add(dbCand.category);
+                }
+            });
+
+            const sorted = Object.values(candStats)
+                .filter(c => (c.name || '').toLowerCase().includes(searchQuery) || (c.chestNo || '').toString().toLowerCase().includes(searchQuery))
+                .sort((a, b) => b.points - a.points);
+
+            const body = document.getElementById('candidate-table-body');
+            if (sorted.length === 0) {
+                body.innerHTML = `<tr><td colspan="8" class="px-8 py-20 text-center text-slate-400 font-bold uppercase text-xs tracking-widest">No candidates found</td></tr>`;
+                return;
+            }
+
+            body.innerHTML = sorted.map((c, idx) => {
+                const percentage = teamTotals[c.team] ? ((c.points / teamTotals[c.team]) * 100).toFixed(1) : '0.0';
+                const sectionsDisplay = Array.from(c.sections).join(', ') || '--';
+
+                const cand = candidateRefMap[c.chestNo] || candidateRefMap[c.id] || {};
+                const avatarHtml = cand.imageUrl
+                    ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">`
+                    : `<span class="text-[10px] font-bold text-slate-400">${c.name.charAt(0)}</span>`;
+
+                return `
+                <tr onclick="viewStudentProfile('${c.chestNo}')" class="border-b border-slate-50 hover:bg-slate-50 transition-colors cursor-pointer group">
+                    <td class="px-8 py-5" data-label="Rank"><span class="font-black ${idx < 3 ? 'text-brand-primary' : 'text-slate-300'}">#${(idx + 1).toString().padStart(2, '0')}</span></td>
+                    <td class="px-8 py-5" data-label="Chest No"><span class="font-black text-slate-500">${c.chestNo}</span></td>
+                    <td class="px-8 py-5" data-label="Candidate">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full border border-slate-100 bg-slate-50 flex items-center justify-center overflow-hidden shrink-0">
+                                ${avatarHtml}
+                            </div>
+                            <span class="font-black text-slate-800 tracking-tight group-hover:text-brand-primary transition-colors">${c.name}</span>
+                        </div>
+                    </td>
+                    <td class="px-8 py-5" data-label="Team"><span class="text-xs font-black text-slate-600 uppercase tracking-widest">${c.team}</span></td>
+                    <td class="px-8 py-5" data-label="Section"><span class="px-2 py-1 bg-slate-100 rounded-md text-[10px] font-bold text-slate-600 uppercase tracking-widest">${sectionsDisplay}</span></td>
+                    <td class="px-8 py-5 text-center" data-label="Programs"><span class="px-2 py-1 bg-slate-100 rounded-lg text-xs font-bold text-slate-700">${c.progs}</span></td>
+                    <td class="px-8 py-5 text-center" data-label="Percentage"><span class="text-xs font-bold text-slate-500">${percentage}%</span></td>
+                    <td class="px-8 py-5 text-right font-black text-brand-primary text-lg" data-label="Total Points">${c.points.toFixed(1)}</td>
+                </tr>
+            `}).join('');
+        }
+
+        function viewStudentProfile(chestNo) {
+            document.getElementById('search-chest').value = chestNo;
+            switchTab('search');
+            searchCreative();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        let searchTimeout = null;
+        function searchCreative() {
+            const query = document.getElementById('search-chest').value.trim().toLowerCase();
+            const suggestions = document.getElementById('search-suggestions');
+            const loader = document.getElementById('search-loading');
+
+            if (!query) {
+                suggestions.classList.add('hidden');
+                return;
+            }
+
+            // Show suggestions
+            const filtered = _data.candidates.filter(c =>
+                c.name.toLowerCase().includes(query) ||
+                (c.chestNo && c.chestNo.toString().includes(query))
+            ).slice(0, 5);
+
+            if (filtered.length > 0) {
+                suggestions.innerHTML = filtered.map(c => `
+                    <div onclick="selectSuggestion('${c.chestNo}')" class="px-4 sm:px-6 py-3 sm:py-4 hover:bg-slate-50 cursor-pointer border-b border-slate-50 last:border-0 flex items-center justify-between">
+                        <div class="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+                            <div class="w-10 h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+                                ${c.imageUrl ? `<img src="${c.imageUrl}" class="w-full h-full object-cover">` : `<i class="fi fi-rr-user text-xs text-slate-300"></i>`}
+                            </div>
+                            <div class="flex flex-col min-w-0">
+                                <span class="font-bold text-slate-900 truncate">${c.name} <span class="text-[10px] text-brand-primary opacity-60 ml-1 font-bold">#${c.chestNo}</span></span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest truncate">${c.team}</span>
+                            </div>
+                        </div>
+                        <i class="fi fi-rr-arrow-small-right text-slate-300 ml-2"></i>
+                    </div>
+                `).join('');
+                suggestions.classList.remove('hidden');
+            } else {
+                suggestions.classList.add('hidden');
+            }
+
+            // Real-time search result if it's a direct chest no match or after a short delay
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const exactMatch = _data.candidates.find(c => c.chestNo == query);
+                if (exactMatch) {
+                    suggestions.classList.add('hidden');
+                    renderProfile(exactMatch);
+                } else if (query.length > 3) {
+                    // If no exact match but long query, maybe show the first filtered result
+                    if (filtered.length === 1) renderProfile(filtered[0]);
+                }
+            }, 500);
+        }
+
+        function selectSuggestion(chestNo) {
+            document.getElementById('search-chest').value = chestNo;
+            document.getElementById('search-suggestions').classList.add('hidden');
+            const cand = _data.candidates.find(c => c.chestNo == chestNo);
+            if (cand) renderProfile(cand);
+        }
+
+        function renderProfile(cand) {
+            const area = document.getElementById('chest-result-area');
+            const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
+            const candResults = _data.results.filter(r => (r.candidateId === cand.id || r.chestNo == cand.chestNo) && publishedProgIds.has(r.programId));
+            const total = candResults.reduce((sum, r) => sum + parseFloat(r.totalPoints || r.points || 0), 0);
+
+            const programMap = {};
+            _data.programs.forEach(p => programMap[p.id] = p);
+
+            // Refactored Search Result UI: Robust Grid + Flex-row wrapping to solve layout overlapping
+            area.innerHTML = `
+            <div class="bg-white border border-slate-200 rounded-[2rem] p-6 sm:p-8 md:p-10 space-y-8 sm:space-y-10 animate-reveal shadow-sm">
+                
+                <!-- Enhanced Clean Header -->
+                <div class="flex flex-col md:flex-row justify-between items-center gap-8 border-b border-slate-100 pb-8 sm:pb-10">
+                    <div class="flex items-center gap-5 sm:gap-8 w-full">
+                        <div class="w-20 h-20 sm:w-28 sm:h-28 bg-brand-primary rounded-full flex items-center justify-center overflow-hidden shrink-0 ring-4 ring-slate-50 shadow-md">
+                            ${cand.imageUrl ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">` : `<i class="fi fi-rr-user text-3xl sm:text-5xl text-white/50"></i>`}
+                        </div>
+                        <div class="space-y-2 min-w-0">
+                            <h3 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight flex items-baseline gap-2 flex-wrap">
+                                ${cand.name}
+                                <span class="text-lg sm:text-2xl text-slate-400 font-bold">#${cand.chestNo}</span>
+                            </h3>
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="px-3 py-1 bg-brand-primary/10 text-brand-primary rounded-md text-[9px] sm:text-[10px] font-black uppercase tracking-widest">${cand.team}</span>
+                                <span class="w-1.5 h-1.5 bg-slate-200 rounded-full hidden sm:block"></span>
+                                <span class="text-[9px] sm:text-[10px] text-slate-400 font-bold uppercase tracking-widest">${cand.category || 'General'} | ${cand.gender || 'Common'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-50 border border-slate-100 px-8 py-5 rounded-3xl text-center shrink-0 w-full md:w-auto min-w-[200px]">
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Accumulated Points</p>
+                        <p class="text-5xl sm:text-6xl font-black text-brand-primary tracking-tighter">${total.toFixed(1)}</p>
+                    </div>
+                </div>
+
+                <!-- Structured Grid Body to prevent overlapping -->
+                <div class="grid lg:grid-cols-12 gap-10">
+                    
+                    <!-- Left Column: Participation (7 spans) -->
+                    <div class="lg:col-span-7 xl:col-span-8 space-y-6">
+                        <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                            <span class="w-1 h-4 bg-brand-primary rounded-sm"></span>
+                            Participation & Results
+                        </h4>
+                        
+                        <div class="space-y-4">
+                            ${candResults.length > 0 ? candResults.map(r => {
+                const p = programMap[r.programId] || { name: 'Unknown Program', section: 'General' };
+                const pName = p.name || 'Unknown Program';
+                const pSection = p.section || p.category || 'General';
+                const pos = parseInt(r.positionLabel);
+                const gradeRaw = r.gradeLabel || '';
+                const grade = gradeRaw.split(' ')[0].split('(')[0].trim();
+                const posSuffix = pos === 1 ? 'st' : (pos === 2 ? 'nd' : (pos === 3 ? 'rd' : 'th'));
+                const posDisplay = pos ? `${pos}${posSuffix}` : '';
+
+                const template = _data.posterTemplate;
+                const photoShape = (template && template.elements && template.elements.candidatePhoto) ? template.elements.candidatePhoto.shape : 'rounded';
+                const photoRadius = photoShape === 'circle' ? 'rounded-2xl' : (photoShape === 'rounded' ? 'rounded-2xl' : 'rounded-none');
+                
+                const showChest = template ? (template.elements?.chestNo?.visible !== false) : true;
+                const showTeam = template ? (template.elements?.team?.visible !== false) : true;
+
+                return `
+                                <!-- Responsive Wrapped Card fixing the overlapping issue -->
+                                <div class="bg-white border border-slate-200 rounded-[1.25rem] p-4 sm:p-5 flex flex-col xl:flex-row justify-between items-start xl:items-center gap-5 hover:border-brand-primary/30 hover:shadow-md transition-all relative overflow-hidden">
+                                    
+                                    <!-- Left Section (Program Info) -->
+                                    <div class="flex items-center gap-4 w-full xl:w-auto min-w-0 relative z-10">
+                                        <div class="w-14 h-14 bg-white border border-slate-100 ${photoRadius} flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+                                            ${cand.imageUrl ? `<img src="${cand.imageUrl}" class="w-full h-full object-cover">` : `<i class="fi fi-rr-user text-xl text-slate-200"></i>`}
+                                        </div>
+                                        <div class="min-w-0 flex-1">
+                                            <h5 class="text-base sm:text-lg font-black text-slate-900 leading-tight truncate pr-2">${pName}</h5>
+                                            <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+                                                <span class="px-2 py-0.5 bg-brand-primary/5 text-brand-primary rounded text-[9px] font-black uppercase tracking-widest">${pSection}</span>
+                                                ${showChest ? `<span class="text-[10px] text-slate-400 font-semibold">Chest: #${r.chestNo || '--'}</span>` : ''}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Right Section (Stats & Download button wrapped safely) -->
+                                    <div class="flex items-center gap-4 sm:gap-6 w-full xl:w-auto justify-between xl:justify-end border-t xl:border-t-0 border-slate-100 pt-4 xl:pt-0 shrink-0 relative z-10">
+                                        
+                                        <!-- Rank Info -->
+                                        <div class="text-center min-w-[60px]">
+                                            <div class="flex items-baseline justify-center gap-1">
+                                                <span class="text-2xl sm:text-3xl font-black ${pos === 1 ? 'text-brand-primary' : 'text-slate-700'} leading-none tracking-tighter">${posDisplay || '--'}</span>
+                                                ${grade ? `<span class="text-lg font-black text-brand-secondary leading-none">${grade}</span>` : ''}
+                                            </div>
+                                            <div class="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">Achievement</div>
+                                        </div>
+
+                                        <div class="w-px h-10 bg-slate-100 hidden sm:block"></div>
+
+                                        <!-- Points Info -->
+                                        <div class="text-center min-w-[50px]">
+                                            <div class="text-2xl sm:text-3xl font-black text-brand-primary leading-none tracking-tighter">${r.totalPoints || r.points || 0}</div>
+                                            <div class="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">Points</div>
+                                        </div>
+
+                                        <!-- View Poster Link -->
+                                        <div class="flex items-center gap-2">
+                                            <button onclick="downloadPoster(event, '${escapeQuotes(cand.name)}', '${r.chestNo || ''}', '${escapeQuotes(pName)}', '${posDisplay}', '${grade}', '${escapeQuotes(cand.team)}', '${cand.imageUrl || ''}')" 
+                                                class="w-12 h-12 bg-brand-secondary text-white rounded-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shadow-brand-secondary/20 shrink-0" title="Download Poster">
+                                                <i class="fi fi-rr-download text-lg"></i>
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>`;
+            }).join('') : `
+                                <div class="py-12 text-center bg-slate-50 rounded-3xl border border-dashed border-slate-200">
+                                    <p class="text-slate-400 font-bold uppercase text-[10px] tracking-widest">No published results found</p>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Stats (5 spans) -->
+                    <div class="lg:col-span-5 xl:col-span-4 space-y-6">
+                        <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                            <span class="w-1 h-4 bg-brand-secondary rounded-sm"></span>
+                            Performance Stats
+                        </h4>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Programs</p>
+                                <p class="text-3xl font-black text-slate-800">${candResults.length}</p>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-100 p-5 rounded-2xl">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Rank</p>
+                                <p class="text-3xl font-black text-slate-800">#${getStudentRank(cand.chestNo)}</p>
+                            </div>
+                            <div class="col-span-2 bg-slate-50 border border-slate-100 p-6 rounded-2xl">
+                                <p class="text-[9px] font-black text-brand-primary/70 uppercase tracking-widest mb-2">Contribution to ${cand.team}</p>
+                                <p class="text-3xl font-black text-brand-primary tracking-tighter">${((total / getTeamTotal(cand.team)) * 100 || 0).toFixed(1)}% <span class="text-[10px] font-bold text-slate-400 tracking-normal ml-1">of team total</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>`;
+        }
+
+        function getStudentRank(chestNo) {
+            // Simple rank calculator based on current loaded data
+            const candStats = {};
+            const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
+            _data.results.forEach(res => {
+                if (!publishedProgIds.has(res.programId)) return;
+                const key = res.chestNo || res.candidateName;
+                if (!key) return;
+                if (!candStats[key]) candStats[key] = 0;
+                candStats[key] += parseFloat(res.totalPoints || res.points || 0);
+            });
+            const sorted = Object.entries(candStats).sort((a, b) => b[1] - a[1]);
+            const rank = sorted.findIndex(s => s[0] == chestNo) + 1;
+            return rank > 0 ? rank : '--';
+        }
+
+        function getTeamTotal(teamName) {
+            let total = 0;
+            const publishedProgIds = new Set(_data.programs.filter(p => p.resultsPublished).map(p => p.id));
+            _data.results.forEach(res => {
+                if (!publishedProgIds.has(res.programId)) return;
+                if ((res.team || res.teamName) === teamName) total += parseFloat(res.totalPoints || res.points || 0);
+            });
+            return total || 1;
+        }
+
+
+        // Init
+        initSync();
+    </script>
+</body>
+
+</html>
